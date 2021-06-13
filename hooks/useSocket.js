@@ -6,12 +6,12 @@ export default function useSocket() {
 
   useEffect(() => {
     const socketIo = io();
-
     setSocket(socketIo);
 
     function cleanup() {
       socketIo.disconnect();
     }
+
     return cleanup;
   }, []);
 
