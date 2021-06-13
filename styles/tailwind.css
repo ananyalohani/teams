@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .h-vh {
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply bg-indigo-600 font-semibold text-white px-4 py-2 rounded-md shadow-sm;
+    @apply hover:bg-indigo-700 focus:outline-none focus:ring-2 ring-indigo-400 flex-grow-0;
+  }
+
+  .btn-light {
+    @apply btn bg-indigo-500 hover:bg-indigo-600 ring-indigo-700;
+  }
+
+  .call-icon-wrapper {
+    @apply bg-indigo-700 rounded-full p-4 cursor-pointer;
+  }
+
+  .call-icon-wrapper.active {
+    @apply bg-indigo-900 ring-2 ring-indigo-400 ring-inset;
+  }
+
+  .call-icon {
+    @apply text-white h-6 w-6;
+  }
+
+  .call-icon-wrapper.phn {
+    @apply bg-red-600;
+  }
+}

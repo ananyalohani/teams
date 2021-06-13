@@ -1,0 +1,42 @@
+html,
+body {
+  @apply bg-white my-0 mx-auto h-full w-full;
+}
+
+a {
+  @apply no-underline;
+}
+
+* {
+  @apply box-border p-0 m-0;
+}
+
+.wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.phn .call-icon {
+  @apply transform;
+  --tw-rotate: 135deg;
+}
+
+.left-padding-desktop {
+  padding-left: 10%;
+}
+
+@media only screen and (max-width: 640px) {
+  .homepage-image-wrapper > div {
+    height: 280px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .homepage-image-wrapper > div > img {
+    width: 100%;
+  }
+
+  .left-padding-desktop {
+    padding-left: 0;
+  }
+}
