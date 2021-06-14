@@ -12,7 +12,11 @@ module.exports = {
       full: '100%',
       screen: '100vh',
     },
-    extend: {},
+    extend: {
+      scale: {
+        '-1': '-1',
+      },
+    },
     fontFamily: {
       sans: ['SegoeUI', 'ui-sans-serif', 'system-ui'],
       body: ['SegoeUI', 'ui-sans-serif', 'system-ui'],
