@@ -32,16 +32,25 @@ export default function Header() {
 
         <div className='flex flex-row space-x-4 items-center '>
           {!session && (
-            <button onClick={signIn} className='btn hidden sm:block'>
-              Sign In
-            </button>
+            <>
+              <button onClick={signIn} className='btn hidden sm:block'>
+                Sign In
+              </button>
+              <FaUserCircle className='w-10 h-10 text-indigo-400 hidden sm:block' />
+            </>
           )}
           {session && (
-            <button onClick={signOut} className='btn hidden sm:block'>
-              Sign Out
-            </button>
+            <>
+              <button onClick={signOut} className='btn hidden sm:block'>
+                Sign Out
+              </button>
+              <img
+                src={session.user.image}
+                alt='user avatar'
+                className='w-10 h-10 rounded-full border border-gray-100 shadow-sm'
+              />
+            </>
           )}
-          <FaUserCircle className='w-10 h-10 text-indigo-400 hidden sm:block' />
         </div>
       </div>
     </header>

@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
@@ -5,6 +6,10 @@ import Header from '../components/header';
 
 export default function Home() {
   const [session, loading] = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
 
   return (
     <div>

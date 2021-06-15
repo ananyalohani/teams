@@ -19,6 +19,18 @@ const options = {
     //   from: '',
     // }),
   ],
+  // callbacks: {
+  //   jwt: async (token, user, account, profile, isNewUser) => {
+  //     if (user) {
+  //       token.uid = user.id;
+  //     }
+  //     return Promise.resolve(token);
+  //   },
+  //   session: async (session, user) => {
+  //     session.user.uid = user.uid;
+  //     return Promise.resolve(session);
+  //   },
+  // },
 };
 
 export default (req, res) => NextAuth(req, res, options);
