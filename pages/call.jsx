@@ -3,6 +3,7 @@ import Head from 'next/head';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import { v4 as uuidV4 } from 'uuid';
+import { useSession } from 'next-auth/client';
 import Header from '../components/header';
 import CallFooter from '../components/callFooter';
 
@@ -27,10 +28,27 @@ export default function Call({ roomId }) {
   const socketRef = useRef(); // ref to the socket connection object
   const userVideo = useRef(); // ref to the user's video
   const peersRef = useRef([]); // ref to all the peer connection objects
+  const [session, loading] = useSession();
+  const [content, setContent] = useState();
 
   useEffect(() => {
     console.log(socketRef);
   }, [socketRef]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch('/api/call');
+      const json = await res.json();
+      console.log(json);
+      if (json.content) setContent(json.content);
+    };
+
+    fetchData();
+  }, [session]);
+
+  // if (typeof window !== 'undefined' && loading) return null;
+  // if (!session) // redirect to login page
+  // else // return page contents
 
   useEffect(() => {
     socketRef.current = io();

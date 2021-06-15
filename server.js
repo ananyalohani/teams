@@ -98,6 +98,10 @@ nextApp.prepare().then(() => {
     return nextHandler(req, res);
   });
 
+  app.post('*', (req, res) => {
+    return nextHandler(req, res);
+  });
+
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`Next Express app ready on http://localhost:${port}`);

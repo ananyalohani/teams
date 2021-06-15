@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 export default function Header() {
+  const [session, loading] = useSession();
+
   return (
     <header className='bg-white w-full border-b-2 sticky h-24'>
       <div className='wrapper flex flex-row sm:justify-between py-5 items-center'>
@@ -28,7 +31,16 @@ export default function Header() {
         </div>
 
         <div className='flex flex-row space-x-4 items-center '>
-          <button className='btn hidden sm:block'>Sign In</button>
+          {!session && (
+            <button onClick={signIn} className='btn hidden sm:block'>
+              Sign In
+            </button>
+          )}
+          {session && (
+            <button onClick={signOut} className='btn hidden sm:block'>
+              Sign Out
+            </button>
+          )}
           <FaUserCircle className='w-10 h-10 text-indigo-400 hidden sm:block' />
         </div>
       </div>
