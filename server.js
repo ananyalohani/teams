@@ -37,6 +37,7 @@ io.on('connection', (socket) => {
     }
     socketToRoom[socket.id] = roomId;
     const usersInThisRoom = users[roomId].filter((id) => id !== socket.id);
+    socket.join(roomId);
 
     socket.emit('all-users', usersInThisRoom);
   });
@@ -55,6 +56,11 @@ io.on('connection', (socket) => {
       signal: payload.signal,
       id: socket.id,
     });
+  });
+
+  // Send message on the group chat
+  socket.on('send-message', (payload) => {
+    socket.to(payload.roomId).emit('receive-message', payload.msgData);
   });
 
   // Disconnect from socket
