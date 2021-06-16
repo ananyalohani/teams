@@ -23,6 +23,10 @@ const options = {
     //   from: '',
     // }),
   ],
+  pages: {
+    signIn: '/login',
+  },
+
   // callbacks: {
   //   jwt: async (token, user, account, profile, isNewUser) => {
   //     if (user) {
