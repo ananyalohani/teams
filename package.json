@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "next": "latest",
     "next-auth": "^3.26.1",
+    "nookies": "^2.5.2",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^6.7.0",
     "react": "^17.0.1",
