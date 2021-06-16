@@ -1,7 +1,16 @@
+import React, { useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import Header from '../components/header';
 
 export default function Home() {
+  const [session, loading] = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <div>
       <Head>
@@ -18,7 +27,16 @@ export default function Home() {
               Meet, chat, call and collaborate <br />
               in just one place.
             </p>
-            <button className='btn'>Sign In</button>
+            {!session && (
+              <button onClick={signIn} className='btn'>
+                Sign In
+              </button>
+            )}
+            {session && (
+              <button onClick={signOut} className='btn'>
+                Sign Out
+              </button>
+            )}
           </div>
           <img
             src='/images/homepage_picture.png'
