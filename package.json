@@ -20,6 +20,7 @@
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "request": "^2.79.0",
+    "short-uuid": "^4.2.0",
     "simple-peer": "^9.11.0",
     "socket.io": "^4.1.2",
     "socket.io-client": "^4.1.2",
@@ -27,9 +28,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "autoprefixer": "^10.0.4",
+    "autoprefixer": "^10.2.6",
     "nodemon": "^2.0.7",
-    "postcss": "^8.1.10",
-    "tailwindcss": "^2.1.1"
+    "postcss": "^8.3.5",
+    "tailwindcss": "^2.1.4"
   }
 }

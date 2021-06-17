@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { CgSpinner } from 'react-icons/cg';
-import { v4 as uuidV4 } from 'uuid';
+// import { v4 as uuidV4 } from 'uuid';
+import short from 'short-uuid';
 
 const Call = () => {
   useEffect(() => {
-    window.location.href = `/call/${uuidV4()}`;
+    window.location.href = `/call/${short.generate()}`;
   }, []);
 
   return (

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { BiLink } from 'react-icons/bi';
 import Head from 'next/head';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
-import Header from '../../components/header';
-import CallFooter from '../../components/callFooter';
+import Header from '@/components/header';
+import CallFooter from '@/components/callFooter';
 
 const Video = (props) => {
   const ref = useRef();
@@ -91,8 +92,7 @@ export default function Call({ roomId }) {
           console.log('receiving message');
           addChat(msgData);
         });
-      })
-      .finally(() => {});
+      });
   }, []);
 
   function createPeer(userToSignal, callerId, stream) {
@@ -158,19 +158,32 @@ export default function Call({ roomId }) {
         {/* CHAT PANEL */}
         <div
           id='chat-panel'
-          className='flex flex-col bg-white w-80 absolute top-24 right-0 bottom-20 border-l-2'
+          className='flex flex-col bg-gray-900 w-80 absolute top-24 right-0 bottom-20 border-l border-gray-600'
         >
-          <div className='bg-indigo-100 w-full p-5'>
-            <div className='flex flex-row space-x-2'>
-              <p className='font-semibold text-indigo-600'>Meeting ID:</p>
-              <p>{'xyz123'}</p>
+          <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
+            <div>
+              <div className='flex flex-row space-x-2'>
+                <p className='font-bold text-gray-900 whitespace-nowrap'>
+                  Meeting ID
+                </p>
+                <p>{roomId}</p>
+              </div>
+              <div className='flex flex-row space-x-2'>
+                <p className='font-bold text-gray-900 whitespace-nowrap'>
+                  Participants
+                </p>
+                <p>{peers.length}</p>
+              </div>
             </div>
-            <div className='flex flex-row space-x-2'>
-              <p className='font-semibold text-indigo-600'>Participants:</p>
-              <p>{4}</p>
-            </div>
+            <button className='btn-alt btn-small'>
+              <BiLink className='btn-icon' />
+              Copy Link
+            </button>
           </div>
-          <div id='chat-window' className='flex-1'>
+          <div
+            id='chat-window'
+            className='flex-1 text-gray-200 py-3 px-4 overflow-y-scroll'
+          >
             {chats.map((msgData, idx) => (
               <div key={idx}>
                 <p>{msgData.userId}</p>
@@ -180,15 +193,17 @@ export default function Call({ roomId }) {
           </div>
           <form
             onSubmit={sendMessage}
-            className='flex flex-row justify-evenly my-2'
+            className='flex flex-row justify-evenly my-3'
           >
             <input
               type='text'
-              className='border-2 bg-gray-100 rounded w-56 text-base px-3 py-2'
+              className='bg-gray-800 border border-gray-600 text-gray-200 rounded-md p-2 w-56'
               onChange={(e) => setMessage(e.target.value)}
               value={message}
+              placeholder='Type your message'
             />
-            <button type='submit' className='btn-light'>
+
+            <button type='submit' className='btn btn-small'>
               Send
             </button>
           </form>
@@ -196,7 +211,7 @@ export default function Call({ roomId }) {
         {/* VIDEO GRID */}
         <div
           id='video-grid'
-          className='bg-gray-100 absolute left-0 bottom-20 top-24 right-80 flex flex-wrap'
+          className='bg-gray-900 absolute left-0 bottom-20 top-24 right-80 flex flex-wrap'
         >
           <video
             className='h-2/5 w-1/2 -scale-y-1'

@@ -1,17 +1,25 @@
 import React from 'react';
-import { BiMicrophoneOff, BiVideoOff, BiPhone } from 'react-icons/bi';
+import {
+  IoMicSharp,
+  IoMicOffSharp,
+  IoVideocamOff,
+  IoVideocam,
+  IoCall,
+  IoChatbox,
+} from 'react-icons/io5';
+import { MdScreenShare } from 'react-icons/md';
 
 export default function CallFooter() {
   return (
-    <footer className='h-20 absolute bottom-0 left-0 w-full bg-indigo-200 p-4 flex flex-row items-center justify-center space-x-10 border-t border-indigo-300'>
+    <footer className='h-20 absolute bottom-0 left-0 w-full bg-gray-800 p-4 flex flex-row items-center justify-center space-x-10 border-t border-gray-600'>
       <div className='call-icon-wrapper active'>
-        <BiMicrophoneOff className='call-icon ' />
+        <IoMicOffSharp className='call-icon ' />
       </div>
       <div className='call-icon-wrapper'>
-        <BiVideoOff className='call-icon' />
+        <IoVideocamOff className='call-icon' />
       </div>
       <div className='call-icon-wrapper phn'>
-        <BiPhone className='call-icon' />
+        <IoCall className='call-icon' />
       </div>
     </footer>
   );

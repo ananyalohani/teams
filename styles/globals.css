@@ -16,6 +16,12 @@ a {
   margin: 0 auto;
 }
 
+.card-text {
+  width: auto !important;
+  max-width: 500px;
+  @apply text-lg text-gray-200;
+}
+
 .phn .call-icon {
   @apply transform;
   --tw-rotate: 135deg;
@@ -23,6 +29,14 @@ a {
 
 .left-padding-desktop {
   padding-left: 10%;
+}
+
+.btn .btn-icon {
+  @apply text-gray-900 w-5 h-5 mr-2;
+}
+
+.btn-alt .btn-icon {
+  @apply text-blue-400 w-5 h-5 mr-2;
 }
 
 /* #video-grid {
@@ -38,6 +52,10 @@ a {
 }
 
 @media only screen and (max-width: 640px) {
+  .wrapper {
+    width: 90%;
+  }
+
   .homepage-image-wrapper > div {
     height: 280px;
     width: 100%;
@@ -50,5 +68,9 @@ a {
 
   .left-padding-desktop {
     padding-left: 0;
+  }
+
+  .card-text {
+    width: auto !important;
   }
 }

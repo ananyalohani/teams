@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 module.exports = {
   mode: 'jit',
   important: true,
@@ -13,6 +15,10 @@ module.exports = {
       screen: '100vh',
     },
     extend: {
+      colors: {
+        gray: colors.coolGray,
+        trueGray: colors.trueGray,
+      },
       scale: {
         '-1': '-1',
       },
