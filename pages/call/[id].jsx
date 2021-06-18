@@ -1,39 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { BiLink } from 'react-icons/bi';
-import Head from 'next/head';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
-import Header from '@/components/header';
+
 import CallFooter from '@/components/callFooter';
+import Header from '@/components/header';
+import Head from '@/components/head';
+import Video from '@/components/video';
+import ChatPanel from '@/components/chatPanel';
 
-const Video = (props) => {
-  const ref = useRef();
-
-  useEffect(() => {
-    props.peer.on('stream', (stream) => {
-      ref.current.srcObject = stream;
-    });
-  });
-
-  return (
-    <video className='h-2/5 w-1/2 -scale-x-1' playsInline autoPlay ref={ref} />
-  );
-};
-
-export default function Call({ roomId }) {
+export default function Call({ serverURL, clientURL, roomId }) {
   const [peers, setPeers] = useState([]); // keep track of all the peer videos in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
-  const [message, setMessage] = useState('');
   const socketRef = useRef(); // ref to the socket connection object
   const userVideo = useRef(); // ref to the user's video
   const peersRef = useRef([]); // ref to all the peer connection objects
 
   useEffect(() => {
-    console.log(socketRef);
-  }, [socketRef, socketRef.current]);
-
-  useEffect(() => {
-    socketRef.current = io('https://ws.msft.lohani.dev/');
+    socketRef.current = io(serverURL);
     // get access to the user's mic and webcam
     navigator.mediaDevices
       .getUserMedia({
@@ -116,7 +99,7 @@ export default function Call({ roomId }) {
   }
 
   function addPeer(incomingSignal, callerId, stream) {
-    //
+    // add the current user to the peer's list of peers
     const peer = new Peer({
       initiator: false,
       trickle: false,
@@ -132,7 +115,7 @@ export default function Call({ roomId }) {
     return peer;
   }
 
-  const sendMessage = (e) => {
+  function sendMessage(e, message) {
     e.preventDefault();
     if (message === '') return;
     addChat({ message, userId: socketRef.current.id });
@@ -141,8 +124,7 @@ export default function Call({ roomId }) {
       msgData: { message, userId: socketRef.current.id },
       roomId,
     });
-    setMessage('');
-  };
+  }
 
   function addChat(message) {
     setChats((chats) => [...chats, message]);
@@ -150,75 +132,29 @@ export default function Call({ roomId }) {
 
   return (
     <>
-      <Head>
-        <title>Call - {roomId}</title>
-      </Head>
+      <Head title={`Call - ${roomId}`} />
       <div className='h-screen'>
         <Header />
-        {/* CHAT PANEL */}
-        <div
-          id='chat-panel'
-          className='flex flex-col bg-gray-900 w-80 absolute top-24 right-0 bottom-20 border-l border-gray-600'
-        >
-          <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
-            <div>
-              <div className='flex flex-row text-gray-900 space-x-2'>
-                <p className='font-bold whitespace-nowrap'>Meeting ID</p>
-                <p>{roomId}</p>
-              </div>
-              <div className='flex flex-row text-gray-900 space-x-2'>
-                <p className='font-bold whitespace-nowrap'>Participants</p>
-                <p>{peers.length}</p>
-              </div>
-            </div>
-            <button className='btn-alt btn-small'>
-              <BiLink className='btn-icon' />
-              Copy Link
-            </button>
-          </div>
-          <div
-            id='chat-window'
-            className='flex-1 text-gray-200 py-3 px-4 overflow-y-scroll'
-          >
-            {chats.map((msgData, idx) => (
-              <div key={idx}>
-                <p>{msgData.userId}</p>
-                <p>{msgData.message}</p>
-              </div>
-            ))}
-          </div>
-          <form
-            onSubmit={sendMessage}
-            className='flex flex-row justify-evenly my-3'
-          >
-            <input
-              type='text'
-              className='bg-gray-800 border border-gray-600 text-gray-200 rounded-md p-2 w-56'
-              onChange={(e) => setMessage(e.target.value)}
-              value={message}
-              placeholder='Type your message'
-            />
-
-            <button type='submit' className='btn btn-small'>
-              Send
-            </button>
-          </form>
-        </div>
-        {/* VIDEO GRID */}
+        <ChatPanel
+          clientURL={clientURL}
+          roomId={roomId}
+          peers={peers}
+          sendMessage={sendMessage}
+          chats={chats}
+        />
         <div
           id='video-grid'
-          className='bg-gray-900 absolute left-0 bottom-20 top-24 right-80 flex flex-wrap'
+          className='bg-gray-900 absolute left-0 bottom-20 top-24 right-0 sm:right-80 flex items-center justify-center'
         >
-          <video
-            className='h-2/5 w-1/2 -scale-y-1'
-            muted
-            playsInline
-            autoPlay
-            ref={userVideo}
-          />
-          {peers.map((p) => {
-            return <Video key={p.peerId} peer={p.peer} />;
-          })}
+          <div className='flex flex-wrap justify-center'>
+            <Video audio={false} ref={userVideo} />
+            {/* <div className='w-56 h-32 sm:h-72 sm:w-100 rounded bg-gray-800 m-2'></div>
+            <div className='w-56 h-32 sm:h-72 sm:w-100 rounded bg-gray-800 m-2'></div>
+            <div className='w-56 h-32 sm:h-72 sm:w-100 rounded bg-gray-800 m-2'></div> */}
+            {peers.map((p) => {
+              return <Video key={p.peerId} peer={p.peer} />;
+            })}
+          </div>
         </div>
         <CallFooter />
       </div>
@@ -226,8 +162,15 @@ export default function Call({ roomId }) {
   );
 }
 
-Call.getInitialProps = ({ req, query: { id } }) => {
+export async function getServerSideProps({ req, query: { id } }) {
+  const serverURL = process.env.SERVER_URL;
+  const clientURL = process.env.CLIENT_URL;
+
   return {
-    roomId: id,
+    props: {
+      serverURL,
+      clientURL,
+      roomId: id,
+    },
   };
-};
+}

@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 import short from 'short-uuid';
+
 import Head from '@/components/head';
 
 const Call = () => {
   useEffect(() => {
+    // redirect to a call/active socket
     window.location.href = `/call/${short.generate()}`;
   }, []);
 

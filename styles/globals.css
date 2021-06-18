@@ -49,12 +49,6 @@ a {
   grid-auto-rows: 300px;
 } */
 
-#video-grid video {
-  width: 100%;
-  height: 100%;
-  /*? object-fit: cover; */
-}
-
 @media only screen and (max-width: 640px) {
   .wrapper {
     width: 90%;
@@ -76,5 +70,9 @@ a {
 
   .card-text {
     width: auto !important;
+  }
+
+  #chat-panel {
+    display: none !important;
   }
 }

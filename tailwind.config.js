@@ -15,6 +15,11 @@ module.exports = {
       screen: '100vh',
     },
     extend: {
+      width: {
+        100: '28rem',
+        110: '30rem',
+        120: '34rem',
+      },
       colors: {
         gray: colors.coolGray,
         trueGray: colors.trueGray,

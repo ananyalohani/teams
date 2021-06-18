@@ -1,106 +1,67 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useState } from 'react';
+import { BiLink } from 'react-icons/bi';
 
-const ChatPanel = forwardRef(({ chats, addChat }, socketRef) => {
-  const [message, setMessage] = useState('');
-
-  // useEffect(() => {
-  //   console.log(message);
-  // }, [message]);
-
-  const sendMessage = () => {
-    if (message === '') return;
-    addChat(message);
-    socketRef.current.emit('send-message', message);
-    setMessage('');
-  };
+function ChatPanel({ clientURL, roomId, peers, sendMessage, chats }) {
+  const [message, setMessage] = useState(''); // bind this to the input text-box
 
   return (
-    <div className='flex flex-col bg-white w-80 absolute top-24 right-0 bottom-20 border-l-2'>
-      <div className='bg-indigo-100 w-full p-5'>
-        <div className='flex flex-row space-x-2'>
-          <p className='font-semibold text-indigo-600'>Meeting ID:</p>
-          <p>{'xyz123'}</p>
+    <div
+      id='chat-panel'
+      className='flex flex-col bg-gray-900 w-80 absolute top-24 right-0 bottom-20 border-l border-gray-600'
+    >
+      <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
+        <div>
+          <div className='flex flex-row text-gray-900 space-x-2'>
+            <p className='font-bold whitespace-nowrap'>Meeting ID</p>
+            <p>{roomId}</p>
+          </div>
+          <div className='flex flex-row text-gray-900 space-x-2'>
+            <p className='font-bold whitespace-nowrap'>Participants</p>
+            <p>{peers.length + 1}</p>
+          </div>
         </div>
-        <div className='flex flex-row space-x-2'>
-          <p className='font-semibold text-indigo-600'>Participants:</p>
-          <p>{4}</p>
-        </div>
+        <button
+          className='btn-alt btn-small'
+          onClick={() =>
+            navigator.clipboard.writeText(`${clientURL}call/${roomId}`)
+          }
+        >
+          <BiLink className='btn-icon' />
+          Copy Link
+        </button>
       </div>
-      <div id='chat-window' className='flex-1'>
-        {chats.map((msg, idx) => (
+      <div
+        id='chat-window'
+        className='flex-1 text-gray-200 py-3 px-4 overflow-y-scroll'
+      >
+        {chats.map((msgData, idx) => (
           <div key={idx}>
-            <p>{msg}</p>
+            <p>{msgData.userId}</p>
+            <p>{msgData.message}</p>
           </div>
         ))}
       </div>
-      <div className='flex flex-row justify-evenly my-2'>
+      <form
+        onSubmit={(e) => {
+          sendMessage(e, message);
+          setMessage('');
+        }}
+        className='flex flex-row justify-evenly my-3'
+      >
         <input
           type='text'
-          className='border-2 bg-gray-100 rounded w-56 text-base px-3 py-2'
+          className='bg-gray-800 border border-gray-600 text-gray-200 rounded-md p-2 w-56'
           onChange={(e) => setMessage(e.target.value)}
           value={message}
+          placeholder='Type your message'
         />
-        <button type='submit' className='btn-light' onClick={sendMessage}>
+
+        <button type='submit' className='btn btn-small'>
           Send
         </button>
-      </div>
+      </form>
     </div>
   );
-});
+}
 
 export default ChatPanel;
-
-// const ChatPanel = ({socketRef}) => {
-//   const [message, setMessage] = useState('');
-//   const [chat, setChat] = useState([]);
-
-//   // useEffect(() => {
-//   //   console.log(message);
-//   // }, [message]);
-
-//   // useEffect(() => {
-//   //   console.log(chat);
-//   // }, [chat]);
-
-//   const sendMessage = () => {
-//     if (message === '') return;
-//     setChat((chats) => [...chats, message]);
-//     socketRef.current.emit('send-message', message);
-//     setMessage('');
-//   };
-
-//   return (
-//     <div className='flex flex-col bg-white w-80 absolute top-24 right-0 bottom-20 border-l-2'>
-//       <div className='bg-indigo-100 w-full p-5'>
-//         <div className='flex flex-row space-x-2'>
-//           <p className='font-semibold text-indigo-600'>Meeting ID:</p>
-//           <p>{'xyz123'}</p>
-//         </div>
-//         <div className='flex flex-row space-x-2'>
-//           <p className='font-semibold text-indigo-600'>Participants:</p>
-//           <p>{4}</p>
-//         </div>
-//       </div>
-//       <div id='chat-window' className='flex-1'>
-//         {chat.map((msg, idx) => (
-//           <div key={idx}>
-//             <p>{msg}</p>
-//           </div>
-//         ))}
-//       </div>
-//       <div className='flex flex-row justify-evenly my-2'>
-//         <input
-//           type='text'
-//           className='border-2 bg-gray-100 rounded w-56 text-base px-3 py-2'
-//           onChange={(e) => setMessage(e.target.value)}
-//           value={message}
-//         />
-//         <button type='submit' className='btn-light' onClick={sendMessage}>
-//           Send
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ChatPanel;
