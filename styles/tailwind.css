@@ -17,10 +17,7 @@
   }
 
   .btn-alt {
-    @apply bg-gray-900 font-semibold text-blue-400 text-lg px-4 py-2;
-    @apply hover:bg-black focus:outline-none focus:ring-2 ring-blue-300 flex-grow-0;
-    @apply flex flex-row items-center justify-center;
-    border-radius: 5px;
+    @apply btn bg-gray-900 text-blue-400 hover:bg-black focus:ring-2 ring-blue-300;
   }
 
   .btn-small {
@@ -41,5 +38,19 @@
 
   .call-icon-wrapper.phn {
     @apply bg-red-600 border-red-400;
+  }
+
+  .btn-icon {
+    @apply text-gray-900 w-5 h-5 mr-2;
+  }
+}
+
+@layer utilities {
+  .text-light {
+    @apply text-gray-200;
+  }
+
+  .text-dark {
+    @apply text-gray-900;
   }
 }

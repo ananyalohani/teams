@@ -162,16 +162,12 @@ export default function Call({ roomId }) {
         >
           <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
             <div>
-              <div className='flex flex-row space-x-2'>
-                <p className='font-bold text-gray-900 whitespace-nowrap'>
-                  Meeting ID
-                </p>
+              <div className='flex flex-row text-gray-900 space-x-2'>
+                <p className='font-bold whitespace-nowrap'>Meeting ID</p>
                 <p>{roomId}</p>
               </div>
-              <div className='flex flex-row space-x-2'>
-                <p className='font-bold text-gray-900 whitespace-nowrap'>
-                  Participants
-                </p>
+              <div className='flex flex-row text-gray-900 space-x-2'>
+                <p className='font-bold whitespace-nowrap'>Participants</p>
                 <p>{peers.length}</p>
               </div>
             </div>

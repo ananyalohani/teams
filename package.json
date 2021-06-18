@@ -11,7 +11,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "next": "latest",
+    "next": "^11.0.0",
     "next-auth": "^3.26.1",
     "nookies": "^2.5.2",
     "postcss-flexbugs-fixes": "^5.0.2",

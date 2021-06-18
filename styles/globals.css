@@ -31,12 +31,16 @@ a {
   padding-left: 10%;
 }
 
-.btn .btn-icon {
-  @apply text-gray-900 w-5 h-5 mr-2;
-}
-
 .btn-alt .btn-icon {
   @apply text-blue-400 w-5 h-5 mr-2;
+}
+
+.btn.link {
+  @apply p-0;
+}
+
+.btn.link > a {
+  @apply px-4 py-2 w-full h-full flex flex-row items-center justify-center;
 }
 
 /* #video-grid {

@@ -10,7 +10,7 @@ function Layout({ title, children }) {
         <title>{title}</title>
       </Head>
       <Header />
-      <main className='flex flex-col'>{children}</main>
+      <main className='flex flex-col bg-gray-900'>{children}</main>
       <Footer />
     </>
   );
