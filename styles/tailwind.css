@@ -29,7 +29,7 @@
   }
 
   .call-icon-wrapper.active {
-    @apply bg-blue-500 border-2 border-blue-400;
+    @apply bg-blue-500 border border-blue-400;
   }
 
   .call-icon {
