@@ -75,14 +75,14 @@ const CallContextProvider = ({ children }) => {
             peerId: userId,
             peer,
           });
-        }
 
-        const peerItem = newPeers.find((p) => p.peerId === payload.callerId);
-        if (!peerItem) {
-          newPeers.push({
-            peerId: userId,
-            peer,
-          });
+          const peerItem = newPeers.find((p) => p.peerId === payload.callerId);
+          if (!peerItem) {
+            newPeers.push({
+              peerId: userId,
+              peer,
+            });
+          }
         }
       });
       setPeers(newPeers);
