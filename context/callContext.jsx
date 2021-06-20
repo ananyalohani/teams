@@ -25,10 +25,6 @@ const CallContextProvider = ({ children }) => {
   const peersRef = useRef([]); // ref to all the peer connection objects
 
   useEffect(() => {
-    console.log(peers, socketRef.current?.id);
-  }, [peers]);
-
-  useEffect(() => {
     async function getUserMedia() {
       // get user's audio and video
       try {
@@ -61,34 +57,35 @@ const CallContextProvider = ({ children }) => {
     // join the room
     socketRef.current.emit('join-room', roomId);
 
+    // alert if the room is full
     socketRef.current.on('room-full', () => {
       alert('This room is full, please join a different room.');
     });
 
     // create peer connections with users who are currently in the room
     socketRef.current.on('all-users', (users) => {
-      const peers = [];
+      const newPeers = [];
       users.forEach((userId) => {
         const item = peersRef.current.find(
           (p) => p.peerId === payload.callerId
         );
-
         if (!item) {
           const peer = createPeer(userId, socketRef.current.id, stream);
           peersRef.current.push({
             peerId: userId,
             peer,
-            peerStream: stream,
           });
+        }
 
-          peers.push({
+        const peerItem = newPeers.find((p) => p.peerId === payload.callerId);
+        if (!peerItem) {
+          newPeers.push({
             peerId: userId,
             peer,
-            peerStream: stream,
           });
         }
       });
-      setPeers(peers);
+      setPeers(newPeers);
     });
 
     // add a peer connection when a user joins the room
@@ -99,10 +96,11 @@ const CallContextProvider = ({ children }) => {
         peersRef.current.push({
           peerId: payload.callerId,
           peer,
-          peerStream: stream,
         });
-        const peerObj = { peerId: payload.callerId, peer, peerStream: stream };
-        setPeers((users) => [...users, peerObj]);
+
+        const peerObj = { peerId: payload.callerId, peer };
+        const peerItem = peers.find((p) => (p.peerId = peerObj.peerId));
+        if (!peerItem) setPeers((oldPeers) => [...oldPeers, peerObj]);
       }
     });
 
@@ -114,12 +112,15 @@ const CallContextProvider = ({ children }) => {
   }
 
   function leaveRoom() {
-    // delete the peer when the user leaves the call
+    // destroy the peer when the user leaves the call
     socketRef.current.on('user-left', (id) => {
       const peerObj = peersRef.current.find((p) => p.peerId === id);
       peerObj?.peer.destroy();
-      const newPeers = peersRef.current.filter((p) => p.peerId !== id);
+
+      let newPeers = peersRef.current.filter((p) => p.peerId !== id);
       peersRef.current = newPeers;
+
+      newPeers = peers.filter((p) => p.peerId !== id);
       setPeers(newPeers);
     });
   }
@@ -131,8 +132,6 @@ const CallContextProvider = ({ children }) => {
       trickle: false,
       stream,
     });
-
-    console.log('creating peer:', callerId);
 
     // trigger a socket event to send a signal
     peer.on('signal', (signal) => {
@@ -154,7 +153,6 @@ const CallContextProvider = ({ children }) => {
       stream,
     });
 
-    console.log('adding peer:', callerId);
     peer.on('signal', (signal) => {
       socketRef.current.emit('returning-signal', { signal, callerId });
     });

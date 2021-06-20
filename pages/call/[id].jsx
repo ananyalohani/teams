@@ -28,7 +28,6 @@ export default function Call({ serverURL, clientURL, roomId }) {
   }, []);
 
   useEffect(() => {
-    // ! KEEP THIS HERE
     // this effect will only run once after getting user's audio and video
     if (userStream === 'not initialised') return;
     if (!joinedRoomRef.current) {
