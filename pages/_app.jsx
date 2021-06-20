@@ -2,13 +2,16 @@ import '../styles/tailwind.css';
 import '../styles/globals.css';
 import '../styles/segoe-ui.css';
 import { Provider } from 'next-auth/client';
+import { CallContextProvider } from 'context/callContext';
 
-function MyApp({ Component, pageProps }) {
+function Application({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
-      <Component {...pageProps} />
+      <CallContextProvider>
+        <Component {...pageProps} />
+      </CallContextProvider>
     </Provider>
   );
 }
 
-export default MyApp;
+export default Application;

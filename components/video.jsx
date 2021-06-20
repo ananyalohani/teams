@@ -1,26 +1,44 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useCallContext } from '@/context/callContext';
 
-const Video = React.forwardRef(({ peer, audio = true }, userVideoRef) => {
+const Video = React.forwardRef(({ peer }, userVideoRef) => {
   const ref = !userVideoRef ? useRef() : null;
+  const { userVideo: video, connectPeerStream } = useCallContext();
 
   useEffect(() => {
-    peer?.on('stream', (stream) => {
-      ref.current.srcObject = stream;
-    });
-  });
+    if (peer) connectPeerStream(peer, ref);
+  }, []);
 
   return userVideoRef ? (
-    <video
-      className='w-56 h-32 sm:h-72 sm:w-100 rounded object-cover transform -scale-x-1 m-2'
-      muted
-      playsInline
-      autoPlay
-      ref={userVideoRef}
-    />
+    video ? (
+      <video
+        className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover transform -scale-x-1 m-2'
+        muted
+        playsInline
+        autoPlay
+        ref={userVideoRef}
+      />
+    ) : (
+      <>
+        <video
+          className='hidden'
+          muted
+          playsInline
+          autoPlay
+          ref={userVideoRef}
+        />
+        <video
+          className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover transform -scale-x-1 m-2'
+          muted
+          playsInline
+          autoPlay
+          src={null}
+        />
+      </>
+    )
   ) : (
     <video
-      className='sm:h-72 sm:w-100 rounded object-cover m-2'
-      muted={!audio}
+      className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover m-2'
       playsInline
       autoPlay
       ref={ref}

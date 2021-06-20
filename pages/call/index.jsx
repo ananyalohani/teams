@@ -4,10 +4,11 @@ import short from 'short-uuid';
 
 import Head from '@/components/head';
 
-const CallRedirect = () => {
+const CallRedirect = ({ roomName }) => {
   useEffect(() => {
     // redirect to a call/active socket
-    window.location.href = `/call/${short.generate()}`;
+    const roomId = roomName ? roomName : short.generate();
+    window.location.href = `/call/${roomId}`;
   }, []);
 
   return (
