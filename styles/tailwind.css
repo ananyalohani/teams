@@ -20,6 +20,10 @@
     @apply btn bg-gray-900 text-blue-400 hover:bg-black focus:ring-2 ring-blue-300;
   }
 
+  .text-box {
+    @apply bg-gray-900 border border-gray-600 rounded-md p-2 w-64 text-gray-200;
+  }
+
   .btn-small {
     @apply px-3 py-2 text-base;
   }

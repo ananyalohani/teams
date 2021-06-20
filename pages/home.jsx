@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 import { IoVideocam } from 'react-icons/io5';
 import { HiCode } from 'react-icons/hi';
@@ -7,7 +8,32 @@ import { HiCode } from 'react-icons/hi';
 import Layout from '@/components/layout';
 
 function Home() {
+  const router = useRouter();
   const [session, loading] = useSession();
+  const [roomName, setRoomName] = useState();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (roomName && roomName !== '') {
+      removeSpaces();
+      router.push({
+        pathname: '/call',
+        query: {
+          name: roomName,
+        },
+      });
+    } else {
+      router.push('/call');
+    }
+  }
+
+  function removeSpaces() {
+    if (roomName?.includes(' ')) {
+      const arr = roomName;
+      arr.split(' ').join('-');
+      setRoomName(arr);
+    }
+  }
 
   return (
     <Layout title={'Home'}>
@@ -31,14 +57,21 @@ function Home() {
               Secure meetings in <strong>rooms</strong> accessible only to the
               people you choose.
             </p>
-            <button className='btn link'>
-              <Link href='/call'>
-                <a>
-                  <IoVideocam className='btn-icon' />
-                  New Meeting
-                </a>
-              </Link>
-            </button>
+            <form
+              onSubmit={handleSubmit}
+              className='flex flex-row space-x-2 items-center'
+            >
+              <input
+                type='text'
+                className='text-box'
+                onChange={(e) => setRoomName(e.target.value)}
+                placeholder='Enter a name for your room'
+              />
+              <button type='submit' className='btn'>
+                <IoVideocam className='btn-icon' />
+                New Meeting
+              </button>
+            </form>
           </div>
           <img
             src='/images/video_call.png'

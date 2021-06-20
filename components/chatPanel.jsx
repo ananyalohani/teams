@@ -53,7 +53,7 @@ function ChatPanel() {
       >
         <input
           type='text'
-          className='bg-gray-800 border border-gray-600 text-gray-200 rounded-md p-2 w-56'
+          className='text-box bg-gray-800 border-gray-600 w-56'
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder='Type your message'

@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { CgSpinner } from 'react-icons/cg';
 import { nanoid } from 'nanoid';
 
 import Head from '@/components/head';
 
-const CallRedirect = ({ roomName }) => {
+export default function CallRedirect({ room }) {
+  const router = useRouter();
+
   useEffect(() => {
     // redirect to a call/active socket
-    const roomId = roomName ? roomName : nanoid(8);
-    window.location.href = `/call/${roomId}`;
-  }, []);
+    const roomId = room.name ? room.name : nanoid(8);
+    window.location.replace(`/call/${roomId}`);
+    // router.push(`/call/${roomId}`); // ? why doesn't this work?
+  });
 
   return (
     <>
@@ -27,6 +31,12 @@ const CallRedirect = ({ roomName }) => {
       </div>
     </>
   );
-};
+}
 
-export default CallRedirect;
+export async function getServerSideProps({ query: name }) {
+  return {
+    props: {
+      room: name,
+    },
+  };
+}

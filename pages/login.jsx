@@ -28,7 +28,7 @@ export default function Login({ session, providers }) {
           <div className='flex flex-col space-y-2'>
             <label htmlFor='#email'>Email Address</label>
             <input
-              className='bg-gray-900 border border-gray-600 rounded-md p-1 py-2 w-72'
+              className='text-box'
               type='text'
               name='email'
               id='email'
@@ -37,7 +37,7 @@ export default function Login({ session, providers }) {
           <div className='flex flex-col space-y-2'>
             <label htmlFor='#password'>Password</label>
             <input
-              className='bg-gray-900 border border-gray-600 rounded-md p-1 py-2 w-72'
+              className='text-box'
               type='password'
               name='password'
               id='password'
