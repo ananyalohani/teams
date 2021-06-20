@@ -8,6 +8,7 @@ import {
   IoChatbox,
 } from 'react-icons/io5';
 import { MdScreenShare } from 'react-icons/md';
+import Link from 'next/link';
 
 import { useCallContext } from '@/context/callContext';
 
@@ -43,7 +44,9 @@ export default function CallFooter() {
       </div>
 
       <div className='call-icon-wrapper phn'>
-        <IoCall className='call-icon' />
+        <Link href='/home'>
+          <IoCall className='call-icon' />
+        </Link>
       </div>
     </footer>
   );

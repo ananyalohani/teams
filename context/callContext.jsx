@@ -68,7 +68,7 @@ const CallContextProvider = ({ children }) => {
         });
       }
     }
-  }, [socketRef.current, peers]);
+  }, [peers]);
 
   function joinRoom(stream) {
     // set user stream
@@ -144,7 +144,7 @@ const CallContextProvider = ({ children }) => {
       audioStream.enabled = true;
 
       // destroy the peer when the user leaves the call
-      peerObj?.peer.destroy();
+      peerObj.peer.destroy();
 
       // remove the peer from peers and peersRef
       let newPeers = peersRef.current.filter((p) => p.peerId !== id);

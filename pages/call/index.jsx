@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CgSpinner } from 'react-icons/cg';
-import { nanoid } from 'nanoid';
 
+import { generateCallID } from 'utils';
 import Head from '@/components/head';
 
 export default function CallRedirect({ room }) {
@@ -10,7 +10,7 @@ export default function CallRedirect({ room }) {
 
   useEffect(() => {
     // redirect to a call/active socket
-    const roomId = room.name ? room.name : nanoid(8);
+    const roomId = room.name ? room.name : generateCallID();
     window.location.replace(`/call/${roomId}`);
     // router.push(`/call/${roomId}`); // ? why doesn't this work?
   });
