@@ -1,8 +1,10 @@
-import '../styles/tailwind.css';
-import '../styles/globals.css';
-import '../styles/segoe-ui.css';
 import { Provider } from 'next-auth/client';
-import { CallContextProvider } from 'context/callContext';
+
+import 'styles/tailwind.css';
+import 'styles/globals.css';
+import 'styles/segoe-ui.css';
+
+import { CallContextProvider } from '@/context/callContext';
 
 function Application({ Component, pageProps }) {
   return (

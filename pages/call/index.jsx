@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 import { nanoid } from 'nanoid';
+
 import Head from '@/components/head';
 
 const CallRedirect = ({ roomName }) => {

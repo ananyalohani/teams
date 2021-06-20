@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import Link from 'next/link';
+
 import Layout from '@/components/layout';
 
-export default function Home() {
+export default function Index() {
   const [session, loading] = useSession();
 
   useEffect(() => {

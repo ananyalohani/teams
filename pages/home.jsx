@@ -1,9 +1,10 @@
 import React from 'react';
-import Layout from '@/components/layout';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 import { IoVideocam } from 'react-icons/io5';
 import { HiCode } from 'react-icons/hi';
+
+import Layout from '@/components/layout';
 
 function Home() {
   const [session, loading] = useSession();

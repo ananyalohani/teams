@@ -1,6 +1,7 @@
-import { useCallContext } from '@/context/callContext';
 import React, { useState } from 'react';
 import { BiLink } from 'react-icons/bi';
+
+import { useCallContext } from '@/context/callContext';
 
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box

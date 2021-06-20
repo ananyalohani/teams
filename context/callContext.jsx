@@ -50,6 +50,26 @@ const CallContextProvider = ({ children }) => {
     }
   }, [roomId, serverURL]);
 
+  useEffect(() => {
+    // every time a new peer joins the call, check user's audio and video
+    // state and update it accordingly for the peer
+    if (socketRef.current && peers.length) {
+      if (!userAudio) {
+        peers.forEach((p) => {
+          const audioStream = p.peer.streams[0].getAudioTracks()[0];
+          audioStream.enabled = false;
+        });
+      }
+
+      if (!userVideo) {
+        peers.forEach((p) => {
+          const videoStream = p.peer.streams[0].getVideoTracks()[0];
+          videoStream.enabled = false;
+        });
+      }
+    }
+  }, [socketRef.current, peers]);
+
   function joinRoom(stream) {
     // set user stream
     userVideoRef.current.srcObject = stream;
@@ -112,11 +132,21 @@ const CallContextProvider = ({ children }) => {
   }
 
   function leaveRoom() {
-    // destroy the peer when the user leaves the call
     socketRef.current.on('user-left', (id) => {
+      // which peer left
       const peerObj = peersRef.current.find((p) => p.peerId === id);
+
+      // done so that the user is not locked into current state when peer disconnects
+      const videoStream = peerObj.peer.streams[0].getVideoTracks()[0];
+      const audioStream = peerObj.peer.streams[0].getAudioTracks()[0];
+
+      videoStream.enabled = true;
+      audioStream.enabled = true;
+
+      // destroy the peer when the user leaves the call
       peerObj?.peer.destroy();
 
+      // remove the peer from peers and peersRef
       let newPeers = peersRef.current.filter((p) => p.peerId !== id);
       peersRef.current = newPeers;
 
