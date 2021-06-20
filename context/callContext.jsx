@@ -11,9 +11,9 @@ import Peer from 'simple-peer';
 const CallContext = createContext();
 
 const CallContextProvider = ({ children }) => {
-  const [serverURL, setServerURL] = useState(null);
-  const [clientURL, setClientURL] = useState(null);
-  const [roomId, setRoomId] = useState(null);
+  const [serverURL, setServerURL] = useState(null); // set this externally
+  const [clientURL, setClientURL] = useState(null); // set this externally
+  const [roomId, setRoomId] = useState(null); // set this externally
   const [peers, setPeers] = useState([]); // keep track of all the peer videos in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
   const [userStream, setUserStream] = useState('not initialised'); // users stream received from getUserMedia()
@@ -23,6 +23,10 @@ const CallContextProvider = ({ children }) => {
   const socketRef = useRef(); // ref to the socket connection object
   const userVideoRef = useRef(); // ref to the user's video element
   const peersRef = useRef([]); // ref to all the peer connection objects
+
+  useEffect(() => {
+    console.log(peers, socketRef.current?.id);
+  }, [peers]);
 
   useEffect(() => {
     async function getUserMedia() {
@@ -44,8 +48,6 @@ const CallContextProvider = ({ children }) => {
       }
     }
 
-    console.log(roomId);
-
     if (roomId && serverURL) {
       socketRef.current = io(serverURL);
       getUserMedia();
@@ -59,43 +61,49 @@ const CallContextProvider = ({ children }) => {
     // join the room
     socketRef.current.emit('join-room', roomId);
 
+    socketRef.current.on('room-full', () => {
+      alert('This room is full, please join a different room.');
+    });
+
     // create peer connections with users who are currently in the room
     socketRef.current.on('all-users', (users) => {
       const peers = [];
       users.forEach((userId) => {
-        let peer;
-        // if (!checkForDuplicates(peersRef.current, 'peerId', userId)) {
-        peer = createPeer(userId, socketRef.current.id, stream);
-        peersRef.current.push({
-          peerId: userId,
-          peer,
-          peerStream: stream,
-        });
-        // }
+        const item = peersRef.current.find(
+          (p) => p.peerId === payload.callerId
+        );
 
-        // if (!checkForDuplicates(peers, 'peerId', userId)) {
-        peers.push({
-          peerId: userId,
-          peer,
-          peerStream: stream,
-        });
-        // }
+        if (!item) {
+          const peer = createPeer(userId, socketRef.current.id, stream);
+          peersRef.current.push({
+            peerId: userId,
+            peer,
+            peerStream: stream,
+          });
+
+          peers.push({
+            peerId: userId,
+            peer,
+            peerStream: stream,
+          });
+        }
       });
       setPeers(peers);
     });
 
     // add a peer connection when a user joins the room
     socketRef.current.on('user-joined', (payload) => {
-      // if (!checkForDuplicates(peersRef.current, 'peerId', payload.callerId)) {
-      const peer = addPeer(payload.signal, payload.callerId, stream);
-      peersRef.current.push({
-        peerId: payload.callerId,
-        peer,
-        peerStream: stream,
-      });
-      const peerObj = { peerId: payload.callerId, peer, peerStream: stream };
-      setPeers((users) => [...users, peerObj]);
-      // }
+      const item = peersRef.current.find((p) => p.peerId === payload.callerId);
+      if (!item) {
+        const peer = addPeer(payload.signal, payload.callerId, stream);
+        peersRef.current.push({
+          peerId: payload.callerId,
+          peer,
+          peerStream: stream,
+        });
+        const peerObj = { peerId: payload.callerId, peer, peerStream: stream };
+        setPeers((users) => [...users, peerObj]);
+      }
     });
 
     // signal to all other peers that you have joined the room
@@ -110,9 +118,9 @@ const CallContextProvider = ({ children }) => {
     socketRef.current.on('user-left', (id) => {
       const peerObj = peersRef.current.find((p) => p.peerId === id);
       peerObj?.peer.destroy();
-      const peers = peersRef.current.filter((p) => p.peerId !== id);
-      peersRef.current = peers;
-      setPeers(peers);
+      const newPeers = peersRef.current.filter((p) => p.peerId !== id);
+      peersRef.current = newPeers;
+      setPeers(newPeers);
     });
   }
 
@@ -123,6 +131,8 @@ const CallContextProvider = ({ children }) => {
       trickle: false,
       stream,
     });
+
+    console.log('creating peer:', callerId);
 
     // trigger a socket event to send a signal
     peer.on('signal', (signal) => {
@@ -144,6 +154,7 @@ const CallContextProvider = ({ children }) => {
       stream,
     });
 
+    console.log('adding peer:', callerId);
     peer.on('signal', (signal) => {
       socketRef.current.emit('returning-signal', { signal, callerId });
     });
