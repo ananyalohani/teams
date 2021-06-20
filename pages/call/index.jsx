@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { CgSpinner } from 'react-icons/cg';
-import short from 'short-uuid';
-
+import { nanoid } from 'nanoid';
 import Head from '@/components/head';
 
 const CallRedirect = ({ roomName }) => {
   useEffect(() => {
     // redirect to a call/active socket
-    const roomId = roomName ? roomName : short.generate();
+    const roomId = roomName ? roomName : nanoid(8);
     window.location.href = `/call/${roomId}`;
   }, []);
 

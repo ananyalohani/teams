@@ -9,8 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "nanoid": "^3.1.23",
     "next": "^11.0.0",
     "next-auth": "^3.26.1",
     "nookies": "^2.5.2",
@@ -20,12 +19,8 @@
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "request": "^2.79.0",
-    "short-uuid": "^4.2.0",
     "simple-peer": "^9.6.2",
-    "socket.io": "^4.1.2",
-    "socket.io-client": "^4.1.2",
-    "sqlite3": "^5.0.2",
-    "uuid": "^8.3.2"
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
