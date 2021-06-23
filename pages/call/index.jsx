@@ -1,19 +1,35 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CgSpinner } from 'react-icons/cg';
+import { useSession } from 'next-auth/client';
 
-import { generateCallID } from 'utils';
+import Placeholder from '@/components/placeholder';
+import { generateCallID } from 'utils/utils';
 import Head from '@/components/head';
 
 export default function CallRedirect({ room }) {
   const router = useRouter();
+  const [session, loading] = useSession();
 
   useEffect(() => {
     // redirect to a call/active socket
-    const roomId = room.name ? room.name : generateCallID();
-    window.location.replace(`/call/${roomId}`);
-    // router.push(`/call/${roomId}`); // ? why doesn't this work?
-  });
+    console.log(session);
+    if (session) {
+      const roomId = room.name ? room.name : generateCallID();
+      router.push(`/call/${roomId}`); // ? why doesn't this work?
+    }
+
+    // if user not logged in, redirect to login page
+    if (session === null)
+      router.push({
+        pathname: '/login',
+        query: {
+          callbackUrl: '/home',
+        },
+      });
+  }, [session]);
+
+  if (loading || session === null) return <Placeholder />;
 
   return (
     <>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 import { IoVideocam } from 'react-icons/io5';
 import { HiCode } from 'react-icons/hi';
+import Link from 'next/link';
 
+import Placeholder from '@/components/placeholder';
 import Layout from '@/components/layout';
 
 function Home() {
@@ -12,10 +13,26 @@ function Home() {
   const [session, loading] = useSession();
   const [roomName, setRoomName] = useState();
 
+  useEffect(() => {
+    // if user not logged in, redirect to login page
+    console.log(session);
+    if (session === null)
+      router.push({
+        pathname: '/login',
+        query: {
+          callbackUrl: '/home',
+        },
+      });
+  }, [session]);
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (roomName.includes(' ')) {
+      alert('Your room name cannot have spaces');
+      return;
+    }
+
     if (roomName && roomName !== '') {
-      removeSpaces();
       router.push({
         pathname: '/call',
         query: {
@@ -27,13 +44,7 @@ function Home() {
     }
   }
 
-  function removeSpaces() {
-    if (roomName?.includes(' ')) {
-      const arr = roomName;
-      arr.split(' ').join('-');
-      setRoomName(arr);
-    }
-  }
+  if (loading || session === null) return <Placeholder />;
 
   return (
     <Layout title={'Home'}>
@@ -46,7 +57,7 @@ function Home() {
             <div>
               <p className='text-5xl inline'>Hello, </p>
               <p className='text-5xl font-bold text-blue-400 inline'>
-                Ananya Lohani!
+                {session.user.name}!
               </p>
             </div>
             <p className='text-3xl font-semibold'>Start a Meeting</p>
@@ -90,8 +101,8 @@ function Home() {
           <div className='flex flex-col items-end space-y-5'>
             <p className='text-5xl font-bold'>Your meetings are secure</p>
             <p className='text-xl text-right'>
-              Connections are made through sockets on a{' '}
-              <strong>secure server.</strong>
+              Connections are made through sockets on a
+              <strong> secure server.</strong>
               <br />
               Only <strong>authenticated</strong> users can join them.
             </p>
