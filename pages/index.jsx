@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/client';
+
 import Link from 'next/link';
 
 import Layout from '@/components/layout';
 
 export default function Index() {
-  const [session, loading] = useSession();
-
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
   return (
     <Layout title='Microsoft Teams'>
       <section className='w-full bg-blue-500 flex-1 flex flex-col'>
@@ -25,15 +19,12 @@ export default function Index() {
                 in just one place.
               </p>
             </div>
-            {!session ? (
-              <button onClick={signIn} className='btn-alt'>
-                Get Started
-              </button>
-            ) : (
-              <button onClick={signOut} className='btn-alt'>
-                Sign Out
-              </button>
-            )}
+
+            <button className='btn-alt link'>
+              <Link href='/home'>
+                <a>Get Started</a>
+              </Link>
+            </button>
           </div>
           <img
             src='/images/homepage_video_call.png'

@@ -12,6 +12,11 @@ function Home() {
   const [session, loading] = useSession();
   const [roomName, setRoomName] = useState();
 
+  useEffect(() => {
+    console.log(session);
+    if (session === null) window.location.href = '/login';
+  }, [session]);
+
   function handleSubmit(e) {
     e.preventDefault();
     if (roomName && roomName !== '') {
@@ -34,6 +39,8 @@ function Home() {
       setRoomName(arr);
     }
   }
+
+  if (loading) return <div className='bg-gray-900 h-screen w-screen'></div>;
 
   return (
     <Layout title={'Home'}>

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { providers, signIn, getSession } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
-import { MdEmail } from 'react-icons/md';
 import { useRouter } from 'next/router';
 
 export default function Login({ session, providers }) {
   const router = useRouter();
+  const callbackUrl = `${router.query.callbackUrl}home`;
 
   return (
     <main className='bg-gray-900 flex flex-col items-center h-screen space-y-8 justify-center text-gray-200'>
@@ -20,13 +20,13 @@ export default function Login({ session, providers }) {
           <p className='font-bold text-blue-400 inline'>Teams</p>
         </div>
       </div>
-      <div className='bg-gray-800 rounded-lg border border-gray-600 p-8 flex flex-col space-y-5'>
+      <div className='p-5 flex flex-col space-y-5'>
         <div className='flex flex-col space-y-4'>
           <button
             className='btn'
             onClick={() =>
               signIn(providers.github.id, {
-                callbackUrl: router.query.callbackUrl,
+                callbackUrl,
               })
             }
           >
@@ -37,7 +37,7 @@ export default function Login({ session, providers }) {
             className='btn'
             onClick={() =>
               signIn(providers.google.id, {
-                callbackUrl: router.query.callbackUrl,
+                callbackUrl,
               })
             }
           >

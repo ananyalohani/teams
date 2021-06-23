@@ -13,7 +13,6 @@ const options = {
     }),
   ],
   database: process.env.DB_CONN_STR,
-
   pages: {
     signIn: '/login',
   },
