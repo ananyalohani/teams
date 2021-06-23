@@ -35,7 +35,6 @@ const CallContextProvider = ({ children }) => {
           },
           audio: true,
         });
-
         setUserStream(stream);
       } catch (e) {
         setUserStream(null);
@@ -54,19 +53,12 @@ const CallContextProvider = ({ children }) => {
     // every time a new peer joins the call, check user's audio and video
     // state and update it accordingly for the peer
     if (socketRef.current && peers.length) {
-      if (!userAudio) {
-        peers.forEach((p) => {
-          const audioStream = p.peer.streams[0].getAudioTracks()[0];
-          audioStream.enabled = false;
-        });
-      }
-
-      if (!userVideo) {
-        peers.forEach((p) => {
-          const videoStream = p.peer.streams[0].getVideoTracks()[0];
-          videoStream.enabled = false;
-        });
-      }
+      peers.forEach((p) => {
+        const audioStream = p.peer.streams[0].getAudioTracks()[0];
+        const videoStream = p.peer.streams[0].getVideoTracks()[0];
+        audioStream.enabled = userAudio;
+        videoStream.enabled = userVideo;
+      });
     }
   }, [peers]);
 
@@ -264,8 +256,6 @@ const CallContextProvider = ({ children }) => {
   );
 };
 
-function useCallContext() {
-  return useContext(CallContext);
-}
+const useCallContext = () => useContext(CallContext);
 
 export { CallContextProvider, useCallContext };
