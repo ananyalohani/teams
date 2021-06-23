@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 import { useCallContext } from '@/context/callContext';
+import Placeholder from '@/components/placeholder';
 import CallFooter from '@/components/callFooter';
 import ChatPanel from '@/components/chatPanel';
 import Header from '@/components/header';
@@ -8,6 +11,9 @@ import Video from '@/components/video';
 import Head from '@/components/head';
 
 export default function Call({ serverURL, clientURL, roomId }) {
+  const router = useRouter();
+  const [session, loading] = useSession();
+
   const {
     setRoomId,
     setServerURL,
@@ -22,21 +28,36 @@ export default function Call({ serverURL, clientURL, roomId }) {
   } = useCallContext();
 
   useEffect(() => {
-    setServerURL(serverURL);
-    setClientURL(clientURL);
-    setRoomId(roomId);
-  }, []);
+    // if user not logged in, redirect to login page
+    if (session === null)
+      router.push({
+        pathname: '/login',
+        query: {
+          callbackUrl: '/home',
+        },
+      });
+
+    if (session) {
+      setServerURL(serverURL);
+      setClientURL(clientURL);
+      setRoomId(roomId);
+    }
+  }, [session]);
 
   useEffect(() => {
     // this effect will only run once after getting user's audio and video
-    if (userStream === 'not initialised') return;
-    if (!joinedRoomRef.current) {
-      joinRoom(userStream);
-      leaveRoom();
-      receiveMessages();
-      joinedRoomRef.current = true;
+    if (session) {
+      if (userStream === 'not initialised') return;
+      if (!joinedRoomRef.current) {
+        joinRoom(userStream);
+        leaveRoom();
+        receiveMessages();
+        joinedRoomRef.current = true;
+      }
     }
-  }, [userStream]);
+  }, [userStream, session]);
+
+  if (loading || session === null) return <Placeholder />;
 
   return (
     <>

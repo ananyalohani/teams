@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-
+import { useSession } from 'next-auth/client';
 import Link from 'next/link';
 
 import Layout from '@/components/layout';
 
 export default function Index() {
+  const [session, loading] = useSession();
+
   return (
     <Layout title='Microsoft Teams'>
       <section className='w-full bg-blue-500 flex-1 flex flex-col'>
@@ -21,7 +23,7 @@ export default function Index() {
             </div>
 
             <button className='btn-alt link'>
-              <Link href='/home'>
+              <Link href={session ? '/home' : '/login'}>
                 <a>Get Started</a>
               </Link>
             </button>
@@ -75,7 +77,6 @@ export default function Index() {
             </li>
           </ul>
         </div>
-        {/* <p className='text-white'>{JSON.stringify(colors)}</p> */}
       </section>
     </Layout>
   );

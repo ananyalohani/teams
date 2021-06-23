@@ -3,9 +3,8 @@ import { providers, signIn, getSession } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
 import { useRouter } from 'next/router';
 
-export default function Login({ session, providers }) {
+export default function Login({ session, providers, callbackUrl }) {
   const router = useRouter();
-  const callbackUrl = `${router.query.callbackUrl}home`;
 
   return (
     <main className='bg-gray-900 flex flex-col items-center h-screen space-y-8 justify-center text-gray-200'>
@@ -50,9 +49,12 @@ export default function Login({ session, providers }) {
   );
 }
 
-Login.getInitialProps = async (context) => {
-  const { req, res } = context;
+export async function getServerSideProps(context) {
+  const { req, res, query } = context;
   const session = await getSession({ req });
+  const url = query
+    ? `${process.env.NEXTAUTH_URL}${query.callbackUrl}`
+    : `${process.env.NEXTAUTH_URL}/home`;
 
   if (session && res && session.accessToken) {
     console.log(session.user);
@@ -61,7 +63,10 @@ Login.getInitialProps = async (context) => {
   }
 
   return {
-    session: session,
-    providers: await providers(context),
+    props: {
+      session: session,
+      providers: await providers(context),
+      callbackUrl: url,
+    },
   };
-};
+}
