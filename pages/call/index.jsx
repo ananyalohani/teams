@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CgSpinner } from 'react-icons/cg';
 
-import { generateCallID } from 'utils';
+import { generateCallID } from 'utils/utils';
 import Head from '@/components/head';
 
 export default function CallRedirect({ room }) {

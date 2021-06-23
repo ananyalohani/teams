@@ -2,13 +2,10 @@ import React, { useEffect } from 'react';
 import { providers, signIn, getSession } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
 import { MdEmail } from 'react-icons/md';
+import { useRouter } from 'next/router';
 
 export default function Login({ session, providers }) {
-  useEffect(() => {
-    console.log(session);
-    console.dir(providers);
-    if (session) window.location.href = '/';
-  }, [session]);
+  const router = useRouter();
 
   return (
     <main className='bg-gray-900 flex flex-col items-center h-screen space-y-8 justify-center text-gray-200'>
@@ -24,42 +21,26 @@ export default function Login({ session, providers }) {
         </div>
       </div>
       <div className='bg-gray-800 rounded-lg border border-gray-600 p-8 flex flex-col space-y-5'>
-        <form className='flex flex-col space-y-4'>
-          <div className='flex flex-col space-y-2'>
-            <label htmlFor='#email'>Email Address</label>
-            <input
-              className='text-box'
-              type='text'
-              name='email'
-              id='email'
-            />
-          </div>
-          <div className='flex flex-col space-y-2'>
-            <label htmlFor='#password'>Password</label>
-            <input
-              className='text-box'
-              type='password'
-              name='password'
-              id='password'
-            />
-          </div>
+        <div className='flex flex-col space-y-4'>
           <button
             className='btn'
-            type='submit'
-            // key={providers.email.name}
-            // onClick={() => signIn(providers.email.id)}
+            onClick={() =>
+              signIn(providers.github.id, {
+                callbackUrl: router.query.callbackUrl,
+              })
+            }
           >
-            <MdEmail className='btn-icon' />
-            Sign in with Email
-          </button>
-        </form>
-        <div style={{ height: 1 }} className='bg-gray-600' />
-        <div className='flex flex-col space-y-4'>
-          <button className='btn' onClick={() => signIn(providers.github.id)}>
             <SiGithub className='btn-icon' />
             Sign in with GitHub
           </button>
-          <button className='btn' onClick={() => signIn(providers.google.id)}>
+          <button
+            className='btn'
+            onClick={() =>
+              signIn(providers.google.id, {
+                callbackUrl: router.query.callbackUrl,
+              })
+            }
+          >
             <SiGoogle className='btn-icon' />
             Sign in with Google
           </button>
