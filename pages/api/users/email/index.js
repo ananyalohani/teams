@@ -10,6 +10,7 @@ handler.get(async (req, res) => {
   } else {
     users = {};
   }
+
   res.status(200).json(users);
 });
 
