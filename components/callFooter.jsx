@@ -15,7 +15,12 @@ import Link from 'next/link';
 import { useCallContext } from '@/context/callContext';
 
 export default function CallFooter() {
-  const { userAudio: audio, userVideo: video, toggleStream } = useCallContext();
+  const {
+    userAudio: audio,
+    userVideo: video,
+    toggleStream,
+    toggleChatPanel,
+  } = useCallContext();
 
   return (
     <footer className='h-20 w-full bg-gray-800 flex flex-row items-center justify-center space-x-10 border-t border-gray-600'>
@@ -53,7 +58,7 @@ export default function CallFooter() {
           <IoCall className='call-icon' />
         </Link>
       </div>
-      <div className='call-icon-wrapper '>
+      <div className='call-icon-wrapper' onClick={toggleChatPanel}>
         <IoChatboxEllipses className='call-icon' />
       </div>
       <div className='call-icon-wrapper '>

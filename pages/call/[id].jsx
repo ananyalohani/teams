@@ -63,13 +63,13 @@ export default function Call({ serverURL, clientURL, roomId }) {
     <>
       <Head title={`Call - ${roomId}`} />
       <Header />
-      <div className='flex flex-col' style={{ height: 'calc(100vh - 6rem)' }}>
+      <div
+        className='flex flex-col'
+        style={{ minHeight: 'calc(100vh - 6rem)' }}
+      >
         <div className='flex flex-row h-full flex-1'>
-          <div
-            id='video-grid'
-            className='bg-gray-900 flex-1 flex items-center justify-center'
-          >
-            <div className='flex flex-wrap justify-center'>
+          <div className='bg-gray-900 flex-1 flex items-center justify-center'>
+            <div id='video-grid' className='flex flex-wrap justify-center p-5'>
               <Video ref={userVideoRef} />
               {peers.map((p) => {
                 return <Video key={p.peerId} peer={p.peer} />;

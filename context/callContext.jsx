@@ -14,6 +14,7 @@ const CallContextProvider = ({ children }) => {
   const [serverURL, setServerURL] = useState(null); // set this externally
   const [clientURL, setClientURL] = useState(null); // set this externally
   const [roomId, setRoomId] = useState(null); // set this externally
+  const [chatPanel, setChatPanel] = useState(true); // to display/hide the chat panel
   const [peers, setPeers] = useState([]); // keep track of all the peer videos in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
   const [userStream, setUserStream] = useState('not initialised'); // users stream received from getUserMedia()
@@ -229,6 +230,10 @@ const CallContextProvider = ({ children }) => {
     });
   }
 
+  function toggleChatPanel() {
+    setChatPanel(!chatPanel);
+  }
+
   const contextProps = {
     roomId,
     setRoomId,
@@ -249,6 +254,8 @@ const CallContextProvider = ({ children }) => {
     receiveMessages,
     toggleStream,
     connectPeerStream,
+    chatPanel,
+    toggleChatPanel,
   };
 
   return (

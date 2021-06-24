@@ -45,6 +45,12 @@ a {
   @apply px-4 py-2 w-full h-full flex flex-row items-center justify-center;
 }
 
+.video {
+  @apply bg-black flex-1 rounded object-cover m-2;
+  @apply max-w-xs max-h-32 sm:max-w-md sm:max-h-72;
+  /* @apply w-56 h-32 sm:h-72 sm:w-100; */
+}
+
 /* #video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);

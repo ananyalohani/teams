@@ -13,7 +13,7 @@ const Video = React.forwardRef(({ peer }, userVideoRef) => {
   return userVideoRef ? (
     video ? (
       <video
-        className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover transform -scale-x-1 m-2'
+        className='video transform -scale-x-1'
         muted
         playsInline
         autoPlay
@@ -29,7 +29,7 @@ const Video = React.forwardRef(({ peer }, userVideoRef) => {
           ref={userVideoRef}
         />
         <video
-          className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover transform -scale-x-1 m-2'
+          className='video transform -scale-x-1'
           muted
           playsInline
           autoPlay
@@ -38,12 +38,7 @@ const Video = React.forwardRef(({ peer }, userVideoRef) => {
       </>
     )
   ) : (
-    <video
-      className='bg-black w-56 h-32 sm:h-72 sm:w-100 rounded object-cover m-2'
-      playsInline
-      autoPlay
-      ref={ref}
-    />
+    <video className='video' playsInline autoPlay ref={ref} />
   );
 });
 

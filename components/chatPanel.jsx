@@ -5,12 +5,17 @@ import { useCallContext } from '@/context/callContext';
 
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
-  const { roomId, clientURL, peers, sendMessage, chats } = useCallContext();
+  const { roomId, clientURL, peers, sendMessage, chats, chatPanel } =
+    useCallContext();
 
   return (
     <div
       id='chat-panel'
-      className='flex flex-col bg-gray-900 w-80 border-l border-gray-600'
+      className={
+        chatPanel
+          ? 'flex flex-col bg-gray-900 w-80 border-l border-gray-600'
+          : 'hidden'
+      }
     >
       <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
         <div>
