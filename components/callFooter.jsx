@@ -5,7 +5,9 @@ import {
   IoVideocamOff,
   IoVideocam,
   IoCall,
-  IoChatbox,
+  IoChatboxEllipses,
+  IoPeople,
+  IoInformationCircle,
 } from 'react-icons/io5';
 import { MdScreenShare } from 'react-icons/md';
 import Link from 'next/link';
@@ -16,7 +18,10 @@ export default function CallFooter() {
   const { userAudio: audio, userVideo: video, toggleStream } = useCallContext();
 
   return (
-    <footer className='h-20 absolute bottom-0 left-0 w-full bg-gray-800 flex flex-row items-center justify-center space-x-10 border-t border-gray-600'>
+    <footer className='h-20 w-full bg-gray-800 flex flex-row items-center justify-center space-x-10 border-t border-gray-600'>
+      <div className='call-icon-wrapper '>
+        <IoInformationCircle className='call-icon' />
+      </div>
       <div
         className={`call-icon-wrapper ${audio ? '' : 'active'}`}
         onClick={() => {
@@ -47,6 +52,12 @@ export default function CallFooter() {
         <Link href='/home'>
           <IoCall className='call-icon' />
         </Link>
+      </div>
+      <div className='call-icon-wrapper '>
+        <IoChatboxEllipses className='call-icon' />
+      </div>
+      <div className='call-icon-wrapper '>
+        <IoPeople className='call-icon' />
       </div>
     </footer>
   );

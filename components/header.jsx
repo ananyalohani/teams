@@ -7,7 +7,7 @@ export default function Header() {
   const [session, loading] = useSession();
 
   return (
-    <header className='bg-gray-900 w-screen border-b border-gray-600 sticky h-24'>
+    <header className='bg-gray-900 border-b border-gray-600 sticky h-24'>
       <div className='wrapper flex flex-row justify-center sm:justify-between py-5 items-center'>
         <div className='flex flex-row space-x-4 items-center'>
           <a

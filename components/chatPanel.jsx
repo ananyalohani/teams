@@ -10,7 +10,7 @@ function ChatPanel() {
   return (
     <div
       id='chat-panel'
-      className='flex flex-col bg-gray-900 w-80 absolute top-24 right-0 bottom-20 border-l border-gray-600'
+      className='flex flex-col bg-gray-900 w-80 border-l border-gray-600'
     >
       <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
         <div>

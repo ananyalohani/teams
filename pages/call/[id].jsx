@@ -62,19 +62,21 @@ export default function Call({ serverURL, clientURL, roomId }) {
   return (
     <>
       <Head title={`Call - ${roomId}`} />
-      <div className='h-screen'>
-        <Header />
-        <ChatPanel />
-        <div
-          id='video-grid'
-          className='bg-gray-900 absolute left-0 bottom-20 top-24 right-0 sm:right-80 flex items-center justify-center'
-        >
-          <div className='flex flex-wrap justify-center'>
-            <Video ref={userVideoRef} />
-            {peers.map((p) => {
-              return <Video key={p.peerId} peer={p.peer} />;
-            })}
+      <Header />
+      <div className='flex flex-col' style={{ height: 'calc(100vh - 6rem)' }}>
+        <div className='flex flex-row h-full flex-1'>
+          <div
+            id='video-grid'
+            className='bg-gray-900 flex-1 flex items-center justify-center'
+          >
+            <div className='flex flex-wrap justify-center'>
+              <Video ref={userVideoRef} />
+              {peers.map((p) => {
+                return <Video key={p.peerId} peer={p.peer} />;
+              })}
+            </div>
           </div>
+          <ChatPanel />
         </div>
         <CallFooter />
       </div>
