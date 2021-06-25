@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BiLink } from 'react-icons/bi';
 
-import { assignRandomColor } from 'utils/utils';
+import { assignRandomColor } from 'utils';
 import { useCallContext } from '@/context/callContext';
 
 function ChatPanel({ user }) {

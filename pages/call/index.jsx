@@ -2,7 +2,7 @@ import React from 'react';
 import { getSession } from 'next-auth/client';
 
 import Placeholder from '@/components/placeholder';
-import { generateCallID } from 'utils/utils';
+import { generateCallID } from 'utils';
 import Head from '@/components/head';
 
 export default function CallRedirect() {

@@ -1,8 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { nolookalikes } from 'nanoid-dictionary';
 
-const assignedColors = [];
-
 export function checkForDuplicates(array, parameter, value) {
   array.map((element) => {
     if (element[parameter] === value) {
@@ -36,6 +34,7 @@ const colors = {
   orange: '#fb923c',
   red: '#f87171',
 };
+
 export function assignRandomColor() {
   const i = Math.floor(Math.random() * Object.keys(colors).length);
   const key = Object.keys(colors)[i];

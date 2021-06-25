@@ -8,7 +8,7 @@ import React, {
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 
-import { assignRandomColor } from 'utils/utils';
+import { assignRandomColor } from 'utils';
 
 const CallContext = createContext();
 
