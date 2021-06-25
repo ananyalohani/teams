@@ -22,6 +22,10 @@ const options = {
         ? Promise.resolve(url)
         : Promise.resolve(baseUrl);
     },
+    session: async (session, token) => {
+      session.user.id = token.id;
+      return session;
+    },
   },
 };
 
