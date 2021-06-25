@@ -1,19 +1,14 @@
 import React, { useEffect } from 'react';
-import { useSession } from 'next-auth/client';
-import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/client';
 
 import { useCallContext } from '@/context/callContext';
-import Placeholder from '@/components/placeholder';
 import CallFooter from '@/components/callFooter';
 import ChatPanel from '@/components/chatPanel';
 import Header from '@/components/header';
 import Video from '@/components/video';
 import Head from '@/components/head';
 
-export default function Call({ serverURL, clientURL, roomId }) {
-  const router = useRouter();
-  const [session, loading] = useSession();
-
+export default function Call({ serverURL, clientURL, roomId, user }) {
   const {
     setRoomId,
     setServerURL,
@@ -28,36 +23,21 @@ export default function Call({ serverURL, clientURL, roomId }) {
   } = useCallContext();
 
   useEffect(() => {
-    // if user not logged in, redirect to login page
-    if (session === null)
-      router.push({
-        pathname: '/login',
-        query: {
-          callbackUrl: '/home',
-        },
-      });
-
-    if (session) {
-      setServerURL(serverURL);
-      setClientURL(clientURL);
-      setRoomId(roomId);
-    }
-  }, [session]);
+    setServerURL(serverURL);
+    setClientURL(clientURL);
+    setRoomId(roomId);
+  }, []);
 
   useEffect(() => {
     // this effect will only run once after getting user's audio and video
-    if (session) {
-      if (userStream === 'not initialised') return;
-      if (!joinedRoomRef.current) {
-        joinRoom(userStream);
-        leaveRoom();
-        receiveMessages();
-        joinedRoomRef.current = true;
-      }
+    if (userStream === 'not initialised') return;
+    if (!joinedRoomRef.current) {
+      joinRoom(userStream);
+      leaveRoom();
+      receiveMessages();
+      joinedRoomRef.current = true;
     }
-  }, [userStream, session]);
-
-  if (loading || session === null) return <Placeholder />;
+  }, [userStream]);
 
   return (
     <>
@@ -76,7 +56,7 @@ export default function Call({ serverURL, clientURL, roomId }) {
               })}
             </div>
           </div>
-          <ChatPanel />
+          <ChatPanel user={user} />
         </div>
         <CallFooter />
       </div>
@@ -84,15 +64,33 @@ export default function Call({ serverURL, clientURL, roomId }) {
   );
 }
 
-export async function getServerSideProps({ query: { id } }) {
-  const serverURL = process.env.SERVER_URL;
-  const clientURL = process.env.CLIENT_URL;
+export async function getServerSideProps(context) {
+  try {
+    const { req, query } = context;
+    const session = await getSession({ req });
 
+    if (session) {
+      const serverURL = process.env.SERVER_URL;
+      const clientURL = process.env.CLIENT_URL;
+
+      return {
+        props: {
+          serverURL,
+          clientURL,
+          roomId: query.id,
+          user: session.user,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // user not logged in, redirect to /login page
   return {
-    props: {
-      serverURL,
-      clientURL,
-      roomId: id,
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
     },
   };
 }

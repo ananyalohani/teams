@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
+import { getSession } from 'next-auth/client';
 import { IoVideocam } from 'react-icons/io5';
 import { HiCode } from 'react-icons/hi';
-import Link from 'next/link';
 
-import Placeholder from '@/components/placeholder';
 import Layout from '@/components/layout';
 
-function Home() {
+export default function Home({ user }) {
   const router = useRouter();
-  const [session, loading] = useSession();
   const [roomName, setRoomName] = useState();
-
-  useEffect(() => {
-    // if user not logged in, redirect to login page
-    console.log(session);
-    if (session === null)
-      router.push({
-        pathname: '/login',
-        query: {
-          callbackUrl: '/home',
-        },
-      });
-  }, [session]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (roomName.includes(' ')) {
+    if (roomName?.includes(' ')) {
       alert('Your room name cannot have spaces');
       return;
     }
@@ -44,8 +29,6 @@ function Home() {
     }
   }
 
-  if (loading || session === null) return <Placeholder />;
-
   return (
     <Layout title={'Home'}>
       <section
@@ -57,7 +40,7 @@ function Home() {
             <div>
               <p className='text-5xl inline'>Hello, </p>
               <p className='text-5xl font-bold text-blue-400 inline'>
-                {session.user.name}!
+                {user.name}!
               </p>
             </div>
             <p className='text-3xl font-semibold'>Start a Meeting</p>
@@ -147,4 +130,27 @@ function Home() {
   );
 }
 
-export default Home;
+export async function getServerSideProps(context) {
+  try {
+    const { req } = context;
+    const session = await getSession({ req });
+
+    if (session) {
+      return {
+        props: {
+          user: session.user,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // user not logged in, redirect to /login page
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
+    },
+  };
+}

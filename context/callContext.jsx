@@ -8,6 +8,8 @@ import React, {
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 
+import { assignRandomColor } from 'utils/utils';
+
 const CallContext = createContext();
 
 const CallContextProvider = ({ children }) => {
@@ -66,9 +68,10 @@ const CallContextProvider = ({ children }) => {
   function joinRoom(stream) {
     // set user stream
     userVideoRef.current.srcObject = stream;
+    const userColor = assignRandomColor();
 
     // join the room
-    socketRef.current.emit('join-room', roomId);
+    socketRef.current.emit('join-room', { roomId, userColor });
 
     // alert if the room is full
     socketRef.current.on('room-full', () => {
@@ -76,24 +79,24 @@ const CallContextProvider = ({ children }) => {
     });
 
     // create peer connections with users who are currently in the room
-    socketRef.current.on('all-users', (users) => {
+    socketRef.current.on('all-users', (users, userColor) => {
       const newPeers = [];
       users.forEach((userId) => {
-        const item = peersRef.current.find(
-          (p) => p.peerId === payload.callerId
-        );
+        const item = peersRef.current.find((p) => p.peerId === userId);
         if (!item) {
           const peer = createPeer(userId, socketRef.current.id, stream);
           peersRef.current.push({
             peerId: userId,
             peer,
+            peerColor: userColor,
           });
 
-          const peerItem = newPeers.find((p) => p.peerId === payload.callerId);
+          const peerItem = newPeers.find((p) => p.peerId === userId);
           if (!peerItem) {
             newPeers.push({
               peerId: userId,
               peer,
+              peerColor: userColor,
             });
           }
         }
@@ -185,14 +188,14 @@ const CallContextProvider = ({ children }) => {
     return peer;
   }
 
-  function sendMessage(e, message) {
+  function sendMessage(e, message, name) {
     // send a text message within the video call
     e.preventDefault();
     if (message === '') return;
-    addChat({ message, userId: socketRef.current.id });
+    addChat({ message, name });
 
     socketRef.current.emit('send-message', {
-      msgData: { message, userId: socketRef.current.id },
+      msgData: { message, name },
       roomId,
     });
   }

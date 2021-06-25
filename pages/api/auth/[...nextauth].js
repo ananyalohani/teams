@@ -14,7 +14,14 @@ const options = {
   ],
   database: process.env.DB_CONN_STR,
   pages: {
-    signIn: '/login',
+    signIn: '/auth/login',
+  },
+  callbacks: {
+    redirect: async (url, baseUrl) => {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(baseUrl);
+    },
   },
 };
 

@@ -53,11 +53,11 @@ export default function CallFooter() {
         )}
       </div>
 
-      <div className='call-icon-wrapper phn'>
-        <Link href='/home'>
+      <Link href='/home'>
+        <div className='call-icon-wrapper phn'>
           <IoCall className='call-icon' />
-        </Link>
-      </div>
+        </div>
+      </Link>
       <div className='call-icon-wrapper' onClick={toggleChatPanel}>
         <IoChatboxEllipses className='call-icon' />
       </div>

@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BiLink } from 'react-icons/bi';
 
+import { assignRandomColor } from 'utils/utils';
 import { useCallContext } from '@/context/callContext';
 
-function ChatPanel() {
+function ChatPanel({ user }) {
   const [message, setMessage] = useState(''); // bind this to the input text-box
   const { roomId, clientURL, peers, sendMessage, chats, chatPanel } =
     useCallContext();
+  const [userColor, setUserColor] = useState();
+
+  useEffect(() => {
+    setUserColor(assignRandomColor());
+  }, []);
 
   return (
     <div
@@ -16,6 +22,7 @@ function ChatPanel() {
           ? 'flex flex-col bg-gray-900 w-80 border-l border-gray-600'
           : 'hidden'
       }
+      style={{ maxHeight: 'calc(100vh - 11rem)' }}
     >
       <div className='bg-blue-400 w-full p-4 flex flex-col space-y-2'>
         <div>
@@ -40,18 +47,25 @@ function ChatPanel() {
       </div>
       <div
         id='chat-window'
-        className='flex-1 text-gray-200 py-3 px-4 overflow-y-scroll'
+        className='flex-1 text-gray-200 p-3 overflow-y-scroll flex flex-col space-y-2'
       >
         {chats.map((msgData, idx) => (
-          <div key={idx}>
-            <p>{msgData.userId}</p>
-            <p>{msgData.message}</p>
+          <div
+            key={idx}
+            className='bg-gray-850 rounded py-2 px-3 border-l-2 flex flex-col space-y-1'
+            style={{ borderLeftColor: userColor }}
+          >
+            <div className='flex flex-row items-center justify-between'>
+              <p className='text-base font-semibold'>{msgData.name}</p>
+              <p className='text-sm font-light opacity-80'>2:46 PM</p>
+            </div>
+            <p className='text-sm'>{msgData.message}</p>
           </div>
         ))}
       </div>
       <form
         onSubmit={(e) => {
-          sendMessage(e, message);
+          sendMessage(e, message, user.name);
           setMessage('');
         }}
         className='flex flex-row justify-evenly my-3'

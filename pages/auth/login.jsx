@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
-import { providers, signIn, getSession } from 'next-auth/client';
+import React from 'react';
+import { signIn, getSession, getProviders } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
-import { useRouter } from 'next/router';
 
-export default function Login({ session, providers, callbackUrl }) {
-  const router = useRouter();
-
+export default function Login({ providers, callbackUrl }) {
   return (
     <main className='bg-gray-900 flex flex-col items-center h-screen space-y-8 justify-center text-gray-200'>
       <div className='flex flex-col items-center space-y-5'>
@@ -34,11 +31,7 @@ export default function Login({ session, providers, callbackUrl }) {
           </button>
           <button
             className='btn'
-            onClick={() =>
-              signIn(providers.google.id, {
-                callbackUrl,
-              })
-            }
+            onClick={() => signIn(providers.google.id, { callbackUrl })}
           >
             <SiGoogle className='btn-icon' />
             Sign in with Google
@@ -50,23 +43,26 @@ export default function Login({ session, providers, callbackUrl }) {
 }
 
 export async function getServerSideProps(context) {
-  const { req, res, query } = context;
-  const session = await getSession({ req });
-  const url = query
-    ? `${process.env.NEXTAUTH_URL}${query.callbackUrl}`
-    : `${process.env.NEXTAUTH_URL}/home`;
-
-  if (session && res && session.accessToken) {
-    console.log(session.user);
-    res.end();
-    return;
+  try {
+    const { req } = context;
+    const session = await getSession({ req });
+    if (session) {
+      // if user is already logged in, redirect to /home
+      return {
+        redirect: {
+          destination: '/home',
+          permanent: false,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
   }
 
+  const providers = await getProviders();
+  const clientURL = process.env.CLIENT_URL;
+
   return {
-    props: {
-      session: session,
-      providers: await providers(context),
-      callbackUrl: url,
-    },
+    props: { providers, callbackUrl: `${clientURL}home` },
   };
 }
