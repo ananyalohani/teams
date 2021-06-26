@@ -1,8 +1,6 @@
 {
   "name": "microsoft-teams-clone",
-  "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,13 +14,11 @@
     "next": "^11.0.0",
     "next-auth": "^3.26.1",
     "next-connect": "^0.10.1",
-    "nookies": "^2.5.2",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^6.7.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
-    "request": "^2.79.0",
     "simple-peer": "^9.6.2",
     "socket.io-client": "^4.1.2"
   },

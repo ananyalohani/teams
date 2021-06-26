@@ -16,6 +16,7 @@ const CallContextProvider = ({ children }) => {
   const [serverURL, setServerURL] = useState(null); // set this externally
   const [clientURL, setClientURL] = useState(null); // set this externally
   const [roomId, setRoomId] = useState(null); // set this externally
+  const [user, setUser] = useState(null); // session.user object of currently logged in user
   const [chatPanel, setChatPanel] = useState(true); // to display/hide the chat panel
   const [peers, setPeers] = useState([]); // keep track of all the peer videos in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
@@ -46,11 +47,11 @@ const CallContextProvider = ({ children }) => {
       }
     }
 
-    if (roomId && serverURL) {
+    if (roomId && serverURL && user) {
       socketRef.current = io(serverURL);
       getUserMedia();
     }
-  }, [roomId, serverURL]);
+  }, [roomId, user, serverURL]);
 
   useEffect(() => {
     // every time a new peer joins the call, check user's audio and video
@@ -68,54 +69,47 @@ const CallContextProvider = ({ children }) => {
   function joinRoom(stream) {
     // set user stream
     userVideoRef.current.srcObject = stream;
-    const userColor = assignRandomColor();
 
     // join the room
-    socketRef.current.emit('join-room', { roomId, userColor });
+    socketRef.current.emit('join-room', roomId);
 
     // alert if the room is full
     socketRef.current.on('room-full', () => {
       alert('This room is full, please join a different room.');
     });
 
-    // create peer connections with users who are currently in the room
-    socketRef.current.on('all-users', (users, userColor) => {
-      const newPeers = [];
-      users.forEach((userId) => {
-        const item = peersRef.current.find((p) => p.peerId === userId);
-        if (!item) {
-          const peer = createPeer(userId, socketRef.current.id, stream);
-          peersRef.current.push({
-            peerId: userId,
-            peer,
-            peerColor: userColor,
-          });
+    socketRef.current.on('user-already-joined', () => {
+      alert(
+        "It looks like you're already in this room. You cannot join the same room twice."
+      );
+    });
 
-          const peerItem = newPeers.find((p) => p.peerId === userId);
-          if (!peerItem) {
-            newPeers.push({
-              peerId: userId,
-              peer,
-              peerColor: userColor,
-            });
-          }
-        }
+    // create peer connections with users who are currently in the room
+    socketRef.current.on('all-users', (usersInThisRoom) => {
+      const newPeers = [];
+      usersInThisRoom.forEach((userId) => {
+        const peer = createPeer(userId, socketRef.current.id, stream);
+        peersRef.current.push({
+          peerId: userId,
+          peer,
+        });
+
+        newPeers.push({
+          peerId: userId,
+          peer,
+        });
       });
       setPeers(newPeers);
     });
 
     // add a peer connection when a user joins the room
-    socketRef.current.on('user-joined', (payload) => {
-      const item = peersRef.current.find((p) => p.peerId === payload.callerId);
+    socketRef.current.on('user-joined', ({ signal, callerId }) => {
+      const item = peersRef.current.find((p) => p.peerId === callerId);
       if (!item) {
-        const peer = addPeer(payload.signal, payload.callerId, stream);
-        peersRef.current.push({
-          peerId: payload.callerId,
-          peer,
-        });
-
-        const peerObj = { peerId: payload.callerId, peer };
-        const peerItem = peers.find((p) => (p.peerId = peerObj.peerId));
+        const peer = addPeer(signal, callerId, stream);
+        const peerObj = { peerId: callerId, peer };
+        peersRef.current.push(peerObj);
+        const peerItem = peers.find((p) => p.peerId === peerObj.peerId);
         if (!peerItem) setPeers((oldPeers) => [...oldPeers, peerObj]);
       }
     });
@@ -180,7 +174,10 @@ const CallContextProvider = ({ children }) => {
     });
 
     peer.on('signal', (signal) => {
-      socketRef.current.emit('returning-signal', { signal, callerId });
+      socketRef.current.emit('returning-signal', {
+        signal,
+        callerId,
+      });
     });
 
     peer.signal(incomingSignal);
@@ -188,21 +185,22 @@ const CallContextProvider = ({ children }) => {
     return peer;
   }
 
-  function sendMessage(e, message, name) {
+  function sendMessage(e, message, userId, name, userColor) {
     // send a text message within the video call
     e.preventDefault();
     if (message === '') return;
-    addChat({ message, name });
+    const msgData = { message, userId, name, userColor };
+    addChat(msgData);
 
     socketRef.current.emit('send-message', {
-      msgData: { message, name },
       roomId,
+      msgData,
     });
   }
 
   function receiveMessages() {
     // listen to incoming messages from sockets
-    socketRef.current.on('receive-message', (msgData) => {
+    socketRef.current.on('receive-message', ({ msgData }) => {
       addChat(msgData);
     });
   }
@@ -237,9 +235,15 @@ const CallContextProvider = ({ children }) => {
     setChatPanel(!chatPanel);
   }
 
+  function disconnectSocket() {
+    socketRef.current.disconnect();
+  }
+
   const contextProps = {
     roomId,
     setRoomId,
+    user,
+    setUser,
     serverURL,
     setServerURL,
     clientURL,
@@ -259,6 +263,7 @@ const CallContextProvider = ({ children }) => {
     connectPeerStream,
     chatPanel,
     toggleChatPanel,
+    disconnectSocket,
   };
 
   return (

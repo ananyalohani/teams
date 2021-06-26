@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { getSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 import { useCallContext } from '@/context/callContext';
 import CallFooter from '@/components/callFooter';
@@ -7,9 +8,13 @@ import ChatPanel from '@/components/chatPanel';
 import Header from '@/components/header';
 import Video from '@/components/video';
 import Head from '@/components/head';
+import { assignRandomColor } from 'utils';
 
 export default function Call({ serverURL, clientURL, roomId, user }) {
+  const router = useRouter();
+
   const {
+    setUser,
     setRoomId,
     setServerURL,
     setClientURL,
@@ -20,12 +25,24 @@ export default function Call({ serverURL, clientURL, roomId, user }) {
     joinRoom,
     leaveRoom,
     receiveMessages,
+    disconnectSocket,
   } = useCallContext();
 
   useEffect(() => {
+    // listen to route change events and manually
+    // disconnect the socket connection
+    router.events.on('routeChangeStart', disconnectSocket);
+
+    return () => {
+      router.events.off('routeChangeStart', disconnectSocket);
+    };
+  }, []);
+
+  useEffect(() => {
+    setUser({ ...user, color: assignRandomColor() });
+    setRoomId(roomId);
     setServerURL(serverURL);
     setClientURL(clientURL);
-    setRoomId(roomId);
   }, []);
 
   useEffect(() => {
@@ -56,7 +73,7 @@ export default function Call({ serverURL, clientURL, roomId, user }) {
               })}
             </div>
           </div>
-          <ChatPanel user={user} />
+          <ChatPanel />
         </div>
         <CallFooter />
       </div>

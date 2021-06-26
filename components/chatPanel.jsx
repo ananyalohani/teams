@@ -4,15 +4,10 @@ import { BiLink } from 'react-icons/bi';
 import { assignRandomColor } from 'utils';
 import { useCallContext } from '@/context/callContext';
 
-function ChatPanel({ user }) {
+function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
-  const { roomId, clientURL, peers, sendMessage, chats, chatPanel } =
+  const { user, roomId, clientURL, peers, sendMessage, chats, chatPanel } =
     useCallContext();
-  const [userColor, setUserColor] = useState();
-
-  useEffect(() => {
-    setUserColor(assignRandomColor());
-  }, []);
 
   return (
     <div
@@ -53,10 +48,10 @@ function ChatPanel({ user }) {
           <div
             key={idx}
             className='bg-gray-850 rounded py-2 px-3 border-l-2 flex flex-col space-y-1'
-            style={{ borderLeftColor: userColor }}
+            style={{ borderLeftColor: msgData.userColor }}
           >
             <div className='flex flex-row items-center justify-between'>
-              <p className='text-base font-semibold'>{msgData.name}</p>
+              <p className='text-base font-semibold'>{msgData.userId === user.id ? `${msgData.name} (You)` : `${msgData.name}`}</p>
               <p className='text-sm font-light opacity-80'>2:46 PM</p>
             </div>
             <p className='text-sm'>{msgData.message}</p>
@@ -65,7 +60,7 @@ function ChatPanel({ user }) {
       </div>
       <form
         onSubmit={(e) => {
-          sendMessage(e, message, user.name);
+          sendMessage(e, message, user.id, user.name, user.color);
           setMessage('');
         }}
         className='flex flex-row justify-evenly my-3'
