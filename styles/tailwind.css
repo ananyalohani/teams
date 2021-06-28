@@ -29,7 +29,7 @@
   }
 
   .call-icon-wrapper {
-    @apply bg-gray-600 border border-gray-500 rounded-full p-3 cursor-pointer;
+    @apply bg-gray-600 border border-gray-500 rounded-full p-2 sm:p-3 cursor-pointer;
   }
 
   .call-icon-wrapper.active {
@@ -37,7 +37,7 @@
   }
 
   .call-icon {
-    @apply text-white h-6 w-6;
+    @apply text-white h-5 w-5 sm:h-6 sm:w-6;
   }
 
   .call-icon-wrapper.phn {

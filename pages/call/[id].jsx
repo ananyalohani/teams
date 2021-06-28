@@ -31,10 +31,10 @@ export default function Call({ serverURL, clientURL, roomId, user }) {
   useEffect(() => {
     // listen to route change events and manually
     // disconnect the socket connection
-    router.events.on('routeChangeStart', disconnectSocket);
-
+    const handleRouteChange = (url, { shallow }) => disconnectSocket();
+    router.events.on('routeChangeStart', handleRouteChange);
     return () => {
-      router.events.off('routeChangeStart', disconnectSocket);
+      router.events.off('routeChangeStart', handleRouteChange);
     };
   }, []);
 
@@ -75,7 +75,7 @@ export default function Call({ serverURL, clientURL, roomId, user }) {
           </div>
           <ChatPanel />
         </div>
-        <CallFooter />
+        <CallFooter router={router}/>
       </div>
     </>
   );

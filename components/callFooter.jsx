@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   IoMicSharp,
   IoMicOffSharp,
@@ -20,10 +20,11 @@ export default function CallFooter() {
     userVideo: video,
     toggleStream,
     toggleChatPanel,
+    disconnectSocket,
   } = useCallContext();
 
   return (
-    <footer className='h-20 w-full bg-gray-800 flex flex-row items-center justify-center space-x-10 border-t border-gray-600'>
+    <footer className='h-20 w-full bg-gray-800 flex flex-row items-center justify-center space-x-5 sm:space-x-10 border-t border-gray-600'>
       <div className='call-icon-wrapper '>
         <IoInformationCircle className='call-icon' />
       </div>
@@ -54,7 +55,7 @@ export default function CallFooter() {
       </div>
 
       <Link href='/home'>
-        <div className='call-icon-wrapper phn'>
+        <div className='call-icon-wrapper phn' onClick={disconnectSocket}>
           <IoCall className='call-icon' />
         </div>
       </Link>
