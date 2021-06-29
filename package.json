@@ -20,9 +20,11 @@
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "simple-peer": "^9.6.2",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "twilio-video": "^2.8.0"
   },
   "devDependencies": {
+    "@types/twilio-video": "^2.11.0",
     "autoprefixer": "^10.2.6",
     "nodemon": "^2.0.7",
     "postcss": "^8.3.5",
