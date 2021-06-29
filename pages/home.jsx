@@ -32,8 +32,8 @@ export default function Home({ user }) {
   return (
     <Layout title={'Home'}>
       <section
-        className='w-full flex items-center justify-center'
-        style={{ height: 'calc(100vh - 6rem)' }}
+        className='w-full flex items-center justify-center bg-gray-900'
+        style={{ height: 'calc(100vh - 5rem)' }}
       >
         <div className='wrapper flex flex-row justify-between items-center text-light'>
           <div className='flex flex-col items-start space-y-5'>

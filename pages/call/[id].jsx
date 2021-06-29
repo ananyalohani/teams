@@ -75,7 +75,7 @@ export default function Call({ serverURL, clientURL, roomId, user }) {
           </div>
           <ChatPanel />
         </div>
-        <CallFooter router={router}/>
+        <CallFooter router={router} />
       </div>
     </>
   );

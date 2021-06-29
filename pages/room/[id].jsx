@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getSession } from 'next-auth/client';
-import Video from 'twilio-video';
 import Participant from '@/components/participant';
+import Header from '@/components/header';
+import Head from '@/components/head';
+import ChatPanel from '@/components/chatPanel';
+import CallFooter from '@/components/callFooter';
+import { useRoomCallContext } from '@/context/roomCallContext';
+import { assignRandomColor } from 'utils';
 
 export default function RoomCall({
   serverURL,
@@ -10,79 +15,73 @@ export default function RoomCall({
   user,
   accessToken,
 }) {
-  const [participants, setParticipants] = useState([]);
-  const [room, setRoom] = useState();
-
-  const participantConnected = (participant) => {
-    setParticipants((prevParticipants) => [...prevParticipants, participant]);
-  };
-
-  const participantDisconnected = (participant) => {
-    setParticipants((prevParticipants) =>
-      prevParticipants.filter((p) => p !== participant)
-    );
-  };
-
-  useEffect(() => {
-    if (accessToken) {
-      Video.connect(accessToken, { name: roomId }).then(
-        (room) => {
-          console.log(room);
-          setRoom(room);
-        },
-        (err) => {
-          console.error(`Unable to connect to Room: ${err.message}`);
-        }
-      );
-    }
-  }, [accessToken]);
+  const {
+    room,
+    participants,
+    joinRoom,
+    leaveRoom,
+    setServerURL,
+    setClientURL,
+    setRoomId,
+    setToken,
+    setUser,
+    router,
+    socketConnected,
+    handleLogout,
+  } = useRoomCallContext();
 
   useEffect(() => {
-    if (room) {
-      console.dir(room);
-      room.on('participantConnected', participantConnected);
-      room.on('participantDisconnected', participantDisconnected);
-      room.participants.forEach(participantConnected);
-    }
+    setServerURL(serverURL);
+    setClientURL(clientURL);
+    setToken(accessToken);
+    setRoomId(roomId);
+    setUser({ ...user, color: assignRandomColor() });
+  }, []);
 
+  useEffect(() => {
+    if (socketConnected.current) {
+      joinRoom();
+      leaveRoom();
+    }
+  }, [socketConnected]);
+
+  useEffect(() => {
+    router.events.on('routeChangeStart', handleLogout);
     return () => {
-      room?.off('participantConnected', participantConnected);
-      room?.off('participantDisconnected', participantDisconnected);
+      router.events.off('routeChangeStart', handleLogout);
     };
-  }, [room]);
+  }, []);
 
-  const remoteParticipants = participants.map((participant) => (
+  const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
 
-  const handleLogout = useCallback(() => {
-    setRoom((prevRoom) => {
-      if (prevRoom) {
-        prevRoom.localParticipant.tracks.forEach((trackPub) => {
-          trackPub.track.stop();
-        });
-        prevRoom.disconnect();
-      }
-      return null;
-    });
-  }, []);
-
   return (
-    <div className='room'>
-      <h2>Room: {roomId}</h2>
-      <button onClick={handleLogout}>Log out</button>
-      <div className='local-participant'>
-        {room ?? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-            muted={true}
-          />
-        )}
+    <>
+      <Head title={`Call - ${roomId}`} />
+      <Header />
+      <div
+        className='flex flex-col'
+        style={{ minHeight: 'calc(100vh - 5rem)' }}
+      >
+        <div className='flex flex-row h-full flex-1'>
+          <div className='bg-gray-875 flex-1 flex items-center justify-center'>
+            <div id='video-grid' className='flex flex-wrap justify-center p-5'>
+              {room && (
+                <Participant
+                  key={room.localParticipant.sid}
+                  participant={room.localParticipant}
+                  me={true}
+                />
+              )}
+              {remoteParticipants}
+            </div>
+          </div>
+          <ChatPanel />
+        </div>
+        <CallFooter router={router} />
       </div>
-      <h3>Remote Participants</h3>
-      <div className='remote-participants'>{remoteParticipants}</div>
-    </div>
+    </>
   );
 }
 
@@ -116,7 +115,7 @@ export async function getServerSideProps(context) {
             clientURL,
             roomId,
             user: session.user,
-            accessToken: await jsonData.token,
+            accessToken: jsonData.token,
           },
         };
       } catch (e) {

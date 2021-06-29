@@ -12,28 +12,54 @@ const Participant = ({ participant, me = false }) => {
       .map((publication) => publication.track)
       .filter((track) => track !== null);
 
+  const trackSubscribed = (track) => {
+    if (track.kind === 'video') {
+      setVideoTracks((videoTracks) => [...videoTracks, track]);
+    } else if (track.kind === 'audio') {
+      setAudioTracks((audioTracks) => [...audioTracks, track]);
+    }
+  };
+
+  const trackUnsubscribed = (track) => {
+    if (track.kind === 'video') {
+      setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
+    } else if (track.kind === 'audio') {
+      setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
+    }
+  };
+
+  const trackDisabled = (track) => {
+    track.on('disabled', () => {
+      // replace user video with avatar
+    });
+  };
+
+  function trackEnabled(track) {
+    track.on('enabled', () => {
+      /* Hide the avatar image and show the associated <video> element. */
+    });
+  }
+
   useEffect(() => {
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
-    const trackSubscribed = (track) => {
-      if (track.kind === 'video') {
-        setVideoTracks((videoTracks) => [...videoTracks, track]);
-      } else if (track.kind === 'audio') {
-        setAudioTracks((audioTracks) => [...audioTracks, track]);
-      }
-    };
-
-    const trackUnsubscribed = (track) => {
-      if (track.kind === 'video') {
-        setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
-      } else if (track.kind === 'audio') {
-        setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
-      }
-    };
-
     participant.on('trackSubscribed', trackSubscribed);
     participant.on('trackUnsubscribed', trackUnsubscribed);
+
+    participant.tracks.forEach((publication) => {
+      if (publication.isSubscribed) {
+        trackDisabled(publication.track);
+      }
+      publication.on('subscribed', trackDisabled);
+    });
+
+    participant.tracks.forEach((publication) => {
+      if (publication.isSubscribed) {
+        trackEnabled(publication.track);
+      }
+      publication.on('subscribed', trackEnabled);
+    });
 
     return () => {
       setVideoTracks([]);
@@ -63,13 +89,12 @@ const Participant = ({ participant, me = false }) => {
   }, [audioTracks]);
 
   return (
-    <div className='participant'>
-      <h3>{participant.identity}</h3>
+    <div>
       <video
         ref={videoRef}
         playsInline
         autoPlay={true}
-        className={`video ${me ?? 'transform -scale-x-1'}`}
+        className={`video ${me && 'transform -scale-x-1'}`}
       />
       <audio ref={audioRef} autoPlay={true} muted={me} />
     </div>
