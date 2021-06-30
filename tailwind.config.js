@@ -25,6 +25,8 @@ module.exports = {
         trueGray: colors.trueGray,
         gray: {
           850: '#1F2737',
+          875: '#182030',
+          950: '#080B10',
         },
       },
       scale: {

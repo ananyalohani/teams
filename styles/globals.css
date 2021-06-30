@@ -51,55 +51,6 @@ a {
   /* @apply w-56 h-32 sm:h-72 sm:w-100; */
 }
 
-/* ! ============================== */
-
-.room {
-  position: relative;
-}
-.room button {
-  position: absolute;
-  top: 0;
-  right: 20px;
-}
-.room > h3 {
-  text-align: center;
-  font-weight: 300;
-  margin-bottom: 1em;
-}
-
-.local-participant {
-  text-align: center;
-  margin-bottom: 2em;
-}
-.remote-participants {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  padding: 0 2em 2em;
-}
-.participant {
-  background: #333e5a;
-  padding: 10px;
-  border-radius: 6px;
-  display: inline-block;
-  margin-right: 10px;
-}
-.participant:last-child {
-  margin-right: 0;
-}
-.participant h3 {
-  text-align: center;
-  padding-bottom: 0.5em;
-  color: #fff;
-}
-
-/* ! ========================== */
-/* #video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-} */
-
 @media only screen and (max-width: 640px) {
   .wrapper {
     width: 90%;

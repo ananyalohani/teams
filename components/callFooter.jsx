@@ -12,27 +12,30 @@ import {
 import { MdScreenShare } from 'react-icons/md';
 import Link from 'next/link';
 
-import { useCallContext } from '@/context/callContext';
+import { useRoomCallContext } from '@/context/roomCallContext';
 
 export default function CallFooter() {
   const {
     userAudio: audio,
     userVideo: video,
-    toggleStream,
+    toggleUserAudio,
+    toggleUserVideo,
     toggleChatPanel,
-    disconnectSocket,
-  } = useCallContext();
+  } = useRoomCallContext();
+
+  useEffect(() => {
+    console.log('audio', audio);
+    console.log('video', video);
+  }, [audio, video]);
 
   return (
-    <footer className='h-20 w-full bg-gray-800 flex flex-row items-center justify-center space-x-5 sm:space-x-10 border-t border-gray-600'>
+    <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-center space-x-5 sm:space-x-10 border-t border-gray-950'>
       <div className='call-icon-wrapper '>
         <IoInformationCircle className='call-icon' />
       </div>
       <div
         className={`call-icon-wrapper ${audio ? '' : 'active'}`}
-        onClick={() => {
-          toggleStream('audio');
-        }}
+        onClick={toggleUserAudio}
       >
         {audio ? (
           <IoMicSharp className='call-icon' />
@@ -43,9 +46,7 @@ export default function CallFooter() {
 
       <div
         className={`call-icon-wrapper ${video ? '' : 'active'}`}
-        onClick={() => {
-          toggleStream('video');
-        }}
+        onClick={toggleUserVideo}
       >
         {video ? (
           <IoVideocam className='call-icon' />
@@ -55,7 +56,7 @@ export default function CallFooter() {
       </div>
 
       <Link href='/home'>
-        <div className='call-icon-wrapper phn' onClick={disconnectSocket}>
+        <div className='call-icon-wrapper phn'>
           <IoCall className='call-icon' />
         </div>
       </Link>
@@ -64,6 +65,9 @@ export default function CallFooter() {
       </div>
       <div className='call-icon-wrapper '>
         <IoPeople className='call-icon' />
+      </div>
+      <div className='call-icon-wrapper '>
+        <MdScreenShare className='call-icon' />
       </div>
     </footer>
   );

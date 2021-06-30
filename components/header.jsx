@@ -7,8 +7,8 @@ export default function Header() {
   const [session, loading] = useSession();
 
   return (
-    <header className='bg-gray-900 border-b border-gray-600 sticky h-24'>
-      <div className='wrapper flex flex-row justify-center sm:justify-between py-5 items-center'>
+    <header className='bg-gray-900 border-b border-gray-950 sticky h-20'>
+      <div className='wrapper flex flex-row justify-center sm:justify-between py-3 items-center'>
         <div className='flex flex-row space-x-4 items-center'>
           <a
             href='https://www.microsoft.com/en-in/'
@@ -21,13 +21,13 @@ export default function Header() {
               src='/images/msft_logo.png'
               alt='Microsoft Logo'
               style={{
-                width: 42,
-                hight: 42,
+                width: 36,
+                hight: 36,
               }}
             />
           </a>
           <h1
-            style={{ fontSize: '34px', marginBottom: '2px' }}
+            style={{ fontSize: '32px', marginBottom: '2px' }}
             className='text-blue-400 font-bold'
           >
             <Link href='/'>

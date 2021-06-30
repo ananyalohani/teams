@@ -5,12 +5,15 @@ import 'styles/globals.css';
 import 'styles/segoe-ui.css';
 
 import { CallContextProvider } from '@/context/callContext';
+import { RoomCallContextProvider } from '@/context/roomCallContext';
 
 function Application({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
       <CallContextProvider>
-        <Component {...pageProps} />
+        <RoomCallContextProvider>
+          <Component {...pageProps} />
+        </RoomCallContextProvider>
       </CallContextProvider>
     </Provider>
   );

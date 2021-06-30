@@ -10,7 +10,7 @@
 
 @layer components {
   .btn {
-    @apply bg-blue-400 font-semibold text-gray-900 text-lg px-4 py-2;
+    @apply bg-blue-400 font-semibold text-gray-900 text-base px-3 py-2;
     @apply hover:bg-blue-500 focus:outline-none focus:ring-2 ring-blue-300;
     @apply flex flex-row items-center justify-center;
     border-radius: 5px;
@@ -21,7 +21,8 @@
   }
 
   .text-box {
-    @apply bg-gray-900 border border-gray-600 rounded-md p-2 w-64 text-gray-200;
+    @apply bg-gray-800 border border-gray-950 px-3 rounded-md p-2 w-64 text-gray-200;
+    @apply focus:outline-none focus:border-blue-400;
   }
 
   .btn-small {
@@ -29,11 +30,11 @@
   }
 
   .call-icon-wrapper {
-    @apply bg-gray-600 border border-gray-500 rounded-full p-2 sm:p-3 cursor-pointer;
+    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3 cursor-pointer;
   }
 
   .call-icon-wrapper.active {
-    @apply bg-blue-500 border border-blue-400;
+    @apply bg-blue-500 border border-blue-800;
   }
 
   .call-icon {
@@ -41,7 +42,7 @@
   }
 
   .call-icon-wrapper.phn {
-    @apply bg-red-600 border-red-400;
+    @apply bg-red-600 border-red-800;
   }
 
   .btn-icon {

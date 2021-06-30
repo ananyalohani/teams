@@ -15,6 +15,18 @@ export function generateCallID(length = 8) {
   return nanoid();
 }
 
+export function formattedTimeString() {
+  const date = new Date();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const suffix = hours % 12 === hours ? 'AM' : 'PM';
+  const timeString = `${
+    hours % 12 === 0 ? 12 : hours % 12
+  }:${minutes} ${suffix}`;
+
+  return timeString;
+}
+
 const colors = {
   rose: '#fb7185',
   pink: '#f472b6',
