@@ -7,39 +7,6 @@ const Participant = ({ participant, me = false }) => {
   const videoRef = useRef();
   const audioRef = useRef();
 
-  const trackpubsToTracks = (trackMap) =>
-    Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
-
-  const trackSubscribed = (track) => {
-    if (track.kind === 'video') {
-      setVideoTracks((videoTracks) => [...videoTracks, track]);
-    } else if (track.kind === 'audio') {
-      setAudioTracks((audioTracks) => [...audioTracks, track]);
-    }
-  };
-
-  const trackUnsubscribed = (track) => {
-    if (track.kind === 'video') {
-      setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
-    } else if (track.kind === 'audio') {
-      setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
-    }
-  };
-
-  const trackDisabled = (track) => {
-    track.on('disabled', () => {
-      // replace user video with avatar
-    });
-  };
-
-  function trackEnabled(track) {
-    track.on('enabled', () => {
-      /* Hide the avatar image and show the associated <video> element. */
-    });
-  }
-
   useEffect(() => {
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
@@ -87,6 +54,40 @@ const Participant = ({ participant, me = false }) => {
       };
     }
   }, [audioTracks]);
+
+  const trackpubsToTracks = (trackMap) => {
+    return Array.from(trackMap.values())
+      .map((publication) => publication.track)
+      .filter((track) => track !== null);
+  };
+
+  const trackSubscribed = (track) => {
+    if (track.kind === 'video') {
+      setVideoTracks((videoTracks) => [...videoTracks, track]);
+    } else if (track.kind === 'audio') {
+      setAudioTracks((audioTracks) => [...audioTracks, track]);
+    }
+  };
+
+  const trackUnsubscribed = (track) => {
+    if (track.kind === 'video') {
+      setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
+    } else if (track.kind === 'audio') {
+      setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
+    }
+  };
+
+  const trackDisabled = (track) => {
+    track.on('disabled', () => {
+      // replace user video with avatar
+    });
+  };
+
+  function trackEnabled(track) {
+    track.on('enabled', () => {
+      // Hide the avatar image and show the associated <video> element.
+    });
+  }
 
   return (
     <div>

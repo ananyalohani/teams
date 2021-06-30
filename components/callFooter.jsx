@@ -12,7 +12,6 @@ import {
 import { MdScreenShare } from 'react-icons/md';
 import Link from 'next/link';
 
-import { useCallContext } from '@/context/callContext';
 import { useRoomCallContext } from '@/context/roomCallContext';
 
 export default function CallFooter() {
@@ -66,6 +65,9 @@ export default function CallFooter() {
       </div>
       <div className='call-icon-wrapper '>
         <IoPeople className='call-icon' />
+      </div>
+      <div className='call-icon-wrapper '>
+        <MdScreenShare className='call-icon' />
       </div>
     </footer>
   );

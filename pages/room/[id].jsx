@@ -47,13 +47,6 @@ export default function RoomCall({
     }
   }, [socketConnected.current]);
 
-  // useEffect(() => {
-  //   router.events.on('routeChangeStart', handleLogout);
-  //   return () => {
-  //     router.events.off('routeChangeStart', handleLogout);
-  //   };
-  // }, []);
-
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
@@ -81,7 +74,7 @@ export default function RoomCall({
           </div>
           <ChatPanel />
         </div>
-        <CallFooter router={router} />
+        <CallFooter />
       </div>
     </>
   );
