@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { getSession } from 'next-auth/client';
 import Participant from '@/components/participant';
 import Header from '@/components/header';

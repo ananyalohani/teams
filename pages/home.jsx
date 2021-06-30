@@ -19,13 +19,13 @@ export default function Home({ user }) {
 
     if (roomName && roomName !== '') {
       router.push({
-        pathname: '/call',
+        pathname: '/room',
         query: {
           name: roomName,
         },
       });
     } else {
-      router.push('/call');
+      router.push('/room');
     }
   }
 
