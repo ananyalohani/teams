@@ -27,7 +27,7 @@ export default function RoomCall({
     setUser,
     router,
     socketConnected,
-    handleLogout,
+    receiveMessages,
   } = useRoomCallContext();
 
   useEffect(() => {
@@ -39,18 +39,20 @@ export default function RoomCall({
   }, []);
 
   useEffect(() => {
+    console.log('socket connected:', socketConnected.current);
     if (socketConnected.current) {
       joinRoom();
       leaveRoom();
+      receiveMessages();
     }
-  }, [socketConnected]);
+  }, [socketConnected.current]);
 
-  useEffect(() => {
-    router.events.on('routeChangeStart', handleLogout);
-    return () => {
-      router.events.off('routeChangeStart', handleLogout);
-    };
-  }, []);
+  // useEffect(() => {
+  //   router.events.on('routeChangeStart', handleLogout);
+  //   return () => {
+  //     router.events.off('routeChangeStart', handleLogout);
+  //   };
+  // }, []);
 
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />

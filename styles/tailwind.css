@@ -21,7 +21,8 @@
   }
 
   .text-box {
-    @apply bg-gray-800 border border-gray-950 px-3 focus:outline-none focus:border-blue-400 rounded-md p-2 w-64 text-gray-200;
+    @apply bg-gray-800 border border-gray-950 px-3 rounded-md p-2 w-64 text-gray-200;
+    @apply focus:outline-none focus:border-blue-400;
   }
 
   .btn-small {

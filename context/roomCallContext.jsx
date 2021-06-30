@@ -26,9 +26,10 @@ const RoomCallContextProvider = ({ children }) => {
   const [chats, setChats] = useState([]); // keep track of all the chats
   const router = useRouter(); // to handle when user redirects to a new page
   const socketRef = useRef(); // ref to the socket connection object
-  const socketConnected = useRef(false);
+  const socketConnected = useRef(false); // set the state of connection of socket
 
-  const handleLogout = useCallback(() => {
+  const handleCallEnd = useCallback(() => {
+    // handle the case when the user ends a call
     socketRef.current.disconnect();
     setRoom((prevRoom) => {
       if (prevRoom) {
@@ -41,24 +42,26 @@ const RoomCallContextProvider = ({ children }) => {
     });
   }, []);
 
+  const cleanup = (event) => {
+    // cleanup function for call end
+    if (event.persisted) {
+      return;
+    }
+    if (room) {
+      handleCallEnd();
+    }
+  };
+
   useEffect(() => {
     if (room) {
-      const tidyUp = (event) => {
-        if (event.persisted) {
-          return;
-        }
-        if (room) {
-          handleLogout();
-        }
-      };
-      window.addEventListener('pagehide', tidyUp);
-      window.addEventListener('beforeunload', tidyUp);
+      window.addEventListener('pagehide', cleanup);
+      window.addEventListener('beforeunload', cleanup);
       return () => {
-        window.removeEventListener('pagehide', tidyUp);
-        window.removeEventListener('beforeunload', tidyUp);
+        window.removeEventListener('pagehide', cleanup);
+        window.removeEventListener('beforeunload', cleanup);
       };
     }
-  }, [room, handleLogout]);
+  }, [room, handleCallEnd]);
 
   useEffect(() => {
     // connect to Twilio's video server when you receive a token
@@ -77,7 +80,7 @@ const RoomCallContextProvider = ({ children }) => {
 
   useEffect(() => {
     // connect to the socket
-    if (roomId && serverURL && user) {
+    if (roomId && serverURL) {
       socketRef.current = io(serverURL);
       socketConnected.current = true;
     }
@@ -98,6 +101,7 @@ const RoomCallContextProvider = ({ children }) => {
   }, [room]);
 
   function joinRoom() {
+    console.log(socketRef.current);
     // join the room
     socketRef.current.emit('join-room', roomId);
 
@@ -125,6 +129,7 @@ const RoomCallContextProvider = ({ children }) => {
   }
 
   function toggleUserAudio() {
+    // toggle user's audio track
     if (userAudio) {
       room.localParticipant.audioTracks.forEach((publication) => {
         publication.track.disable();
@@ -138,6 +143,7 @@ const RoomCallContextProvider = ({ children }) => {
   }
 
   function toggleUserVideo() {
+    // toggle user's video track
     if (userVideo) {
       room.localParticipant.videoTracks.forEach((publication) => {
         publication.track.disable();
@@ -187,6 +193,10 @@ const RoomCallContextProvider = ({ children }) => {
     );
   }
 
+  function toggleChatPanel() {
+    setChatPanel(!chatPanel);
+  }
+
   const contextProps = {
     serverURL,
     setServerURL,
@@ -200,7 +210,7 @@ const RoomCallContextProvider = ({ children }) => {
     user,
     setUser,
     chatPanel,
-    setChatPanel,
+    toggleChatPanel,
     chats,
     addChat,
     router,
@@ -209,7 +219,7 @@ const RoomCallContextProvider = ({ children }) => {
     socketConnected,
     sendMessage,
     receiveMessages,
-    handleLogout,
+    handleCallEnd,
     userAudio,
     userVideo,
     toggleUserAudio,

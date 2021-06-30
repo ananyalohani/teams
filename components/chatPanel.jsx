@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { BiLink } from 'react-icons/bi';
 import { IoSendSharp, IoCloseOutline } from 'react-icons/io5';
 
-import { assignRandomColor } from 'utils';
-import { useCallContext } from '@/context/callContext';
+import { formattedTimeString } from 'utils';
+import { useRoomCallContext } from '@/context/roomCallContext';
 
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
-  const { user, roomId, clientURL, peers, sendMessage, chats, chatPanel } =
-    useCallContext();
+
+  const { user, sendMessage, chats, chatPanel, toggleChatPanel } =
+    useRoomCallContext();
 
   return (
     <div
@@ -23,17 +24,10 @@ function ChatPanel() {
       <div className='bg-gray-800 w-full p-4 flex flex-col space-y-2 border-b-2 border-gray-950'>
         <div className='flex flex-row text-gray-200 justify-between'>
           <p className='font-semibold'>Meeting Chat</p>
-          <IoCloseOutline className='text-gray-200 h-6 w-6' />
+          <div className='cursor-pointer' onClick={toggleChatPanel}>
+            <IoCloseOutline className='text-gray-200 h-6 w-6' />
+          </div>
         </div>
-        {/* <button
-          className='btn-alt btn-small'
-          onClick={() =>
-            navigator.clipboard.writeText(`${clientURL}call/${roomId}`)
-          }
-        >
-          <BiLink className='btn-icon' />
-          Copy Link
-        </button> */}
       </div>
       <div
         id='chat-window'
@@ -51,7 +45,9 @@ function ChatPanel() {
                   ? `${msgData.name} (You)`
                   : `${msgData.name}`}
               </p>
-              <p className='text-sm font-light opacity-80'>2:46 PM</p>
+              <p className='text-sm font-light opacity-80'>
+                {formattedTimeString()}
+              </p>
             </div>
             <p className='text-sm'>{msgData.message}</p>
           </div>
