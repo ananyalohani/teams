@@ -35,6 +35,10 @@ a {
   @apply text-blue-400 w-5 h-5 mr-2;
 }
 
+.MuiSnackbar-root .MuiSnackbarContent-root {
+  @apply bg-blue-400 rounded text-gray-900 font-bold;
+}
+
 .btn.link,
 .btn-alt.link {
   @apply p-0;

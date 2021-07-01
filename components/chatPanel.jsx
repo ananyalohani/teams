@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IoSendSharp, IoCloseOutline } from 'react-icons/io5';
 
-import { formattedTimeString } from 'utils';
 import { useRoomCallContext } from '@/context/roomCallContext';
 
 function ChatPanel() {
@@ -39,14 +38,12 @@ function ChatPanel() {
             style={{ borderLeftColor: msgData.userColor }}
           >
             <div className='flex flex-row items-center justify-between'>
-              <p className='text-base font-semibold'>
+              <p className='text-sm font-semibold'>
                 {msgData.userId === user.id
                   ? `${msgData.name} (You)`
                   : `${msgData.name}`}
               </p>
-              <p className='text-sm font-light opacity-80'>
-                {formattedTimeString()}
-              </p>
+              <p className='text-sm font-light opacity-80'>{msgData.time}</p>
             </div>
             <p className='text-sm'>{msgData.message}</p>
           </div>

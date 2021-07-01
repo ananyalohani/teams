@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import Video from 'twilio-video';
 import io from 'socket.io-client';
+import { formattedTimeString } from 'utils';
 
 const RoomCallContext = createContext();
 
@@ -160,7 +161,13 @@ const RoomCallContextProvider = ({ children }) => {
     // send a text message within the video call
     e.preventDefault();
     if (message === '') return;
-    const msgData = { message, userId, name, userColor };
+    const msgData = {
+      message,
+      userId,
+      name,
+      userColor,
+      time: formattedTimeString(),
+    };
     addChat(msgData);
 
     socketRef.current.emit('send-message', {

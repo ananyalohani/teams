@@ -48,6 +48,11 @@
   .btn-icon {
     @apply text-gray-900 w-5 h-5 mr-2;
   }
+
+  .popper {
+    @apply bg-gray-700 px-4 py-5 bg-opacity-20 backdrop-filter backdrop-blur-sm;
+    @apply border border-gray-950 rounded text-gray-200 mb-3 z-10 shadow;
+  }
 }
 
 @layer utilities {
