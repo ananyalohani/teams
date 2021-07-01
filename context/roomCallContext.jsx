@@ -120,6 +120,7 @@ const RoomCallContextProvider = ({ children }) => {
 
   function leaveRoom() {
     // when a user leaves the room
+    if (!room || !room.localParticipant) return;
     room.on('disconnected', (room) => {
       // Detach the local media elements
       room.localParticipant.tracks.forEach((publication) => {
@@ -131,6 +132,7 @@ const RoomCallContextProvider = ({ children }) => {
 
   function toggleUserAudio() {
     // toggle user's audio track
+    if (!room || !room.localParticipant) return;
     if (userAudio) {
       room.localParticipant.audioTracks.forEach((publication) => {
         publication.track.disable();
@@ -145,6 +147,7 @@ const RoomCallContextProvider = ({ children }) => {
 
   function toggleUserVideo() {
     // toggle user's video track
+    if (!room || !room.localParticipant) return;
     if (userVideo) {
       room.localParticipant.videoTracks.forEach((publication) => {
         publication.track.disable();

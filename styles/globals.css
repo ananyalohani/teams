@@ -36,7 +36,7 @@ a {
 }
 
 .MuiSnackbar-root .MuiSnackbarContent-root {
-  @apply bg-blue-400 rounded text-gray-900 font-bold;
+  @apply bg-blue-400 rounded-sm text-gray-900 font-bold;
 }
 
 .btn.link,

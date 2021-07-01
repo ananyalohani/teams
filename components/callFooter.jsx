@@ -26,8 +26,8 @@ export default function CallFooter() {
     chatPanel,
   } = useRoomCallContext();
 
-  const [anchor, setAnchor] = useState(null);
-  const open = Boolean(anchor);
+  const [anchor, setAnchor] = useState(null); // anchor for the popper
+  const open = Boolean(anchor); // open state of popper
 
   useEffect(() => {
     console.log('audio', audio);
@@ -56,6 +56,7 @@ export default function CallFooter() {
           </div>
         </ClickAwayListener>
       </div>
+
       <div className='flex flex-row space-x-5 sm:space-x-8'>
         <div
           className={`call-icon-wrapper ${audio ? '' : 'active'}`}
@@ -67,7 +68,6 @@ export default function CallFooter() {
             <IoMicOffSharp className='call-icon' />
           )}
         </div>
-
         <div
           className={`call-icon-wrapper ${video ? '' : 'active'}`}
           onClick={toggleUserVideo}

@@ -5,8 +5,8 @@ import { MdContentCopy } from 'react-icons/md';
 
 function CallInfoPopper({ anchorEl, open }) {
   const { roomId, clientURL, participants } = useRoomCallContext();
-  const meetingLink = `${clientURL}/room/${roomId}`;
   const [openSB, setOpenSB] = useState(false);
+  const meetingLink = `${clientURL}/room/${roomId}`;
 
   return (
     <>
