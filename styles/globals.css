@@ -52,7 +52,6 @@ a {
 .video {
   @apply bg-black flex-1 rounded object-cover m-2;
   @apply max-w-xs max-h-32 sm:max-w-md sm:max-h-72;
-  /* @apply w-56 h-32 sm:h-72 sm:w-100; */
 }
 
 @media only screen and (max-width: 640px) {

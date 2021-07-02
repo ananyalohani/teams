@@ -20,6 +20,7 @@ const RoomCallContextProvider = ({ children }) => {
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
   const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
   const [participants, setParticipants] = useState([]); // array of `participant` objects returned by Twilio
+  const [usersList, setUsersList] = useState([]);
   const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
@@ -30,7 +31,7 @@ const RoomCallContextProvider = ({ children }) => {
   const socketConnected = useRef(false); // set the state of connection of socket
 
   const handleCallEnd = useCallback(() => {
-    // handle the case when the user ends a call
+    // handle the case when a user ends the call
     socketRef.current.disconnect();
     setRoom((prevRoom) => {
       if (prevRoom) {
@@ -43,17 +44,17 @@ const RoomCallContextProvider = ({ children }) => {
     });
   }, []);
 
-  const cleanup = (event) => {
-    // cleanup function for call end
-    if (event.persisted) {
-      return;
-    }
-    if (room) {
-      handleCallEnd();
-    }
-  };
-
   useEffect(() => {
+    const cleanup = (event) => {
+      // cleanup function for call end
+      if (event.persisted) {
+        return;
+      }
+      if (room) {
+        handleCallEnd();
+      }
+    };
+
     if (room) {
       window.addEventListener('pagehide', cleanup);
       window.addEventListener('beforeunload', cleanup);
@@ -69,7 +70,7 @@ const RoomCallContextProvider = ({ children }) => {
     if (token) {
       Video.connect(token, { name: roomId }).then(
         (room) => {
-          console.log(room);
+          // console.log(room);
           setRoom(room);
         },
         (err) => {
@@ -101,10 +102,14 @@ const RoomCallContextProvider = ({ children }) => {
     };
   }, [room]);
 
+  useEffect(() => {
+    console.log('usersList:', usersList);
+  }, [usersList]);
+
   function joinRoom() {
-    console.log(socketRef.current);
+    // console.log(socketRef.current);
     // join the room
-    socketRef.current.emit('join-room', roomId);
+    socketRef.current.emit('join-room', { roomId, user });
 
     // alert if the room is full
     socketRef.current.on('room-full', () => {
@@ -115,6 +120,12 @@ const RoomCallContextProvider = ({ children }) => {
       alert(
         "It looks like you're already in this room. You cannot join the same room twice."
       );
+    });
+  }
+
+  function updateUsersList() {
+    socketRef.current.on('updated-users-list', ({ usersInThisRoom }) => {
+      setUsersList(usersInThisRoom);
     });
   }
 
@@ -234,6 +245,7 @@ const RoomCallContextProvider = ({ children }) => {
     userVideo,
     toggleUserAudio,
     toggleUserVideo,
+    updateUsersList,
   };
 
   return (

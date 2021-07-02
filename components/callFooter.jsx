@@ -29,10 +29,10 @@ export default function CallFooter() {
   const [anchor, setAnchor] = useState(null); // anchor for the popper
   const open = Boolean(anchor); // open state of popper
 
-  useEffect(() => {
-    console.log('audio', audio);
-    console.log('video', video);
-  }, [audio, video]);
+  // useEffect(() => {
+  //   console.log('audio', audio);
+  //   console.log('video', video);
+  // }, [audio, video]);
 
   const handleClick = (e) => {
     setAnchor(anchor ? null : e.currentTarget);

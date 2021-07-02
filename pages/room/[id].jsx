@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/client';
 import Participant from '@/components/participant';
 import Header from '@/components/header';
@@ -7,6 +7,9 @@ import ChatPanel from '@/components/chatPanel';
 import CallFooter from '@/components/callFooter';
 import { useRoomCallContext } from '@/context/roomCallContext';
 import { assignRandomColor } from 'utils';
+import dynamic from 'next/dynamic';
+
+// const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
 export default function RoomCall({
   serverURL,
@@ -25,9 +28,9 @@ export default function RoomCall({
     setRoomId,
     setToken,
     setUser,
-    router,
     socketConnected,
     receiveMessages,
+    updateUsersList,
   } = useRoomCallContext();
 
   useEffect(() => {
@@ -42,6 +45,7 @@ export default function RoomCall({
     console.log('socket connected:', socketConnected.current);
     if (socketConnected.current) {
       joinRoom();
+      updateUsersList();
       leaveRoom();
       receiveMessages();
     }
@@ -50,6 +54,8 @@ export default function RoomCall({
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
+
+  // return <ExcalidrawComp />;
 
   return (
     <>

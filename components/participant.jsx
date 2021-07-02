@@ -91,13 +91,15 @@ const Participant = ({ participant, me = false }) => {
 
   return (
     <div>
-      <video
-        ref={videoRef}
-        playsInline
-        autoPlay={true}
-        className={`video ${me && 'transform -scale-x-1'}`}
-      />
-      <audio ref={audioRef} autoPlay={true} muted={me} />
+      <div className='video-wrapper bg-gray-950'>
+        <video
+          ref={videoRef}
+          playsInline
+          autoPlay={true}
+          className={`video ${me && 'transform -scale-x-1'}`}
+        />
+        <audio ref={audioRef} autoPlay={true} muted={me} />
+      </div>
     </div>
   );
 };
