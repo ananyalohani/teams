@@ -15,29 +15,37 @@ export default function MyTracks({ participant }) {
 
   useEffect(() => {
     const loadBlurBgLib = async () => {
-      const { GaussianBlurBackgroundProcessor } = await import(
-        '@twilio/video-processors'
-      );
-      const blurBg = new GaussianBlurBackgroundProcessor({
-        assetsPath: `${clientURL}/twilio-video-processor/assets`,
-      });
-      setBlurBackground(blurBg);
+      try {
+        const { GaussianBlurBackgroundProcessor } = await import(
+          '@twilio/video-processors'
+        );
+        const blurBg = new GaussianBlurBackgroundProcessor({
+          assetsPath: `${clientURL}/twilio-video-processor/assets`,
+        });
+        setBlurBackground(blurBg);
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     const loadVirtualBgLib = async () => {
-      const { VirtualBackgroundProcessor } = await import(
-        '@twilio/video-processors'
-      );
+      try {
+        const { VirtualBackgroundProcessor } = await import(
+          '@twilio/video-processors'
+        );
 
-      const img = new Image();
-      img.src = '/twilio-video-processor/backgrounds/beach.jpeg';
-      img.onload = () => {
-        const virtualBg = new VirtualBackgroundProcessor({
-          assetsPath: `${clientURL}/twilio-video-processor/assets`,
-          backgroundImage: img,
-        });
-        setVirtualBackground(virtualBg);
-      };
+        const img = new Image();
+        img.src = '/twilio-video-processor/backgrounds/beach.jpeg';
+        img.onload = () => {
+          const virtualBg = new VirtualBackgroundProcessor({
+            assetsPath: `${clientURL}/twilio-video-processor/assets`,
+            backgroundImage: img,
+          });
+          setVirtualBackground(virtualBg);
+        };
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     loadVirtualBgLib();
