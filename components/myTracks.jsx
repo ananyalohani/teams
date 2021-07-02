@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Participant from '@/components/participant';
 import { useRoomCallContext } from '@/context/roomCallContext';
+import { trackpubsToTracks } from 'utils';
 
 export default function MyTracks({ participant }) {
   const { userBg, clientURL } = useRoomCallContext();
   const [virtualBackground, setVirtualBackground] = useState();
   const [blurBackground, setBlurBackground] = useState();
   const [videoTracks, setVideoTracks] = useState([]);
-
-  const trackpubsToTracks = (trackMap) => {
-    return Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
-  };
 
   useEffect(() => {
     setVideoTracks(trackpubsToTracks(participant.videoTracks));

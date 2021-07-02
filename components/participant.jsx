@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { trackpubsToTracks } from 'utils';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
@@ -54,12 +55,6 @@ const Participant = ({ participant, me = false }) => {
       };
     }
   }, [audioTracks]);
-
-  const trackpubsToTracks = (trackMap) => {
-    return Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
-  };
 
   const trackSubscribed = (track) => {
     if (track.kind === 'video') {

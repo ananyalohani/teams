@@ -52,3 +52,9 @@ export function assignRandomColor() {
   const key = Object.keys(colors)[i];
   return colors[key];
 }
+
+export function trackpubsToTracks(trackMap) {
+  return Array.from(trackMap.values())
+    .map((publication) => publication.track)
+    .filter((track) => track !== null);
+}
