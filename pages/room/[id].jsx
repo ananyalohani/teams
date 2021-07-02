@@ -8,6 +8,8 @@ import CallFooter from '@/components/callFooter';
 import { useRoomCallContext } from '@/context/roomCallContext';
 import { assignRandomColor } from 'utils';
 import dynamic from 'next/dynamic';
+import ParticipantsPanel from '@/components/participantsPanel';
+import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
 
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
@@ -68,17 +70,18 @@ export default function RoomCall({
         <div className='flex flex-row h-full flex-1'>
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>
-              {room && (
+              {/* {room && (
                 <Participant
                   key={room.localParticipant.sid}
                   participant={room.localParticipant}
                   me={true}
                 />
               )}
-              {remoteParticipants}
+              {remoteParticipants} */}
             </div>
           </div>
           <ChatPanel />
+          <ParticipantsPanel />
         </div>
         <CallFooter />
       </div>

@@ -20,11 +20,11 @@ const RoomCallContextProvider = ({ children }) => {
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
   const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
   const [participants, setParticipants] = useState([]); // array of `participant` objects returned by Twilio
-  const [usersList, setUsersList] = useState([]);
+  const [usersList, setUsersList] = useState([]); // List of NextAuth `user` objects present in the room
   const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
-  const [chatPanel, setChatPanel] = useState(true); // toggle display of chatPanel
+  const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
   const [chats, setChats] = useState([]); // keep track of all the chats
   const router = useRouter(); // to handle when user redirects to a new page
   const socketRef = useRef(); // ref to the socket connection object
@@ -214,8 +214,8 @@ const RoomCallContextProvider = ({ children }) => {
     );
   }
 
-  function toggleChatPanel() {
-    setChatPanel(!chatPanel);
+  function togglePanel(panel) {
+    setDisplayPanel(panel);
   }
 
   const contextProps = {
@@ -230,8 +230,8 @@ const RoomCallContextProvider = ({ children }) => {
     participants,
     user,
     setUser,
-    chatPanel,
-    toggleChatPanel,
+    displayPanel,
+    togglePanel,
     chats,
     addChat,
     router,
@@ -246,6 +246,7 @@ const RoomCallContextProvider = ({ children }) => {
     toggleUserAudio,
     toggleUserVideo,
     updateUsersList,
+    usersList,
   };
 
   return (

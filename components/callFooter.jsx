@@ -22,8 +22,8 @@ export default function CallFooter() {
     userVideo: video,
     toggleUserAudio,
     toggleUserVideo,
-    toggleChatPanel,
-    chatPanel,
+    togglePanel,
+    displayPanel,
   } = useRoomCallContext();
 
   const [anchor, setAnchor] = useState(null); // anchor for the popper
@@ -90,12 +90,19 @@ export default function CallFooter() {
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
         <div
-          className={`call-icon-wrapper ${chatPanel ? 'active' : ''}`}
-          onClick={toggleChatPanel}
+          className={`call-icon-wrapper ${
+            displayPanel === 'chat' ? 'active' : ''
+          }`}
+          onClick={() => togglePanel('chat')}
         >
           <IoChatboxEllipses className='call-icon' />
         </div>
-        <div className='call-icon-wrapper '>
+        <div
+          className={`call-icon-wrapper ${
+            displayPanel === 'participants' ? 'active' : ''
+          }`}
+          onClick={() => togglePanel('participants')}
+        >
           <IoPeople className='call-icon' />
         </div>
       </div>
