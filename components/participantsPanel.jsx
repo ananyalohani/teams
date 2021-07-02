@@ -4,13 +4,10 @@ import { useRoomCallContext } from '@/context/roomCallContext';
 import SidePanel from '@/components/sidePanel';
 
 function ParticipantsPanel() {
-  const { user, usersList, displayPanel } = useRoomCallContext();
+  const { user, usersList } = useRoomCallContext();
+
   return (
-    <SidePanel
-      title={'Participants'}
-      id='participants-panel'
-      visible={displayPanel === 'participants'}
-    >
+    <SidePanel title='Participants' name='participants'>
       <ul className='flex-1 text-gray-200 text-sm p-3 overflow-y-scroll flex flex-col space-y-2'>
         {usersList.map((usr) => (
           <li

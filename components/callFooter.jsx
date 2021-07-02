@@ -11,8 +11,6 @@ import {
 } from 'react-icons/io5';
 import { MdScreenShare } from 'react-icons/md';
 import Link from 'next/link';
-import { ClickAwayListener } from '@material-ui/core';
-import CallInfoPopper from '@/components/callInfoPopper';
 
 import { useRoomCallContext } from '@/context/roomCallContext';
 
@@ -44,17 +42,14 @@ export default function CallFooter() {
   return (
     <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-around border-t border-gray-950'>
       <div className='flex flex-row space-x-5 sm:space-x-8'>
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <div>
-            <div
-              className={`call-icon-wrapper ${open ? 'active' : ''}`}
-              onClick={handleClick}
-            >
-              <IoInformationCircle className='call-icon' />
-            </div>
-            <CallInfoPopper anchorEl={anchor} open={open} />
-          </div>
-        </ClickAwayListener>
+        <div
+          className={`call-icon-wrapper ${
+            displayPanel === 'meeting-details' ? 'active' : ''
+          }`}
+          onClick={() => togglePanel('meeting-details')}
+        >
+          <IoInformationCircle className='call-icon' />
+        </div>
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
