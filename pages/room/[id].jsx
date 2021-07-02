@@ -10,7 +10,7 @@ import { assignRandomColor } from 'utils';
 import dynamic from 'next/dynamic';
 import ParticipantsPanel from '@/components/participantsPanel';
 import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
-
+import MyTracks from '@/components/myTracks';
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
 export default function RoomCall({
@@ -33,6 +33,7 @@ export default function RoomCall({
     socketConnected,
     receiveMessages,
     updateUsersList,
+    changeUserBackground,
   } = useRoomCallContext();
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function RoomCall({
       updateUsersList();
       leaveRoom();
       receiveMessages();
+      changeUserBackground('virtual');
     }
   }, [socketConnected.current]);
 
@@ -71,10 +73,9 @@ export default function RoomCall({
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>
               {room && (
-                <Participant
+                <MyTracks
                   key={room.localParticipant.sid}
                   participant={room.localParticipant}
-                  me={true}
                 />
               )}
               {remoteParticipants}

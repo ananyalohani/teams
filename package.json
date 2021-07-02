@@ -9,6 +9,7 @@
   "dependencies": {
     "@excalidraw/excalidraw": "^0.8.0",
     "@material-ui/core": "^4.11.4",
+    "@twilio/video-processors": "^1.0.0",
     "mongodb": "^3.6.9",
     "mongoose": "^5.12.14",
     "nanoid": "^3.1.23",
@@ -23,7 +24,7 @@
     "react-icons": "^4.2.0",
     "simple-peer": "^9.6.2",
     "socket.io-client": "^4.1.2",
-    "twilio-video": "^2.8.0"
+    "twilio-video": "^2.15.0"
   },
   "devDependencies": {
     "@types/twilio-video": "^2.11.0",

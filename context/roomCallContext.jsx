@@ -24,6 +24,7 @@ const RoomCallContextProvider = ({ children }) => {
   const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
+  const [userBg, setUserBg] = useState(null); // set user's video background as 'virtual' or 'blur'
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
   const [chats, setChats] = useState([]); // keep track of all the chats
   const router = useRouter(); // to handle when user redirects to a new page
@@ -171,6 +172,10 @@ const RoomCallContextProvider = ({ children }) => {
     setUserVideo(!userVideo);
   }
 
+  function changeUserBackground(type) {
+    setUserBg(type);
+  }
+
   function sendMessage(e, message, userId, name, userColor) {
     // send a text message within the video call
     e.preventDefault();
@@ -247,6 +252,8 @@ const RoomCallContextProvider = ({ children }) => {
     toggleUserVideo,
     updateUsersList,
     usersList,
+    userBg,
+    changeUserBackground,
   };
 
   return (
