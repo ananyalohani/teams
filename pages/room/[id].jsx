@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import ParticipantsPanel from '@/components/participantsPanel';
 import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
 import MyTracks from '@/components/myTracks';
+import SharedScreen from '@/components/sharedScreen';
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
 export default function RoomCall({
@@ -34,6 +35,7 @@ export default function RoomCall({
     receiveMessages,
     updateUsersList,
     changeUserBackground,
+    screenTrack,
   } = useRoomCallContext();
 
   useEffect(() => {
@@ -45,13 +47,12 @@ export default function RoomCall({
   }, []);
 
   useEffect(() => {
-    console.log('socket connected:', socketConnected.current);
     if (socketConnected.current) {
       joinRoom();
       updateUsersList();
       leaveRoom();
       receiveMessages();
-      changeUserBackground('virtual');
+      // changeUserBackground('virtual');
     }
   }, [socketConnected.current]);
 
@@ -79,6 +80,7 @@ export default function RoomCall({
                 />
               )}
               {remoteParticipants}
+              {screenTrack && <SharedScreen />}
             </div>
           </div>
           <ChatPanel />

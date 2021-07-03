@@ -30,11 +30,15 @@
   }
 
   .call-icon-wrapper {
-    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3 cursor-pointer;
+    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3;
   }
 
   .call-icon-wrapper.active {
     @apply bg-blue-500 border border-blue-800;
+  }
+
+  .call-icon-wrapper.disabled {
+    @apply opacity-50;
   }
 
   .call-icon {

@@ -58,3 +58,19 @@ export function trackpubsToTracks(trackMap) {
     .map((publication) => publication.track)
     .filter((track) => track !== null);
 }
+
+export const virtualBackgroundImages = {
+  beach: '/twilio-video-processor/backgrounds/beach.jpg',
+  bokeh: '/twilio-video-processor/backgrounds/bokeh.jpg',
+  kitchen: '/twilio-video-processor/backgrounds/kitchen.jpg',
+  lobby: '/twilio-video-processor/backgrounds/lobby.jpg',
+  office1: '/twilio-video-processor/backgrounds/office1.jpg',
+  office2: '/twilio-video-processor/backgrounds/office2.jpg',
+  office3: '/twilio-video-processor/backgrounds/office3.jpg',
+  park: '/twilio-video-processor/backgrounds/park.jpg',
+  pattern1: '/twilio-video-processor/backgrounds/pattern1.jpg',
+  stars1: '/twilio-video-processor/backgrounds/stars1.jpg',
+  stars2: '/twilio-video-processor/backgrounds/stars2.jpg',
+  stars3: '/twilio-video-processor/backgrounds/stars3.jpg',
+  sunset: '/twilio-video-processor/backgrounds/sunset.jpg',
+};

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { trackpubsToTracks } from 'utils';
+import { useRoomCallContext } from '@/context/roomCallContext';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
+  const { setScreenTrack } = useRoomCallContext();
 
   const videoRef = useRef();
   const audioRef = useRef();
@@ -14,6 +16,15 @@ const Participant = ({ participant, me = false }) => {
 
     participant.on('trackSubscribed', trackSubscribed);
     participant.on('trackUnsubscribed', trackUnsubscribed);
+
+    participant.on('trackPublished', (remoteTrackPublication) => {
+      console.log(remoteTrackPublication);
+      setScreenTrack(remoteTrackPublication.track);
+    });
+
+    participant.on('trackUnpublished', (remoteTrackPublication) => {
+      setScreenTrack(null);
+    });
 
     participant.tracks.forEach((publication) => {
       if (publication.isSubscribed) {
@@ -90,10 +101,10 @@ const Participant = ({ participant, me = false }) => {
         <video
           ref={videoRef}
           playsInline
-          autoPlay={true}
+          autoPlay
           className={`video ${me && 'transform -scale-x-1'}`}
         />
-        <audio ref={audioRef} autoPlay={true} muted={me} />
+        <audio ref={audioRef} autoPlay muted={me} />
       </div>
     </div>
   );

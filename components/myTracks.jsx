@@ -11,7 +11,7 @@ export default function MyTracks({ participant }) {
 
   useEffect(() => {
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
-  }, []);
+  }, [participant]);
 
   useEffect(() => {
     const loadBlurBgLib = async () => {
@@ -35,7 +35,7 @@ export default function MyTracks({ participant }) {
         );
 
         const img = new Image();
-        img.src = '/twilio-video-processor/backgrounds/beach.jpeg';
+        img.src = '/twilio-video-processor/backgrounds/beach.jpg';
         img.onload = () => {
           const virtualBg = new VirtualBackgroundProcessor({
             assetsPath: `${clientURL}/twilio-video-processor/assets`,

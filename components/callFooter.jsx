@@ -9,7 +9,7 @@ import {
   IoPeople,
   IoInformationCircle,
 } from 'react-icons/io5';
-import { MdScreenShare } from 'react-icons/md';
+import { MdPresentToAll } from 'react-icons/md';
 import Link from 'next/link';
 
 import { useRoomCallContext } from '@/context/roomCallContext';
@@ -22,15 +22,18 @@ export default function CallFooter() {
     toggleUserVideo,
     togglePanel,
     displayPanel,
+    // shareScreen,
+    toggleScreenShare,
+    room,
   } = useRoomCallContext();
 
   const [anchor, setAnchor] = useState(null); // anchor for the popper
   const open = Boolean(anchor); // open state of popper
+  const [disabled, setDisabled] = useState(true);
 
-  // useEffect(() => {
-  //   console.log('audio', audio);
-  //   console.log('video', video);
-  // }, [audio, video]);
+  useEffect(() => {
+    if (room) setDisabled(false);
+  }, [room]);
 
   const handleClick = (e) => {
     setAnchor(anchor ? null : e.currentTarget);
@@ -42,19 +45,23 @@ export default function CallFooter() {
   return (
     <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-around border-t border-gray-950'>
       <div className='flex flex-row space-x-5 sm:space-x-8'>
-        <div
+        <button
+          disabled={disabled}
           className={`call-icon-wrapper ${
             displayPanel === 'meeting-details' ? 'active' : ''
-          }`}
+          } ${disabled ? 'disabled' : ''}`}
           onClick={() => togglePanel('meeting-details')}
         >
           <IoInformationCircle className='call-icon' />
-        </div>
+        </button>
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
-        <div
-          className={`call-icon-wrapper ${audio ? '' : 'active'}`}
+        <button
+          disabled={disabled}
+          className={`call-icon-wrapper ${audio ? '' : 'active'} ${
+            disabled ? 'disabled' : ''
+          }`}
           onClick={toggleUserAudio}
         >
           {audio ? (
@@ -62,9 +69,12 @@ export default function CallFooter() {
           ) : (
             <IoMicOffSharp className='call-icon' />
           )}
-        </div>
-        <div
-          className={`call-icon-wrapper ${video ? '' : 'active'}`}
+        </button>
+        <button
+          disabled={disabled}
+          className={`call-icon-wrapper ${video ? '' : 'active'} ${
+            disabled ? 'disabled' : ''
+          }`}
           onClick={toggleUserVideo}
         >
           {video ? (
@@ -72,10 +82,16 @@ export default function CallFooter() {
           ) : (
             <IoVideocamOff className='call-icon' />
           )}
-        </div>
-        <div className='call-icon-wrapper '>
-          <MdScreenShare className='call-icon' />
-        </div>
+        </button>
+        <button
+          disabled={disabled}
+          className={`call-icon-wrapper hidden lg:block ${
+            disabled ? 'disabled' : ''
+          }`}
+          onClick={toggleScreenShare}
+        >
+          <MdPresentToAll className='call-icon' />
+        </button>
         <Link href='/home'>
           <div className='call-icon-wrapper phn'>
             <IoCall className='call-icon' />
@@ -84,22 +100,24 @@ export default function CallFooter() {
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
-        <div
+        <button
+          disabled={disabled}
           className={`call-icon-wrapper ${
             displayPanel === 'chat' ? 'active' : ''
-          }`}
+          } ${disabled ? 'disabled' : ''}`}
           onClick={() => togglePanel('chat')}
         >
           <IoChatboxEllipses className='call-icon' />
-        </div>
-        <div
+        </button>
+        <button
+          disabled={disabled}
           className={`call-icon-wrapper ${
             displayPanel === 'participants' ? 'active' : ''
-          }`}
+          } ${disabled ? 'disabled' : ''}`}
           onClick={() => togglePanel('participants')}
         >
           <IoPeople className='call-icon' />
-        </div>
+        </button>
       </div>
     </footer>
   );

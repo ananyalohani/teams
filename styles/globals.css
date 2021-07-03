@@ -11,6 +11,10 @@ a {
   @apply box-border p-0 m-0;
 }
 
+button {
+  @apply focus:outline-none;
+}
+
 .wrapper {
   width: 80%;
   margin: 0 auto;

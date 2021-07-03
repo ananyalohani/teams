@@ -7,7 +7,7 @@ import React, {
   useContext,
   createContext,
 } from 'react';
-import Video from 'twilio-video';
+import Video, { LocalVideoTrack } from 'twilio-video';
 import io from 'socket.io-client';
 import { formattedTimeString } from 'utils';
 
@@ -27,6 +27,7 @@ const RoomCallContextProvider = ({ children }) => {
   const [userBg, setUserBg] = useState(null); // set user's video background as 'virtual' or 'blur'
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
   const [chats, setChats] = useState([]); // keep track of all the chats
+  const [screenTrack, setScreenTrack] = useState(null);
   const router = useRouter(); // to handle when user redirects to a new page
   const socketRef = useRef(); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
@@ -57,6 +58,7 @@ const RoomCallContextProvider = ({ children }) => {
     };
 
     if (room) {
+      console.log(room);
       window.addEventListener('pagehide', cleanup);
       window.addEventListener('beforeunload', cleanup);
       return () => {
@@ -102,10 +104,6 @@ const RoomCallContextProvider = ({ children }) => {
       room?.off('participantDisconnected', participantDisconnected);
     };
   }, [room]);
-
-  useEffect(() => {
-    console.log('usersList:', usersList);
-  }, [usersList]);
 
   function joinRoom() {
     // console.log(socketRef.current);
@@ -223,6 +221,35 @@ const RoomCallContextProvider = ({ children }) => {
     setDisplayPanel(panel);
   }
 
+  async function toggleScreenShare() {
+    if (!screenTrack) {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+        });
+        const userScreen = new LocalVideoTrack(stream.getTracks()[0]);
+        setScreenTrack(userScreen);
+        room.localParticipant
+          .publishTrack(userScreen)
+          .then((localTrackPublication) => {
+            console.log(localTrackPublication);
+            console.log(
+              `Track ${userScreen.name} was published with SID ${localTrackPublication.tracksid}`
+            );
+          });
+        userScreen.mediaStreamTrack.onended = () => {
+          toggleScreenShare();
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      room.localParticipant.unpublishTrack(screenTrack);
+      screenTrack.stop();
+      setScreenTrack(null);
+    }
+  }
+
   const contextProps = {
     serverURL,
     setServerURL,
@@ -254,6 +281,9 @@ const RoomCallContextProvider = ({ children }) => {
     usersList,
     userBg,
     changeUserBackground,
+    toggleScreenShare,
+    screenTrack,
+    setScreenTrack,
   };
 
   return (
