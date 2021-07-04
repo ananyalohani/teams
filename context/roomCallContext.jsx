@@ -42,6 +42,10 @@ const RoomCallContextProvider = ({ children }) => {
         });
         prevRoom.disconnect();
       }
+      if (screenTrack) {
+        screenTrack.stop();
+        setScreenTrack(null);
+      }
       return null;
     });
   }, []);

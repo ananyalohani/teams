@@ -9,6 +9,9 @@ export default function SharedScreen() {
     if (screenTrack) {
       screenTrack.attach(screenRef.current);
     }
+    return () => {
+      screenTrack.detach();
+    }
   }, [screenTrack]);
 
   return <video ref={screenRef} autoPlay className='video' />;

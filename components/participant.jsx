@@ -17,8 +17,13 @@ const Participant = ({ participant, me = false }) => {
     participant.on('trackSubscribed', trackSubscribed);
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
-    participant.on('trackPublished', (remoteTrackPublication) => {
-      console.log(remoteTrackPublication);
+    participant.on('trackPublished', async (remoteTrackPublication) => {
+      while(true) {
+        if (remoteTrackPublication.track) break;
+        await new Promise (res => {
+          setTimeout(res, 1);
+        })
+      }
       setScreenTrack(remoteTrackPublication.track);
     });
 
