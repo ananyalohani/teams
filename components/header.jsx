@@ -22,7 +22,7 @@ export default function Header() {
               alt='Microsoft Logo'
               style={{
                 width: 36,
-                hight: 36,
+                height: 36,
               }}
             />
           </a>

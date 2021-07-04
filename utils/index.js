@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { nolookalikes } from 'nanoid-dictionary';
+// import sendgrid from '@sendgrid/mail';
 
 export function checkForDuplicates(array, parameter, value) {
   array.map((element) => {
@@ -74,3 +75,36 @@ export const virtualBackgroundImages = {
   stars3: '/twilio-video-processor/backgrounds/stars3.jpg',
   sunset: '/twilio-video-processor/backgrounds/sunset.jpg',
 };
+
+export async function sendInvite(data) {
+  await fetch('/api/invite', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+// const sendgrid = require('@sendgrid/mail');
+// function sendEmail(data, apiKey) {
+//   sendgrid.setApiKey(process.env.SMTP_PASSWORD);
+//   const templateId = 'd-4a70325858aa46db9c8bbc21722f4ee8';
+
+//   const options = {
+//     to: data.receiver,
+//     from: data.sender,
+//     templateId,
+//     dynamic_template_data: {
+//       senderName: data.senderName,
+//       receiverName: data.receiverName,
+//       roomId: data.roomId,
+//       meetingLink: data.meetingLink,
+//     },
+//   };
+
+//   sendgrid.send(options, (error, result) => {
+//     if (error) console.error(error);
+//     else console.log('Email sent successfully.');
+//   });
+// }

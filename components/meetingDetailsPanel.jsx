@@ -3,11 +3,28 @@ import SidePanel from '@/components/sidePanel';
 import { useRoomCallContext } from '@/context/roomCallContext';
 import { Snackbar } from '@material-ui/core';
 import { MdContentCopy } from 'react-icons/md';
+import { IoSendSharp } from 'react-icons/io5';
+import { sendInvite } from 'utils';
 
 export default function MeetingDetailsPanel() {
-  const { roomId, clientURL, participants } = useRoomCallContext();
+  const { roomId, clientURL, participants, user } = useRoomCallContext();
+  const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
   const meetingLink = `${clientURL}/room/${roomId}`;
+
+  const handleInvite = (e) => {
+    e.preventDefault();
+    const data = {
+      sender: user.email,
+      receiver: email,
+      senderName: user.name,
+      receiverName: email,
+      roomId,
+      meetingLink,
+    };
+    sendInvite(data);
+    setEmail('');
+  };
 
   return (
     <SidePanel title='Meeting Details' name='meeting-details'>
@@ -32,6 +49,24 @@ export default function MeetingDetailsPanel() {
         <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
           <p className='font-semibold'>Participants</p>
           <p className='font-light'>{participants.length + 1}</p>
+        </div>
+        <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
+          <p className='font-semibold'>Invite Users</p>
+          <p className='font-light'>
+            Enter a user's email to invite them to this meeting.
+          </p>
+          <form className='flex flex-row space-x-2' onSubmit={handleInvite}>
+            <input
+              type='text'
+              name='email'
+              className='text-box p-1 bg-gray-700'
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+            <button type='submit' className=''>
+              <IoSendSharp className='text-gray-600 hover:text-blue-400 w-5 h-5' />
+            </button>
+          </form>
         </div>
       </div>
       <Snackbar
