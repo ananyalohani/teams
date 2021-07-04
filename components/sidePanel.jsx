@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
+
 import { useRoomCallContext } from '@/context/roomCallContext';
 
 function SidePanel({ name, id, title, children }) {

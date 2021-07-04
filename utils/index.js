@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { nolookalikes } from 'nanoid-dictionary';
-// import sendgrid from '@sendgrid/mail';
+import { colors, url } from 'lib';
 
 export function checkForDuplicates(array, parameter, value) {
   array.map((element) => {
@@ -28,26 +28,6 @@ export function formattedTimeString() {
   return timeString;
 }
 
-const colors = {
-  rose: '#fb7185',
-  pink: '#f472b6',
-  fuchsia: '#e879f9',
-  purple: '#c084fc',
-  violet: '#a78bfa',
-  indigo: '#818cf8',
-  blue: '#60a5fa',
-  lightBlue: '#38bdf8',
-  cyan: '#22d3ee',
-  teal: '#2dd4bf',
-  emerald: '#34d399',
-  green: '#4ade80',
-  lime: '#a3e635',
-  yellow: '#facc15',
-  amber: '#fbbf24',
-  orange: '#fb923c',
-  red: '#f87171',
-};
-
 export function assignRandomColor() {
   const i = Math.floor(Math.random() * Object.keys(colors).length);
   const key = Object.keys(colors)[i];
@@ -60,51 +40,37 @@ export function trackpubsToTracks(trackMap) {
     .filter((track) => track !== null);
 }
 
-export const virtualBackgroundImages = {
-  beach: '/twilio-video-processor/backgrounds/beach.jpg',
-  bokeh: '/twilio-video-processor/backgrounds/bokeh.jpg',
-  kitchen: '/twilio-video-processor/backgrounds/kitchen.jpg',
-  lobby: '/twilio-video-processor/backgrounds/lobby.jpg',
-  office1: '/twilio-video-processor/backgrounds/office1.jpg',
-  office2: '/twilio-video-processor/backgrounds/office2.jpg',
-  office3: '/twilio-video-processor/backgrounds/office3.jpg',
-  park: '/twilio-video-processor/backgrounds/park.jpg',
-  pattern1: '/twilio-video-processor/backgrounds/pattern1.jpg',
-  stars1: '/twilio-video-processor/backgrounds/stars1.jpg',
-  stars2: '/twilio-video-processor/backgrounds/stars2.jpg',
-  stars3: '/twilio-video-processor/backgrounds/stars3.jpg',
-  sunset: '/twilio-video-processor/backgrounds/sunset.jpg',
-};
-
 export async function sendInvite(data) {
-  await fetch('/api/invite', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetch('/api/invite', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
 
-// const sendgrid = require('@sendgrid/mail');
-// function sendEmail(data, apiKey) {
-//   sendgrid.setApiKey(process.env.SMTP_PASSWORD);
-//   const templateId = 'd-4a70325858aa46db9c8bbc21722f4ee8';
+export async function getToken(roomId, identity) {
+  try {
+    const data = await fetch(`${url.server}/video/token`, {
+      method: 'POST',
+      body: JSON.stringify({
+        identity,
+        room: roomId,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jsonData = await data.json();
 
-//   const options = {
-//     to: data.receiver,
-//     from: data.sender,
-//     templateId,
-//     dynamic_template_data: {
-//       senderName: data.senderName,
-//       receiverName: data.receiverName,
-//       roomId: data.roomId,
-//       meetingLink: data.meetingLink,
-//     },
-//   };
-
-//   sendgrid.send(options, (error, result) => {
-//     if (error) console.error(error);
-//     else console.log('Email sent successfully.');
-//   });
-// }
+    return jsonData.token;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}

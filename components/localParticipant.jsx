@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
 import Participant from '@/components/participant';
 import { useRoomCallContext } from '@/context/roomCallContext';
 import { trackpubsToTracks } from 'utils';
+import { url } from 'lib';
 
-export default function MyTracks({ participant }) {
-  const { userBg, clientURL } = useRoomCallContext();
+export default function LocalParticipant({ participant }) {
+  const { userBg } = useRoomCallContext();
   const [virtualBackground, setVirtualBackground] = useState();
   const [blurBackground, setBlurBackground] = useState();
   const [videoTracks, setVideoTracks] = useState([]);
@@ -20,7 +22,7 @@ export default function MyTracks({ participant }) {
           '@twilio/video-processors'
         );
         const blurBg = new GaussianBlurBackgroundProcessor({
-          assetsPath: `${clientURL}/twilio-video-processor/assets`,
+          assetsPath: `${url.client}/twilio-video-processor/assets`,
         });
         setBlurBackground(blurBg);
       } catch (e) {
@@ -38,7 +40,7 @@ export default function MyTracks({ participant }) {
         img.src = '/twilio-video-processor/backgrounds/beach.jpg';
         img.onload = () => {
           const virtualBg = new VirtualBackgroundProcessor({
-            assetsPath: `${clientURL}/twilio-video-processor/assets`,
+            assetsPath: `${url.client}/twilio-video-processor/assets`,
             backgroundImage: img,
           });
           setVirtualBackground(virtualBg);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { signIn, getSession, getProviders } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
+import { url } from 'lib';
 
 export default function Login({ providers, callbackUrl }) {
   return (
@@ -60,9 +61,8 @@ export async function getServerSideProps(context) {
   }
 
   const providers = await getProviders();
-  const clientURL = process.env.CLIENT_URL;
 
   return {
-    props: { providers, callbackUrl: `${clientURL}home` },
+    props: { providers, callbackUrl: `${url.client}/home` },
   };
 }

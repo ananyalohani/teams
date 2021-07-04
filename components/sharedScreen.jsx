@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import { useRoomCallContext } from '@/context/roomCallContext';
 
 export default function SharedScreen() {
@@ -11,7 +12,7 @@ export default function SharedScreen() {
     }
     return () => {
       screenTrack.detach();
-    }
+    };
   }, [screenTrack]);
 
   return <video ref={screenRef} autoPlay className='video' />;

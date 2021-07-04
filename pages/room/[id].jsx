@@ -10,26 +10,18 @@ import { assignRandomColor } from 'utils';
 import dynamic from 'next/dynamic';
 import ParticipantsPanel from '@/components/participantsPanel';
 import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
-import MyTracks from '@/components/myTracks';
+import LocalParticipant from '@/components/localParticipant';
 import SharedScreen from '@/components/sharedScreen';
+import { url } from 'lib';
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
-export default function RoomCall({
-  serverURL,
-  clientURL,
-  roomId,
-  user,
-  accessToken,
-}) {
+export default function RoomCall({ roomId, user, accessToken }) {
   const {
     room,
     participants,
     joinRoom,
     leaveRoom,
-    setServerURL,
-    setClientURL,
     setRoomId,
-    setToken,
     setUser,
     socketConnected,
     receiveMessages,
@@ -39,9 +31,6 @@ export default function RoomCall({
   } = useRoomCallContext();
 
   useEffect(() => {
-    setServerURL(serverURL);
-    setClientURL(clientURL);
-    setToken(accessToken);
     setRoomId(roomId);
     setUser({ ...user, color: assignRandomColor() });
   }, []);
@@ -74,7 +63,7 @@ export default function RoomCall({
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>
               {room && (
-                <MyTracks
+                <LocalParticipant
                   key={room.localParticipant.sid}
                   participant={room.localParticipant}
                 />
@@ -100,35 +89,13 @@ export async function getServerSideProps(context) {
 
     if (session) {
       const roomId = query.id;
-      const serverURL = process.env.SERVER_URL;
-      const clientURL = process.env.CLIENT_URL;
 
-      try {
-        const data = await fetch(`${serverURL}/video/token`, {
-          method: 'POST',
-          body: JSON.stringify({
-            identity: session.user.id,
-            room: roomId,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const jsonData = await data.json();
-
-        return {
-          props: {
-            serverURL,
-            clientURL,
-            roomId,
-            user: session.user,
-            accessToken: jsonData.token,
-          },
-        };
-      } catch (e) {
-        console.error(e);
-      }
+      return {
+        props: {
+          roomId,
+          user: session.user,
+        },
+      };
     }
   } catch (e) {
     console.error(e);

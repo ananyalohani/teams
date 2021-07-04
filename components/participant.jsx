@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import { trackpubsToTracks } from 'utils';
 import { useRoomCallContext } from '@/context/roomCallContext';
 
@@ -18,11 +19,11 @@ const Participant = ({ participant, me = false }) => {
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
     participant.on('trackPublished', async (remoteTrackPublication) => {
-      while(true) {
+      while (true) {
         if (remoteTrackPublication.track) break;
-        await new Promise (res => {
+        await new Promise((res) => {
           setTimeout(res, 1);
-        })
+        });
       }
       setScreenTrack(remoteTrackPublication.track);
     });

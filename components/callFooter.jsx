@@ -22,7 +22,6 @@ export default function CallFooter() {
     toggleUserVideo,
     togglePanel,
     displayPanel,
-    // shareScreen,
     toggleScreenShare,
     room,
   } = useRoomCallContext();

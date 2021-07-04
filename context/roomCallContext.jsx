@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import React, {
   useState,
   useEffect,
@@ -9,13 +8,13 @@ import React, {
 } from 'react';
 import Video, { LocalVideoTrack } from 'twilio-video';
 import io from 'socket.io-client';
-import { formattedTimeString } from 'utils';
+
+import { formattedTimeString, getToken } from 'utils';
+import { url } from 'lib';
 
 const RoomCallContext = createContext();
 
 const RoomCallContextProvider = ({ children }) => {
-  const [serverURL, setServerURL] = useState(null); // set this externally
-  const [clientURL, setClientURL] = useState(null); // set this externally
   const [token, setToken] = useState(); // fetch Twilio access token from server
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
   const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
@@ -27,8 +26,7 @@ const RoomCallContextProvider = ({ children }) => {
   const [userBg, setUserBg] = useState(null); // set user's video background as 'virtual' or 'blur'
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
   const [chats, setChats] = useState([]); // keep track of all the chats
-  const [screenTrack, setScreenTrack] = useState(null);
-  const router = useRouter(); // to handle when user redirects to a new page
+  const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
   const socketRef = useRef(); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
 
@@ -62,7 +60,6 @@ const RoomCallContextProvider = ({ children }) => {
     };
 
     if (room) {
-      console.log(room);
       window.addEventListener('pagehide', cleanup);
       window.addEventListener('beforeunload', cleanup);
       return () => {
@@ -72,12 +69,18 @@ const RoomCallContextProvider = ({ children }) => {
     }
   }, [room, handleCallEnd]);
 
+  useEffect(async () => {
+    if (roomId && user) {
+      const accessToken = await getToken(roomId, user.id);
+      setToken(accessToken);
+    }
+  }, [roomId, user]);
+
   useEffect(() => {
     // connect to Twilio's video server when you receive a token
     if (token) {
       Video.connect(token, { name: roomId }).then(
         (room) => {
-          // console.log(room);
           setRoom(room);
         },
         (err) => {
@@ -89,11 +92,11 @@ const RoomCallContextProvider = ({ children }) => {
 
   useEffect(() => {
     // connect to the socket
-    if (roomId && serverURL) {
-      socketRef.current = io(serverURL);
+    if (roomId) {
+      socketRef.current = io(url.server);
       socketConnected.current = true;
     }
-  }, [roomId, serverURL, user]);
+  }, [roomId, user]);
 
   useEffect(() => {
     // add event listeners on the room for participants joining and leaving the room
@@ -110,7 +113,6 @@ const RoomCallContextProvider = ({ children }) => {
   }, [room]);
 
   function joinRoom() {
-    // console.log(socketRef.current);
     // join the room
     socketRef.current.emit('join-room', { roomId, user });
 
@@ -233,14 +235,7 @@ const RoomCallContextProvider = ({ children }) => {
         });
         const userScreen = new LocalVideoTrack(stream.getTracks()[0]);
         setScreenTrack(userScreen);
-        room.localParticipant
-          .publishTrack(userScreen)
-          .then((localTrackPublication) => {
-            console.log(localTrackPublication);
-            console.log(
-              `Track ${userScreen.name} was published with SID ${localTrackPublication.tracksid}`
-            );
-          });
+        room.localParticipant.publishTrack(userScreen);
         userScreen.mediaStreamTrack.onended = () => {
           toggleScreenShare();
         };
@@ -255,11 +250,6 @@ const RoomCallContextProvider = ({ children }) => {
   }
 
   const contextProps = {
-    serverURL,
-    setServerURL,
-    clientURL,
-    setClientURL,
-    setToken,
     room,
     roomId,
     setRoomId,
@@ -270,7 +260,6 @@ const RoomCallContextProvider = ({ children }) => {
     togglePanel,
     chats,
     addChat,
-    router,
     joinRoom,
     leaveRoom,
     socketConnected,
