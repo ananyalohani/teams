@@ -8,7 +8,7 @@ handler.post(async (req, res) => {
   sendEmail(data);
 });
 
-function sendEmail(data, apiKey) {
+function sendEmail(data) {
   sendgrid.setApiKey(process.env.SMTP_PASSWORD);
   const templateId = 'd-4a70325858aa46db9c8bbc21722f4ee8';
 

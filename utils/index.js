@@ -21,9 +21,9 @@ export function formattedTimeString() {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const suffix = hours % 12 === hours ? 'AM' : 'PM';
-  const timeString = `${
-    hours % 12 === 0 ? 12 : hours % 12
-  }:${minutes} ${suffix}`;
+  const timeString = `${hours % 12 === 0 ? 12 : hours % 12}:${
+    minutes % 10 === minutes ? `0${minutes}` : minutes
+  } ${suffix}`;
 
   return timeString;
 }

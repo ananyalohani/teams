@@ -6,7 +6,6 @@ import Head from '@/components/head';
 import ChatPanel from '@/components/chatPanel';
 import CallFooter from '@/components/callFooter';
 import { useRoomCallContext } from '@/context/roomCallContext';
-import { assignRandomColor } from 'utils';
 import dynamic from 'next/dynamic';
 import ParticipantsPanel from '@/components/participantsPanel';
 import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
@@ -32,7 +31,7 @@ export default function RoomCall({ roomId, user, accessToken }) {
 
   useEffect(() => {
     setRoomId(roomId);
-    setUser({ ...user, color: assignRandomColor() });
+    setUser(user);
   }, []);
 
   useEffect(() => {

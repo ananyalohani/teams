@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import { assignRandomColor } from 'utils';
 
 const options = {
   providers: [
@@ -24,6 +25,7 @@ const options = {
     },
     session: async (session, token) => {
       session.user.id = token.id;
+      session.user.color = assignRandomColor();
       return session;
     },
   },

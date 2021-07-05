@@ -1,12 +1,12 @@
-import { ObjectID } from 'bson';
+import { ObjectId } from 'bson';
 import mongoose, { Schema } from 'mongoose';
 
 const MODEL_NAME = 'User';
 
-const schema = new Schema(
+export const userSchema = new Schema(
   {
     _id: {
-      type: ObjectID,
+      type: ObjectId,
     },
     name: {
       type: String,
@@ -25,4 +25,4 @@ const schema = new Schema(
 );
 
 export default mongoose.models[MODEL_NAME] || // look for this model is the mongoose list of models
-  mongoose.model(MODEL_NAME, schema, 'users'); // if not present, create a new model
+  mongoose.model(MODEL_NAME, userSchema, 'users'); // if not present, create a new model

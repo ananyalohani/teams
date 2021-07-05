@@ -46,7 +46,43 @@ const RoomCallContextProvider = ({ children }) => {
       }
       return null;
     });
+    // saveChatSession();
   }, []);
+
+  useEffect(() => {
+    console.log('chats:', chats);
+    if (!chats.length) return;
+    saveChatSession();
+  }, [chats]);
+
+  async function saveChatSession() {
+    try {
+      const jsonChats = JSON.stringify(chats);
+      const reqBody = {
+        roomId: '6pYcXgVM',
+        chats: jsonChats,
+      };
+      const result = await fetch('/api/chat-sessions', {
+        method: 'PUT',
+        body: JSON.stringify(reqBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('chat session saved:', result);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function getChatSession() {
+    try {
+      const result = await fetch(`/api/chat-sessions?roomId=${'6pYcXgVM'}`);
+      console.log('get result:', result);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   useEffect(() => {
     const cleanup = (event) => {
@@ -114,6 +150,7 @@ const RoomCallContextProvider = ({ children }) => {
 
   function joinRoom() {
     // join the room
+    getChatSession();
     socketRef.current.emit('join-room', { roomId, user });
 
     // alert if the room is full
@@ -180,22 +217,22 @@ const RoomCallContextProvider = ({ children }) => {
     setUserBg(type);
   }
 
-  function sendMessage(e, message, userId, name, userColor) {
+  function sendMessage(e, body, user) {
     // send a text message within the video call
     e.preventDefault();
-    if (message === '') return;
-    const msgData = {
-      message,
-      userId,
-      name,
-      userColor,
-      time: formattedTimeString(),
+    if (body === '') return;
+    const chat = {
+      user,
+      message: {
+        body,
+        time: formattedTimeString(),
+      },
     };
-    addChat(msgData);
+    addChat(chat);
 
     socketRef.current.emit('send-message', {
       roomId,
-      msgData,
+      msgData: chat,
     });
   }
 

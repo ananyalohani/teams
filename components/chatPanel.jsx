@@ -15,27 +15,29 @@ function ChatPanel() {
         id='chat-window'
         className='flex-1 text-gray-200 p-3 overflow-y-scroll flex flex-col space-y-2'
       >
-        {chats.map((msgData, idx) => (
+        {chats.map((chat, idx) => (
           <div
             key={idx}
             className='bg-gray-850 rounded py-2 px-3 border-l-2 flex flex-col space-y-1'
-            style={{ borderLeftColor: msgData.userColor }}
+            style={{ borderLeftColor: chat.user.color }}
           >
             <div className='flex flex-row items-center justify-between'>
               <p className='text-sm font-semibold'>
-                {msgData.userId === user.id
-                  ? `${msgData.name} (You)`
-                  : `${msgData.name}`}
+                {chat.user.id === user.id
+                  ? `${chat.user.name} (You)`
+                  : `${chat.user.name}`}
               </p>
-              <p className='text-sm font-light opacity-80'>{msgData.time}</p>
+              <p className='text-sm font-light opacity-80'>
+                {chat.message.time}
+              </p>
             </div>
-            <p className='text-sm'>{msgData.message}</p>
+            <p className='text-sm'>{chat.message.body}</p>
           </div>
         ))}
       </div>
       <form
         onSubmit={(e) => {
-          sendMessage(e, message, user.id, user.name, user.color);
+          sendMessage(e, message, user);
           setMessage('');
         }}
         className='flex flex-row justify-evenly my-3'
