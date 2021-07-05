@@ -50,7 +50,6 @@ const RoomCallContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('chats:', chats);
     if (!chats.length) return;
     saveChatSession();
   }, [chats]);
