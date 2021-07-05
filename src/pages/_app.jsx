@@ -4,7 +4,7 @@ import 'styles/tailwind.css';
 import 'styles/globals.css';
 import 'styles/segoe-ui.css';
 
-import { RoomContextProvider } from '@/context/RoomContext';
+import { RoomContextProvider } from 'context/RoomContext';
 
 function Application({ Component, pageProps }) {
   return (

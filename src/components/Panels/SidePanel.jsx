@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
-import { useRoomContext } from '@/context/RoomContext';
+import { useRoomContext } from 'context/RoomContext';
 
 function SidePanel({ name, id, title, children }) {
   const { displayPanel, togglePanel } = useRoomContext();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRoomContext } from '@/context/RoomContext';
-import SidePanel from '@/components/Panels/SidePanel';
+import { useRoomContext } from 'context/RoomContext';
+import SidePanel from 'components/Panels/SidePanel';
 
 function ParticipantsPanel() {
   const { user, usersList } = useRoomContext();

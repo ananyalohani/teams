@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import Participant from '@/components/Participant/Participant';
-import { useRoomContext } from '@/context/RoomContext';
+import Participant from 'components/Participant/Participant';
+import { useRoomContext } from 'context/RoomContext';
 import { trackpubsToTracks } from 'utils';
 import { url } from 'lib';
 

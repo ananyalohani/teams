@@ -3,8 +3,8 @@ import { Snackbar } from '@material-ui/core';
 import { MdContentCopy } from 'react-icons/md';
 import { IoSendSharp } from 'react-icons/io5';
 
-import SidePanel from '@/components/Panels/SidePanel';
-import { useRoomContext } from '@/context/RoomContext';
+import SidePanel from 'components/Panels/SidePanel';
+import { useRoomContext } from 'context/RoomContext';
 import { sendInvite } from 'utils';
 import { url } from 'lib';
 

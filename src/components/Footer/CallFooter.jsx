@@ -12,7 +12,7 @@ import {
 import { MdPresentToAll } from 'react-icons/md';
 import Link from 'next/link';
 
-import { useRoomContext } from '@/context/RoomContext';
+import { useRoomContext } from 'context/RoomContext';
 
 export default function CallFooter() {
   const {

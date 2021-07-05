@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/client';
-import Participant from '@/components/Participant/Participant';
-import Header from '@/components/Header/Header';
-import Head from '@/components/Head/Head';
-import ChatPanel from '@/components/Panels/ChatPanel';
-import CallFooter from '@/components/Footer/CallFooter';
-import { useRoomContext } from '@/context/RoomContext';
+import Participant from 'components/Participant/Participant';
+import Header from 'components/Header/Header';
+import Head from 'components/Head/Head';
+import ChatPanel from 'components/Panels/ChatPanel';
+import CallFooter from 'components/Footer/CallFooter';
+import { useRoomContext } from 'context/RoomContext';
 import dynamic from 'next/dynamic';
-import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
-import InfoPanel from '@/components/Panels/InfoPanel';
-import LocalParticipant from '@/components/Participant/LocalParticipant';
-import SharedScreen from '@/components/SharedScreen/SharedScreen';
+import ParticipantsPanel from 'components/Panels/ParticipantsPanel';
+import InfoPanel from 'components/Panels/InfoPanel';
+import LocalParticipant from 'components/Participant/LocalParticipant';
+import SharedScreen from 'components/SharedScreen/SharedScreen';
 import { url } from 'lib';
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoSendSharp } from 'react-icons/io5';
 
-import { useRoomContext } from '@/context/RoomContext';
+import { useRoomContext } from 'context/RoomContext';
 import SidePanel from './SidePanel';
 
 function ChatPanel() {
