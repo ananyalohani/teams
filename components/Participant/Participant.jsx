@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { trackpubsToTracks } from 'utils';
-import { useRoomCallContext } from '@/context/roomCallContext';
+import { useRoomContext } from '@/context/RoomContext';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-  const { setScreenTrack } = useRoomCallContext();
+  const { setScreenTrack } = useRoomContext();
 
   const videoRef = useRef();
   const audioRef = useRef();

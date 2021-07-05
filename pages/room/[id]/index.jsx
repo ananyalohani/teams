@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/client';
-import Participant from '@/components/participant';
-import Header from '@/components/header';
-import Head from '@/components/head';
-import ChatPanel from '@/components/chatPanel';
-import CallFooter from '@/components/callFooter';
-import { useRoomCallContext } from '@/context/roomCallContext';
+import Participant from '@/components/Participant/Participant';
+import Header from '@/components/Header/Header';
+import Head from '@/components/Head/Head';
+import ChatPanel from '@/components/Panels/ChatPanel';
+import CallFooter from '@/components/Footer/CallFooter';
+import { useRoomContext } from '@/context/RoomContext';
 import dynamic from 'next/dynamic';
-import ParticipantsPanel from '@/components/participantsPanel';
-import MeetingDetailsPanel from '@/components/meetingDetailsPanel';
-import LocalParticipant from '@/components/localParticipant';
-import SharedScreen from '@/components/sharedScreen';
+import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
+import InfoPanel from '@/components/Panels/InfoPanel';
+import LocalParticipant from '@/components/Participant/LocalParticipant';
+import SharedScreen from '@/components/SharedScreen/SharedScreen';
 import { url } from 'lib';
 // const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
 
@@ -27,7 +27,7 @@ export default function RoomCall({ roomId, user, accessToken }) {
     updateUsersList,
     changeUserBackground,
     screenTrack,
-  } = useRoomCallContext();
+  } = useRoomContext();
 
   useEffect(() => {
     setRoomId(roomId);
@@ -73,7 +73,7 @@ export default function RoomCall({ roomId, user, accessToken }) {
           </div>
           <ChatPanel />
           <ParticipantsPanel />
-          <MeetingDetailsPanel />
+          <InfoPanel />
         </div>
         <CallFooter />
       </div>

@@ -12,9 +12,9 @@ import io from 'socket.io-client';
 import { formattedTimeString, getToken } from 'utils';
 import { url } from 'lib';
 
-const RoomCallContext = createContext();
+const RoomContext = createContext();
 
-const RoomCallContextProvider = ({ children }) => {
+const RoomContextProvider = ({ children }) => {
   const [token, setToken] = useState(); // fetch Twilio access token from server
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
   const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
@@ -316,12 +316,10 @@ const RoomCallContextProvider = ({ children }) => {
   };
 
   return (
-    <RoomCallContext.Provider value={contextProps}>
-      {children}
-    </RoomCallContext.Provider>
+    <RoomContext.Provider value={contextProps}>{children}</RoomContext.Provider>
   );
 };
 
-const useRoomCallContext = () => useContext(RoomCallContext);
+const useRoomContext = () => useContext(RoomContext);
 
-export { RoomCallContextProvider, useRoomCallContext };
+export { RoomContextProvider, useRoomContext };

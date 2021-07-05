@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/client';
 import { IoVideocam } from 'react-icons/io5';
 import { HiCode } from 'react-icons/hi';
 
-import Layout from '@/components/layout';
+import Layout from '@/components/Layout/Layout';
 
 export default function Home({ user }) {
   const router = useRouter();

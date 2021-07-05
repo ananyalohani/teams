@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
 
-import Layout from '@/components/layout';
+import Layout from '@/components/Layout/Layout';
 
 export default function Index() {
   const [session, loading] = useSession();

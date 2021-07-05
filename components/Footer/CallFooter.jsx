@@ -12,7 +12,7 @@ import {
 import { MdPresentToAll } from 'react-icons/md';
 import Link from 'next/link';
 
-import { useRoomCallContext } from '@/context/roomCallContext';
+import { useRoomContext } from '@/context/RoomContext';
 
 export default function CallFooter() {
   const {
@@ -24,7 +24,7 @@ export default function CallFooter() {
     displayPanel,
     toggleScreenShare,
     room,
-  } = useRoomCallContext();
+  } = useRoomContext();
 
   const [anchor, setAnchor] = useState(null); // anchor for the popper
   const open = Boolean(anchor); // open state of popper

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import Participant from '@/components/participant';
-import { useRoomCallContext } from '@/context/roomCallContext';
+import Participant from '@/components/Participant/Participant';
+import { useRoomContext } from '@/context/RoomContext';
 import { trackpubsToTracks } from 'utils';
 import { url } from 'lib';
 
 export default function LocalParticipant({ participant }) {
-  const { userBg } = useRoomCallContext();
+  const { userBg } = useRoomContext();
   const [virtualBackground, setVirtualBackground] = useState();
   const [blurBackground, setBlurBackground] = useState();
   const [videoTracks, setVideoTracks] = useState([]);

@@ -1,10 +1,10 @@
 import React from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
-import { useRoomCallContext } from '@/context/roomCallContext';
+import { useRoomContext } from '@/context/RoomContext';
 
 function SidePanel({ name, id, title, children }) {
-  const { displayPanel, togglePanel } = useRoomCallContext();
+  const { displayPanel, togglePanel } = useRoomContext();
 
   return (
     <div

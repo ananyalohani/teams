@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { IoSendSharp } from 'react-icons/io5';
 
-import { useRoomCallContext } from '@/context/roomCallContext';
-import SidePanel from '@/components/sidePanel';
+import { useRoomContext } from '@/context/RoomContext';
+import SidePanel from './SidePanel';
 
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
 
-  const { user, sendMessage, chats } = useRoomCallContext();
+  const { user, sendMessage, chats } = useRoomContext();
 
   return (
     <SidePanel name='chat' title='Chat'>

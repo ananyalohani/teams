@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Head from '@/components/head';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
+import Head from '@/components/Head/Head';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 
 function Layout({ title, children }) {
   return (

@@ -4,14 +4,14 @@ import 'styles/tailwind.css';
 import 'styles/globals.css';
 import 'styles/segoe-ui.css';
 
-import { RoomCallContextProvider } from '@/context/roomCallContext';
+import { RoomContextProvider } from '@/context/RoomContext';
 
 function Application({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
-      <RoomCallContextProvider>
+      <RoomContextProvider>
         <Component {...pageProps} />
-      </RoomCallContextProvider>
+      </RoomContextProvider>
     </Provider>
   );
 }
