@@ -1,4 +1,4 @@
-import createHandler from 'middleware';
+import createHandler from '@/middleware';
 import sendgrid from '@sendgrid/mail';
 
 const handler = createHandler();

@@ -1,5 +1,5 @@
-import createHandler from 'middleware';
-import ChatSession from 'models/chatSessions';
+import createHandler from '@/middleware';
+import ChatSession from '@/models/chat-sessions';
 
 const handler = createHandler();
 

@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-import { assignRandomColor } from 'utils';
+import { assignRandomColor } from '@/utils';
 
 const options = {
   providers: [

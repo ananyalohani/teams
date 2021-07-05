@@ -12,7 +12,7 @@ import {
 import { MdPresentToAll } from 'react-icons/md';
 import Link from 'next/link';
 
-import { useRoomContext } from 'context/RoomContext';
+import { useRoomContext } from '@/context/RoomContext';
 
 export default function CallFooter() {
   const {
@@ -29,6 +29,11 @@ export default function CallFooter() {
   const [anchor, setAnchor] = useState(null); // anchor for the popper
   const open = Boolean(anchor); // open state of popper
   const [disabled, setDisabled] = useState(true);
+
+  const toggleDisplayPanel = (type) => {
+    if (displayPanel === type) togglePanel('');
+    else togglePanel(type);
+  };
 
   useEffect(() => {
     if (room) setDisabled(false);
@@ -49,7 +54,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'meeting-details' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => togglePanel('meeting-details')}
+          onClick={() => toggleDisplayPanel('meeting-details')}
         >
           <IoInformationCircle className='call-icon' />
         </button>
@@ -104,7 +109,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'chat' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => togglePanel('chat')}
+          onClick={() => toggleDisplayPanel('chat')}
         >
           <IoChatboxEllipses className='call-icon' />
         </button>
@@ -113,7 +118,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'participants' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => togglePanel('participants')}
+          onClick={() => toggleDisplayPanel('participants')}
         >
           <IoPeople className='call-icon' />
         </button>

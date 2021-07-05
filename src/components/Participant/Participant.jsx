@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { trackpubsToTracks } from 'utils';
-import { useRoomContext } from 'context/RoomContext';
+import { trackpubsToTracks } from '@/utils';
+import { useRoomContext } from '@/context/RoomContext';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);

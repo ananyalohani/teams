@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { nolookalikes } from 'nanoid-dictionary';
-import { colors, url } from 'lib';
+import { colors, url } from '@/lib';
 
 export function checkForDuplicates(array, parameter, value) {
   array.map((element) => {

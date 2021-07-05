@@ -1,16 +1,13 @@
 import React, {
   useState,
   useEffect,
-  useRef,
   useCallback,
   useContext,
   createContext,
 } from 'react';
 import Video, { LocalVideoTrack } from 'twilio-video';
-import io from 'socket.io-client';
 
-import { formattedTimeString, getToken } from 'utils';
-import { url } from 'lib';
+import { getToken } from '@/utils';
 
 const RoomContext = createContext();
 
@@ -19,20 +16,15 @@ const RoomContextProvider = ({ children }) => {
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
   const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
   const [participants, setParticipants] = useState([]); // array of `participant` objects returned by Twilio
-  const [usersList, setUsersList] = useState([]); // List of NextAuth `user` objects present in the room
   const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
-  const [userBg, setUserBg] = useState(null); // set user's video background as 'virtual' or 'blur'
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
-  const [chats, setChats] = useState([]); // keep track of all the chats
   const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
-  const socketRef = useRef(); // ref to the socket connection object
-  const socketConnected = useRef(false); // set the state of connection of socket
+  const [isChatSession, setIsChatSession] = useState(false);
 
   const handleCallEnd = useCallback(() => {
     // handle the case when a user ends the call
-    socketRef.current.disconnect();
     setRoom((prevRoom) => {
       if (prevRoom) {
         prevRoom.localParticipant.tracks.forEach((trackPub) => {
@@ -46,42 +38,7 @@ const RoomContextProvider = ({ children }) => {
       }
       return null;
     });
-    // saveChatSession();
   }, []);
-
-  useEffect(() => {
-    if (!chats.length) return;
-    saveChatSession();
-  }, [chats]);
-
-  async function saveChatSession() {
-    try {
-      const jsonChats = JSON.stringify(chats);
-      const reqBody = {
-        roomId: '6pYcXgVM',
-        chats: jsonChats,
-      };
-      const result = await fetch('/api/chat-sessions', {
-        method: 'PUT',
-        body: JSON.stringify(reqBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log('chat session saved:', result);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  async function getChatSession() {
-    try {
-      const result = await fetch(`/api/chat-sessions?roomId=${'6pYcXgVM'}`);
-      console.log('get result:', result);
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   useEffect(() => {
     const cleanup = (event) => {
@@ -105,11 +62,11 @@ const RoomContextProvider = ({ children }) => {
   }, [room, handleCallEnd]);
 
   useEffect(async () => {
-    if (roomId && user) {
+    if (roomId && user && !isChatSession) {
       const accessToken = await getToken(roomId, user.id);
       setToken(accessToken);
     }
-  }, [roomId, user]);
+  }, [roomId, user, isChatSession]);
 
   useEffect(() => {
     // connect to Twilio's video server when you receive a token
@@ -126,14 +83,6 @@ const RoomContextProvider = ({ children }) => {
   }, [token]);
 
   useEffect(() => {
-    // connect to the socket
-    if (roomId) {
-      socketRef.current = io(url.server);
-      socketConnected.current = true;
-    }
-  }, [roomId, user]);
-
-  useEffect(() => {
     // add event listeners on the room for participants joining and leaving the room
     if (room) {
       room.on('participantConnected', participantConnected);
@@ -146,29 +95,6 @@ const RoomContextProvider = ({ children }) => {
       room?.off('participantDisconnected', participantDisconnected);
     };
   }, [room]);
-
-  function joinRoom() {
-    // join the room
-    getChatSession();
-    socketRef.current.emit('join-room', { roomId, user });
-
-    // alert if the room is full
-    socketRef.current.on('room-full', () => {
-      alert('This room is full, please join a different room.');
-    });
-
-    socketRef.current.on('user-already-joined', () => {
-      alert(
-        "It looks like you're already in this room. You cannot join the same room twice."
-      );
-    });
-  }
-
-  function updateUsersList() {
-    socketRef.current.on('updated-users-list', ({ usersInThisRoom }) => {
-      setUsersList(usersInThisRoom);
-    });
-  }
 
   function leaveRoom() {
     // when a user leaves the room
@@ -210,41 +136,6 @@ const RoomContextProvider = ({ children }) => {
       });
     }
     setUserVideo(!userVideo);
-  }
-
-  function changeUserBackground(type) {
-    setUserBg(type);
-  }
-
-  function sendMessage(e, body, user) {
-    // send a text message within the video call
-    e.preventDefault();
-    if (body === '') return;
-    const chat = {
-      user,
-      message: {
-        body,
-        time: formattedTimeString(),
-      },
-    };
-    addChat(chat);
-
-    socketRef.current.emit('send-message', {
-      roomId,
-      msgData: chat,
-    });
-  }
-
-  function receiveMessages() {
-    // listen to incoming messages from sockets
-    socketRef.current.on('receive-message', ({ msgData }) => {
-      addChat(msgData);
-    });
-  }
-
-  function addChat(message) {
-    // add message to the list of chats
-    setChats((chats) => [...chats, message]);
   }
 
   function participantConnected(participant) {
@@ -294,25 +185,16 @@ const RoomContextProvider = ({ children }) => {
     setUser,
     displayPanel,
     togglePanel,
-    chats,
-    addChat,
-    joinRoom,
     leaveRoom,
-    socketConnected,
-    sendMessage,
-    receiveMessages,
     handleCallEnd,
     userAudio,
     userVideo,
     toggleUserAudio,
     toggleUserVideo,
-    updateUsersList,
-    usersList,
-    userBg,
-    changeUserBackground,
     toggleScreenShare,
     screenTrack,
     setScreenTrack,
+    setIsChatSession,
   };
 
   return (

@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/client';
-import Participant from 'components/Participant/Participant';
-import Header from 'components/Header/Header';
-import Head from 'components/Head/Head';
-import ChatPanel from 'components/Panels/ChatPanel';
-import CallFooter from 'components/Footer/CallFooter';
-import { useRoomContext } from 'context/RoomContext';
-import dynamic from 'next/dynamic';
-import ParticipantsPanel from 'components/Panels/ParticipantsPanel';
-import InfoPanel from 'components/Panels/InfoPanel';
-import LocalParticipant from 'components/Participant/LocalParticipant';
-import SharedScreen from 'components/SharedScreen/SharedScreen';
-import { url } from 'lib';
-// const ExcalidrawComp = dynamic(() => import('@excalidraw/excalidraw'));
+
+import Participant from '@/components/Participant/Participant';
+import Header from '@/components/Header/Header';
+import Head from '@/components/Head/Head';
+import ChatPanel from '@/components/Panels/ChatPanel';
+import CallFooter from '@/components/Footer/CallFooter';
+import { useRoomContext } from '@/context/RoomContext';
+import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
+import InfoPanel from '@/components/Panels/InfoPanel';
+import LocalParticipant from '@/components/Participant/LocalParticipant';
+import SharedScreen from '@/components/SharedScreen/SharedScreen';
+import { useSocketContext } from '@/context/SocketContext';
 
 export default function RoomCall({ roomId, user, accessToken }) {
-  const {
-    room,
-    participants,
-    joinRoom,
-    leaveRoom,
-    setRoomId,
-    setUser,
-    socketConnected,
-    receiveMessages,
-    updateUsersList,
-    changeUserBackground,
-    screenTrack,
-  } = useRoomContext();
+  const { room, participants, leaveRoom, setRoomId, setUser, screenTrack } =
+    useRoomContext();
+
+  const { socketConnected, joinRoom, receiveMessages, updateUsersList } =
+    useSocketContext();
 
   useEffect(() => {
     setRoomId(roomId);
@@ -40,15 +31,12 @@ export default function RoomCall({ roomId, user, accessToken }) {
       updateUsersList();
       leaveRoom();
       receiveMessages();
-      // changeUserBackground('virtual');
     }
   }, [socketConnected.current]);
 
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
-
-  // return <ExcalidrawComp />;
 
   return (
     <>

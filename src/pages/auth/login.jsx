@@ -1,7 +1,7 @@
 import React from 'react';
 import { signIn, getSession, getProviders } from 'next-auth/client';
 import { SiGoogle, SiGithub } from 'react-icons/si';
-import { url } from 'lib';
+import { url } from '@/lib';
 
 export default function Login({ providers, callbackUrl }) {
   return (

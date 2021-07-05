@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { useRoomContext } from 'context/RoomContext';
+import { useRoomContext } from '@/context/RoomContext';
 
 export default function SharedScreen() {
   const { screenTrack } = useRoomContext();
