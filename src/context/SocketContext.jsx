@@ -113,6 +113,11 @@ const SocketContextProvider = ({ children }) => {
     setChats((chats) => [...chats, message]);
   }
 
+  function clearChatHistory() {
+    socketRef.current.emit('clear-chat-history', { roomId });
+    setChats([]);
+  }
+
   const contextProps = {
     chats,
     socketConnected,
@@ -121,6 +126,7 @@ const SocketContextProvider = ({ children }) => {
     sendMessage,
     receiveMessages,
     updateUsersList,
+    clearChatHistory,
   };
 
   return (

@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson';
 import mongoose, { Schema } from 'mongoose';
+import { assignRandomColor } from '@/utils';
 
 const MODEL_NAME = 'User';
 
@@ -17,6 +18,10 @@ export const userSchema = new Schema(
     },
     image: {
       type: String,
+    },
+    color: {
+      type: String,
+      default: assignRandomColor(),
     },
   },
   {

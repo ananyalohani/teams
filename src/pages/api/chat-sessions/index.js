@@ -1,9 +1,11 @@
-import createHandler from '@/middleware';
+import createHandler, { runMiddleware } from '@/middleware';
 import ChatSession from '@/models/chat-sessions';
 
 const handler = createHandler();
 
 handler.get(async (req, res) => {
+  await runMiddleware(req, res);
+
   if (!req.query.roomId) res.json([]);
   try {
     const chatSession = await ChatSession.findOne({
@@ -19,6 +21,8 @@ handler.get(async (req, res) => {
 });
 
 handler.put(async (req, res) => {
+  await runMiddleware(req, res);
+
   const data = req.body;
   if (!data) return;
 

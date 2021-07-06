@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Snackbar } from '@material-ui/core';
 import { MdContentCopy } from 'react-icons/md';
-import { IoSendSharp } from 'react-icons/io5';
+import { IoSendSharp, IoVideocam } from 'react-icons/io5';
+import { AiOutlineHistory } from 'react-icons/ai';
 
 import { useRoomContext } from '@/context/RoomContext';
 import { sendInvite } from '@/utils';
@@ -10,7 +11,7 @@ import { useSocketContext } from '@/context/SocketContext';
 
 export default function InfoPanel() {
   const { roomId, user } = useRoomContext();
-  const { usersList } = useSocketContext();
+  const { usersList, clearChatHistory } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
   const meetingLink = `${url.client}/room/${roomId}/chat`;
@@ -29,6 +30,19 @@ export default function InfoPanel() {
     setEmail('');
   };
 
+  const handleStartMeeting = () => {
+    window.location.href = `/room/${roomId}`;
+  };
+
+  const handleClearChat = () => {
+    const response = window.confirm(
+      'Are you sure you want to permanently delete the chat history?'
+    );
+    if (response) {
+      clearChatHistory(roomId);
+    }
+  };
+
   return (
     <div
       className='flex flex-col bg-gray-900 border-l border-gray-950 text-gray-200'
@@ -42,7 +56,7 @@ export default function InfoPanel() {
           <p className='font-semibold'>Information</p>
         </div>
       </div>
-      <div className='flex flex-col space-y-2 p-3 text-sm'>
+      <div className='flex flex-col space-y-3 p-3 text-sm'>
         <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
           <p className='font-semibold'>Room ID</p>
           <p className='font-light'>{roomId}</p>
@@ -67,7 +81,7 @@ export default function InfoPanel() {
         <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
           <p className='font-semibold'>Invite Users</p>
           <p className='font-light'>
-            Enter a user's email to invite them to this meeting.
+            Enter a user's email to invite them to this chat session.
           </p>
           <form className='flex flex-row space-x-2' onSubmit={handleInvite}>
             <input
@@ -82,6 +96,14 @@ export default function InfoPanel() {
             </button>
           </form>
         </div>
+        <button className='btn' onClick={handleStartMeeting}>
+          <IoVideocam className='btn-icon' />
+          Start Meeting
+        </button>
+        <button className='btn' onClick={handleClearChat}>
+          <AiOutlineHistory className='btn-icon' />
+          Clear Chat History
+        </button>
       </div>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
