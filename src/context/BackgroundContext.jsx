@@ -12,7 +12,7 @@ import { trackpubsToTracks } from '@/utils';
 const BackgroundContext = createContext();
 
 const BackgroundContextProvider = ({ children }) => {
-  const { room } = useRoomContext(); // twilio room object
+  const { room, isChatSession } = useRoomContext(); // twilio room object
   const [virtualBackground, setVirtualBackground] = useState(); // virtualBackground library export
   const [blurBackground, setBlurBackground] = useState(); // blurBackground library export
   const librariesLoaded = useRef(false); // checks if virtual and blur background libraries are loaded
@@ -32,6 +32,7 @@ const BackgroundContextProvider = ({ children }) => {
   }, [virtualBackground, blurBackground, room]);
 
   useEffect(() => {
+    if (isChatSession) return;
     const loadBlurBgLib = async () => {
       try {
         const { GaussianBlurBackgroundProcessor } = await import(
@@ -68,7 +69,7 @@ const BackgroundContextProvider = ({ children }) => {
 
     loadVirtualBgLib();
     loadBlurBgLib();
-  }, []);
+  }, [isChatSession]);
 
   const setProcessor = (processor, track) => {
     removeProcessor();

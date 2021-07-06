@@ -9,7 +9,8 @@ handler.get(async (req, res) => {
     const chatSession = await ChatSession.findOne({
       roomId: req.query.roomId,
     });
-    res.send(chatSession.messages);
+    if (chatSession) res.send(chatSession.messages);
+    else res.send([]);
   } catch (e) {
     console.error(e);
   }

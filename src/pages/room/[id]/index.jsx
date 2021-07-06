@@ -11,14 +11,10 @@ import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import LocalParticipant from '@/components/Participant/LocalParticipant';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
-import { useSocketContext } from '@/context/SocketContext';
 
-export default function RoomCall({ roomId, user, accessToken }) {
+export default function RoomCall({ roomId, user }) {
   const { room, participants, leaveRoom, setRoomId, setUser, screenTrack } =
     useRoomContext();
-
-  const { socketConnected, joinRoom, receiveMessages, updateUsersList } =
-    useSocketContext();
 
   useEffect(() => {
     setRoomId(roomId);
@@ -26,13 +22,8 @@ export default function RoomCall({ roomId, user, accessToken }) {
   }, []);
 
   useEffect(() => {
-    if (socketConnected.current) {
-      joinRoom();
-      updateUsersList();
-      leaveRoom();
-      receiveMessages();
-    }
-  }, [socketConnected.current]);
+    leaveRoom();
+  }, [room]);
 
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
@@ -42,10 +33,7 @@ export default function RoomCall({ roomId, user, accessToken }) {
     <>
       <Head title={`Call - ${roomId}`} />
       <Header />
-      <div
-        className='flex flex-col'
-        style={{ minHeight: 'calc(100vh - 5rem)' }}
-      >
+      <div className='flex flex-col' style={{ height: 'calc(100vh - 5rem)' }}>
         <div className='flex flex-row h-full flex-1'>
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>

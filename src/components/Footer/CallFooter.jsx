@@ -14,6 +14,8 @@ import Link from 'next/link';
 
 import { useRoomContext } from '@/context/RoomContext';
 
+// ! USE CLASSNAMES LIBRARY TO SET CLASSNAME 'active' and 'disabled'
+
 export default function CallFooter() {
   const {
     userAudio: audio,
@@ -26,25 +28,11 @@ export default function CallFooter() {
     room,
   } = useRoomContext();
 
-  const [anchor, setAnchor] = useState(null); // anchor for the popper
-  const open = Boolean(anchor); // open state of popper
   const [disabled, setDisabled] = useState(true);
-
-  const toggleDisplayPanel = (type) => {
-    if (displayPanel === type) togglePanel('');
-    else togglePanel(type);
-  };
 
   useEffect(() => {
     if (room) setDisabled(false);
   }, [room]);
-
-  const handleClick = (e) => {
-    setAnchor(anchor ? null : e.currentTarget);
-  };
-  const handleClickAway = () => {
-    setAnchor(null);
-  };
 
   return (
     <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-around border-t border-gray-950'>
@@ -54,7 +42,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'meeting-details' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => toggleDisplayPanel('meeting-details')}
+          onClick={() => togglePanel('meeting-details')}
         >
           <IoInformationCircle className='call-icon' />
         </button>
@@ -109,7 +97,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'chat' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => toggleDisplayPanel('chat')}
+          onClick={() => togglePanel('chat')}
         >
           <IoChatboxEllipses className='call-icon' />
         </button>
@@ -118,7 +106,7 @@ export default function CallFooter() {
           className={`call-icon-wrapper ${
             displayPanel === 'participants' ? 'active' : ''
           } ${disabled ? 'disabled' : ''}`}
-          onClick={() => toggleDisplayPanel('participants')}
+          onClick={() => togglePanel('participants')}
         >
           <IoPeople className='call-icon' />
         </button>

@@ -150,9 +150,10 @@ const RoomContextProvider = ({ children }) => {
     );
   }
 
-  function togglePanel(panel) {
-    setDisplayPanel(panel);
-  }
+  const togglePanel = (type) => {
+    if (displayPanel === type) setDisplayPanel('');
+    else setDisplayPanel(type);
+  };
 
   async function toggleScreenShare() {
     if (!screenTrack) {

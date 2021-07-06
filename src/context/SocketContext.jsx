@@ -19,16 +19,21 @@ const SocketContextProvider = ({ children }) => {
   const socketRef = useRef(null); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
 
-  useEffect(() => {
-    if (!chats.length) return;
-    saveChatSession();
-  }, [chats]);
+  // useEffect(() => {
+  //   if (!chats.length) return;
+  //   saveChatSession();
+  // }, [chats]);
 
   useEffect(() => {
     // connect to the socket
     if (roomId && !socketConnected.current) {
       socketRef.current = io(url.server);
       socketConnected.current = true;
+      console.log('socket connected');
+      joinRoom();
+      receiveMessages();
+      updateUsersList();
+      getChatSession(roomId);
     }
   }, [roomId]);
 
@@ -39,6 +44,7 @@ const SocketContextProvider = ({ children }) => {
         return;
       }
       if (socketRef.current) {
+        saveChatSession(chats);
         socketRef.current.disconnect();
       }
     };
@@ -51,11 +57,11 @@ const SocketContextProvider = ({ children }) => {
     }
   }, [roomId, socketRef.current]);
 
-  async function saveChatSession() {
+  async function saveChatSession(chats, roomId) {
     try {
       const jsonChats = JSON.stringify(chats);
       const reqBody = {
-        roomId: '6pYcXgVM',
+        roomId: roomId,
         chats: jsonChats,
       };
       const result = await fetch('/api/chat-sessions', {
@@ -71,9 +77,9 @@ const SocketContextProvider = ({ children }) => {
     }
   }
 
-  async function getChatSession() {
+  async function getChatSession(roomId) {
     try {
-      const result = await fetch(`/api/chat-sessions?roomId=${'6pYcXgVM'}`);
+      const result = await fetch(`/api/chat-sessions?roomId=${roomId}`);
       console.log('get result:', result);
     } catch (e) {
       console.error(e);
@@ -82,8 +88,9 @@ const SocketContextProvider = ({ children }) => {
 
   function joinRoom() {
     // join the room
-    getChatSession();
+    // getChatSession();
     socketRef.current.emit('join-room', { roomId, user });
+    console.log('room joined');
 
     // alert if the room is full
     socketRef.current.on('room-full', () => {
@@ -91,9 +98,9 @@ const SocketContextProvider = ({ children }) => {
     });
 
     socketRef.current.on('user-already-joined', () => {
-      alert(
-        "It looks like you're already in this room. You cannot join the same room twice."
-      );
+      // alert(
+      //   "It looks like you're already in this room. You cannot join the same room twice."
+      // );
     });
   }
 
