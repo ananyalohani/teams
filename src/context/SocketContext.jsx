@@ -30,7 +30,6 @@ const SocketContextProvider = ({ children }) => {
       receiveMessages();
       updateUsersList();
       getChatHistory();
-      // getChatSession(roomId);
     }
   }, [roomId]);
 
@@ -41,7 +40,6 @@ const SocketContextProvider = ({ children }) => {
         return;
       }
       if (socketRef.current) {
-        // saveChatSession(chats);
         socketRef.current.disconnect();
       }
     };
@@ -53,37 +51,6 @@ const SocketContextProvider = ({ children }) => {
       };
     }
   }, [roomId, socketRef.current]);
-
-  async function saveChatSession(chats, roomId) {
-    // * save the chat session in the db
-    try {
-      const jsonChats = JSON.stringify(chats);
-      const reqBody = {
-        roomId: roomId,
-        chats: jsonChats,
-      };
-      const result = await fetch('/api/chat-sessions', {
-        method: 'PUT',
-        body: JSON.stringify(reqBody),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log('chat session saved:', result);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  async function getChatSession(roomId) {
-    // * fetch the chat session from the db
-    try {
-      const result = await fetch(`/api/chat-sessions?roomId=${roomId}`);
-      console.log('get result:', result);
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   function getChatHistory() {
     // * receive the chat history from the server
@@ -151,8 +118,6 @@ const SocketContextProvider = ({ children }) => {
     socketConnected,
     usersList,
     joinRoom,
-    saveChatSession,
-    getChatSession,
     sendMessage,
     receiveMessages,
     updateUsersList,
