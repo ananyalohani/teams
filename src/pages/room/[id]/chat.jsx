@@ -4,6 +4,7 @@ import { getSession } from 'next-auth/client';
 
 import Layout from '@/components/Layout/Layout';
 import ChatSessionPanel from '@/components/Panels/ChatSessionPanel';
+import Scroller from '@/components/Scroller/Scroller';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 
@@ -67,6 +68,7 @@ export default function Chat({ roomId, user }) {
                   </div>
                 );
               })}
+              <Scroller />
             </div>
           </div>
           <form

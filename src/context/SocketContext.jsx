@@ -70,9 +70,9 @@ const SocketContextProvider = ({ children }) => {
     });
 
     socketRef.current.on('user-already-joined', () => {
-      // alert(
-      //   "It looks like you're already in this room. You cannot join the same room twice."
-      // );
+      alert(
+        "It looks like you're already in this room. You cannot join the same room twice."
+      );
     });
   }
 

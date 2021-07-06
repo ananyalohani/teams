@@ -9,7 +9,6 @@ import CallFooter from '@/components/Footer/CallFooter';
 import { useRoomContext } from '@/context/RoomContext';
 import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
-import LocalParticipant from '@/components/Participant/LocalParticipant';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
 
 export default function RoomCall({ roomId, user }) {

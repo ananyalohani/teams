@@ -4,6 +4,7 @@ import { IoSendSharp } from 'react-icons/io5';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 import SidePanel from './SidePanel';
+import Scroller from '@/components/Scroller/Scroller';
 
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
@@ -36,6 +37,7 @@ function ChatPanel() {
             <p className='text-sm'>{chat.message.body}</p>
           </div>
         ))}
+        <Scroller />
       </div>
       <form
         onSubmit={(e) => {
