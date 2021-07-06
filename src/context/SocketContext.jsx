@@ -114,8 +114,13 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function clearChatHistory() {
+    // * permanently delete chat history
     socketRef.current.emit('clear-chat-history', { roomId });
     setChats([]);
+  }
+
+  function findUser(userId) {
+    return usersList.find((u) => u.id === userId);
   }
 
   const contextProps = {
@@ -127,6 +132,7 @@ const SocketContextProvider = ({ children }) => {
     receiveMessages,
     updateUsersList,
     clearChatHistory,
+    findUser,
   };
 
   return (

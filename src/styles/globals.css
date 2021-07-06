@@ -54,7 +54,7 @@ button {
 }
 
 .video {
-  @apply bg-black flex-1 rounded object-cover m-2;
+  @apply bg-black flex-1 rounded object-cover;
   @apply max-w-xs max-h-32 sm:max-w-md sm:max-h-72;
 }
 

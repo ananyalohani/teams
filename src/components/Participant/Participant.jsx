@@ -1,21 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {
+  IoMicSharp,
+  IoMicOffSharp,
+  IoVideocamOff,
+  IoVideocam,
+} from 'react-icons/io5';
 
 import { trackpubsToTracks } from '@/utils';
 import { useRoomContext } from '@/context/RoomContext';
+import { useSocketContext } from '@/context/SocketContext';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-  const { setScreenTrack } = useRoomContext();
+  const { setScreenTrack, user } = useRoomContext();
+  const { findUser } = useSocketContext();
+  const [participantUser, setParticipantUser] = useState(null);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
 
   const videoRef = useRef();
   const audioRef = useRef();
 
   useEffect(() => {
+    setParticipantUser(findUser(participant.identity));
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
-    participant.on('trackSubscribed', trackSubscribed);
+    participant.on('trackSubscribed', (track) => {
+      trackDisabled(track);
+      trackEnabled(track);
+      trackSubscribed(track);
+    });
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
     participant.on('trackPublished', async (remoteTrackPublication) => {
@@ -33,17 +49,13 @@ const Participant = ({ participant, me = false }) => {
     });
 
     participant.tracks.forEach((publication) => {
-      if (publication.isSubscribed) {
+      if (publication.track) {
         trackDisabled(publication.track);
-      }
-      publication.on('subscribed', trackDisabled);
-    });
-
-    participant.tracks.forEach((publication) => {
-      if (publication.isSubscribed) {
         trackEnabled(publication.track);
+
+        publication.track.on('disabled', (track) => trackDisabled(track));
+        publication.track.on('enabled', (track) => trackEnabled(track));
       }
-      publication.on('subscribed', trackEnabled);
     });
 
     return () => {
@@ -79,6 +91,8 @@ const Participant = ({ participant, me = false }) => {
     } else if (track.kind === 'audio') {
       setAudioTracks((audioTracks) => [...audioTracks, track]);
     }
+    track.on('disabled', (track) => trackDisabled(track));
+    track.on('enabled', (track) => trackEnabled(track));
   };
 
   const trackUnsubscribed = (track) => {
@@ -91,19 +105,29 @@ const Participant = ({ participant, me = false }) => {
 
   const trackDisabled = (track) => {
     track.on('disabled', () => {
-      // replace user video with avatar
+      if (track.kind === 'video') {
+        setIsVideoEnabled(false);
+      }
+      if (track.kind === 'audio') {
+        setIsAudioEnabled(false);
+      }
     });
   };
 
   function trackEnabled(track) {
     track.on('enabled', () => {
-      // Hide the avatar image and show the associated <video> element.
+      if (track.kind === 'video') {
+        setIsVideoEnabled(true);
+      }
+      if (track.kind === 'audio') {
+        setIsAudioEnabled(true);
+      }
     });
   }
 
   return (
     <div>
-      <div className='video-wrapper bg-gray-950'>
+      <div className='video-wrapper bg-gray-950 p-0.5 rounded-md'>
         <video
           ref={videoRef}
           playsInline
@@ -111,6 +135,27 @@ const Participant = ({ participant, me = false }) => {
           className={`video ${me && 'transform -scale-x-1'}`}
         />
         <audio ref={audioRef} autoPlay muted={me} />
+        <div
+          className='text-gray-200 flex flex-row items-center justify-between  p-0.5 mx-auto my-0'
+          style={{ width: '95%' }}
+        >
+          <p>
+            {participantUser && participantUser.name}
+            {participantUser && participantUser.id === user.id ? ' (You)' : ''}
+          </p>
+          <div className='flex flex-row items-center'>
+            {isAudioEnabled ? (
+              <IoMicSharp className='text-gray-200 w-5 h-5' />
+            ) : (
+              <IoMicOffSharp className='text-gray-200 w-5 h-5' />
+            )}
+            {isVideoEnabled ? (
+              <IoVideocam className='text-gray-200 w-5 h-5' />
+            ) : (
+              <IoVideocamOff className='text-gray-200 w-5 h-5' />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
