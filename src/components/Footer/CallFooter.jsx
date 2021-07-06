@@ -11,6 +11,7 @@ import {
 } from 'react-icons/io5';
 import { MdPresentToAll } from 'react-icons/md';
 import Link from 'next/link';
+import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
 
 import { useRoomContext } from '@/context/RoomContext';
 
@@ -109,6 +110,15 @@ export default function CallFooter() {
           onClick={() => togglePanel('participants')}
         >
           <IoPeople className='call-icon' />
+        </button>
+        <button
+          disabled={disabled}
+          className={`call-icon-wrapper text-gray-200 ${
+            displayPanel === 'background' ? 'active' : ''
+          } ${disabled ? 'disabled' : ''}`}
+          onClick={() => togglePanel('background')}
+        >
+          <BackgroundIcon height={24} width={24} />
         </button>
       </div>
     </footer>

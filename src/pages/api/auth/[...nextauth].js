@@ -25,6 +25,7 @@ const options = {
     },
     session: async (session, token) => {
       session.user.id = token.id;
+      session.user.color = assignRandomColor();
       return session;
     },
   },

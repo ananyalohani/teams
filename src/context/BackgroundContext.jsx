@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { url, virtualBackgroundImages } from '@/lib';
+import { url, virtualBackgroundImages as bg } from '@/lib';
 import { useRoomContext } from './RoomContext';
 import { trackpubsToTracks } from '@/utils';
 
@@ -33,6 +33,7 @@ const BackgroundContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (isChatSession) return;
+    // load the GaussianBlurBackgroundProcessor library
     const loadBlurBgLib = async () => {
       try {
         const { GaussianBlurBackgroundProcessor } = await import(
@@ -40,6 +41,8 @@ const BackgroundContextProvider = ({ children }) => {
         );
         const blurBg = new GaussianBlurBackgroundProcessor({
           assetsPath: `${url.client}/twilio-video-processor/assets`,
+          maskBlurRadius: 5,
+          blurFilterRadius: 10,
         });
         setBlurBackground(blurBg);
       } catch (e) {
@@ -47,48 +50,59 @@ const BackgroundContextProvider = ({ children }) => {
       }
     };
 
-    const loadVirtualBgLib = async () => {
-      try {
-        const { VirtualBackgroundProcessor } = await import(
-          '@twilio/video-processors'
-        );
-
-        const img = new Image();
-        img.src = '/twilio-video-processor/backgrounds/beach.jpg';
-        img.onload = () => {
-          const virtualBg = new VirtualBackgroundProcessor({
-            assetsPath: `${url.client}/twilio-video-processor/assets`,
-            backgroundImage: img,
-          });
-          setVirtualBackground(virtualBg);
-        };
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    loadVirtualBgLib();
     loadBlurBgLib();
+    loadVirtualBgLib(bg.beach);
   }, [isChatSession]);
 
+  const loadVirtualBgLib = async (imagePath) => {
+    // load the VirtualBackgroundProcessor library
+    try {
+      const { VirtualBackgroundProcessor } = await import(
+        '@twilio/video-processors'
+      );
+
+      const img = new Image();
+      img.src = imagePath;
+      img.onload = () => {
+        const virtualBg = new VirtualBackgroundProcessor({
+          assetsPath: `${url.client}/twilio-video-processor/assets`,
+          backgroundImage: img,
+          fitType: 'Fill',
+          historyCount: 1,
+          maskBlurRadius: 5,
+        });
+        setVirtualBackground(virtualBg);
+      };
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    toggleBackground('virtual');
+  }, [virtualBackground]);
+
   const setProcessor = (processor, track) => {
-    removeProcessor();
+    // set a new processor on a given track
+    removeProcessor(track);
     if (processor) {
-      track?.addProcessor(processor);
+      track.addProcessor(processor);
     }
   };
 
   const removeProcessor = (track) => {
-    if (track?.processor) {
-      track?.removeProcessor(track.processor);
+    // remove the existing processor from the track
+    if (track.processor) {
+      track.removeProcessor(track.processor);
     }
   };
 
   function toggleBackground(type) {
-    if (type === null) {
-      removeProcessor(backgroundProcessor, videoTracks[0]);
-      return;
-    }
+    // toggle background of the user's video
+    if (!videoTracks) return;
+
+    removeProcessor(videoTracks[0]);
+    if (type === null) return;
 
     const backgroundProcessor =
       type === 'blur' ? blurBackground : virtualBackground;
@@ -99,7 +113,12 @@ const BackgroundContextProvider = ({ children }) => {
       .catch((e) => console.error(e));
   }
 
-  function changeUserBackground(type) {
+  function changeUserBackground(type, imagePath = null) {
+    // ? type = 'blur' | 'virtual' | null ; imagePath = string | null
+    // exposed function to change user's video background
+    if (imagePath) {
+      loadVirtualBgLib(imagePath);
+    }
     toggleBackground(type);
   }
 

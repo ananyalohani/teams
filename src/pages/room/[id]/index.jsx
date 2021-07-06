@@ -8,6 +8,7 @@ import ChatPanel from '@/components/Panels/ChatPanel';
 import CallFooter from '@/components/Footer/CallFooter';
 import { useRoomContext } from '@/context/RoomContext';
 import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
+import BackgroundPanel from '@/components/Panels/BackgroundPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
 
@@ -50,6 +51,7 @@ export default function RoomCall({ roomId, user }) {
           <ChatPanel />
           <ParticipantsPanel />
           <InfoPanel />
+          <BackgroundPanel />
         </div>
         <CallFooter />
       </div>

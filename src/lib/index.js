@@ -7,8 +7,8 @@ module.exports = {
     server:
       process.env.NODE_ENV === 'production'
         ? 'https://ws.msft.lohani.dev'
-        : 'http://localhost:5100',
-    // : 'https://ws.msft.lohani.dev',
+        : 'https://ws.msft.lohani.dev',
+    // : 'http://localhost:5100',
   },
   colors: {
     rose: '#fb7185',
@@ -35,13 +35,13 @@ module.exports = {
     kitchen: '/twilio-video-processor/backgrounds/kitchen.jpg',
     lobby: '/twilio-video-processor/backgrounds/lobby.jpg',
     office1: '/twilio-video-processor/backgrounds/office1.jpg',
-    office2: '/twilio-video-processor/backgrounds/office2.jpg',
+    // office2: '/twilio-video-processor/backgrounds/office2.jpg',
     office3: '/twilio-video-processor/backgrounds/office3.jpg',
     park: '/twilio-video-processor/backgrounds/park.jpg',
     pattern1: '/twilio-video-processor/backgrounds/pattern1.jpg',
     stars1: '/twilio-video-processor/backgrounds/stars1.jpg',
-    stars2: '/twilio-video-processor/backgrounds/stars2.jpg',
-    stars3: '/twilio-video-processor/backgrounds/stars3.jpg',
+    // stars2: '/twilio-video-processor/backgrounds/stars2.jpg',
+    // stars3: '/twilio-video-processor/backgrounds/stars3.jpg',
     sunset: '/twilio-video-processor/backgrounds/sunset.jpg',
   },
 };

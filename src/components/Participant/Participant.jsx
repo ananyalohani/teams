@@ -4,6 +4,7 @@ import {
   IoMicOffSharp,
   IoVideocamOff,
   IoVideocam,
+  IoHandRightSharp,
 } from 'react-icons/io5';
 
 import { trackpubsToTracks } from '@/utils';
@@ -13,11 +14,11 @@ import { useSocketContext } from '@/context/SocketContext';
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-  const { setScreenTrack, user } = useRoomContext();
-  const { findUser } = useSocketContext();
   const [participantUser, setParticipantUser] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const { setScreenTrack, user } = useRoomContext();
+  const { findUser } = useSocketContext();
 
   const videoRef = useRef();
   const audioRef = useRef();
@@ -127,7 +128,7 @@ const Participant = ({ participant, me = false }) => {
 
   return (
     <div>
-      <div className='video-wrapper bg-gray-950 p-0.5 rounded-md'>
+      <div className='video-wrapper bg-gray-900 p-1 rounded-md'>
         <video
           ref={videoRef}
           playsInline
@@ -136,14 +137,14 @@ const Participant = ({ participant, me = false }) => {
         />
         <audio ref={audioRef} autoPlay muted={me} />
         <div
-          className='text-gray-200 flex flex-row items-center justify-between  p-0.5 mx-auto my-0'
+          className='text-gray-200 text-sm flex flex-row items-center justify-between  p-0.5 mx-auto my-0'
           style={{ width: '95%' }}
         >
           <p>
             {participantUser && participantUser.name}
             {participantUser && participantUser.id === user.id ? ' (You)' : ''}
           </p>
-          <div className='flex flex-row items-center'>
+          <div className='flex flex-row items-center space-x-2'>
             {isAudioEnabled ? (
               <IoMicSharp className='text-gray-200 w-5 h-5' />
             ) : (
