@@ -1,6 +1,3 @@
-import io from 'socket.io-client';
-import { url } from '@/lib';
-import { formattedTimeString } from '@/utils';
 import React, {
   createContext,
   useContext,
@@ -8,6 +5,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import io from 'socket.io-client';
+
+import { url } from '@/lib';
+import { formattedTimeString } from '@/utils';
 import { useRoomContext } from './RoomContext';
 
 const SocketContext = createContext();
@@ -19,13 +20,8 @@ const SocketContextProvider = ({ children }) => {
   const socketRef = useRef(null); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
 
-  // useEffect(() => {
-  //   if (!chats.length) return;
-  //   saveChatSession();
-  // }, [chats]);
-
   useEffect(() => {
-    // connect to the socket
+    // * connect to the socket and listen to incoming socket events
     if (roomId && !socketConnected.current) {
       socketRef.current = io(url.server);
       socketConnected.current = true;
@@ -33,18 +29,19 @@ const SocketContextProvider = ({ children }) => {
       joinRoom();
       receiveMessages();
       updateUsersList();
-      getChatSession(roomId);
+      getChatHistory();
+      // getChatSession(roomId);
     }
   }, [roomId]);
 
   useEffect(() => {
     const cleanup = (event) => {
-      // cleanup function for call disconnect
+      // * cleanup function for call disconnect
       if (event.persisted) {
         return;
       }
       if (socketRef.current) {
-        saveChatSession(chats);
+        // saveChatSession(chats);
         socketRef.current.disconnect();
       }
     };
@@ -58,6 +55,7 @@ const SocketContextProvider = ({ children }) => {
   }, [roomId, socketRef.current]);
 
   async function saveChatSession(chats, roomId) {
+    // * save the chat session in the db
     try {
       const jsonChats = JSON.stringify(chats);
       const reqBody = {
@@ -78,6 +76,7 @@ const SocketContextProvider = ({ children }) => {
   }
 
   async function getChatSession(roomId) {
+    // * fetch the chat session from the db
     try {
       const result = await fetch(`/api/chat-sessions?roomId=${roomId}`);
       console.log('get result:', result);
@@ -86,13 +85,19 @@ const SocketContextProvider = ({ children }) => {
     }
   }
 
+  function getChatHistory() {
+    // * receive the chat history from the server
+    socketRef.current.on('chat-history', ({ chatHistory }) => {
+      setChats(chatHistory);
+    });
+  }
+
   function joinRoom() {
-    // join the room
-    // getChatSession();
+    // * join the room
     socketRef.current.emit('join-room', { roomId, user });
     console.log('room joined');
 
-    // alert if the room is full
+    // * alert if the room is full
     socketRef.current.on('room-full', () => {
       alert('This room is full, please join a different room.');
     });
@@ -111,7 +116,7 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function sendMessage(e, body, user) {
-    // send a text message within the video call
+    // * send a text message within the video call
     e.preventDefault();
     if (body === '') return;
     const chat = {
@@ -125,19 +130,19 @@ const SocketContextProvider = ({ children }) => {
 
     socketRef.current.emit('send-message', {
       roomId,
-      msgData: chat,
+      chat,
     });
   }
 
   function receiveMessages() {
-    // listen to incoming messages from sockets
-    socketRef.current.on('receive-message', ({ msgData }) => {
-      addChat(msgData);
+    // * listen to incoming messages from sockets
+    socketRef.current.on('receive-message', ({ chat }) => {
+      addChat(chat);
     });
   }
 
   function addChat(message) {
-    // add message to the list of chats
+    // * add message to the list of chats
     setChats((chats) => [...chats, message]);
   }
 

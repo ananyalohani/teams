@@ -4,13 +4,15 @@ import ChatSession from '@/models/chat-sessions';
 const handler = createHandler();
 
 handler.get(async (req, res) => {
-  if (!req.query.roomId) res.send([]);
+  if (!req.query.roomId) res.json([]);
   try {
     const chatSession = await ChatSession.findOne({
       roomId: req.query.roomId,
     });
-    if (chatSession) res.send(chatSession.messages);
-    else res.send([]);
+    if (chatSession) {
+      console.log(chatSession.messages);
+      res.json(chatSession.messages);
+    } else res.json([]);
   } catch (e) {
     console.error(e);
   }

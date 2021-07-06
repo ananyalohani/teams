@@ -24,7 +24,7 @@ const RoomContextProvider = ({ children }) => {
   const [isChatSession, setIsChatSession] = useState(false);
 
   const handleCallEnd = useCallback(() => {
-    // handle the case when a user ends the call
+    // * handle the case when a user ends the call
     setRoom((prevRoom) => {
       if (prevRoom) {
         prevRoom.localParticipant.tracks.forEach((trackPub) => {
@@ -42,7 +42,7 @@ const RoomContextProvider = ({ children }) => {
 
   useEffect(() => {
     const cleanup = (event) => {
-      // cleanup function for call end
+      // * cleanup function for call end
       if (event.persisted) {
         return;
       }
@@ -62,6 +62,7 @@ const RoomContextProvider = ({ children }) => {
   }, [room, handleCallEnd]);
 
   useEffect(async () => {
+    // * fetch accessToken for twilio video
     if (roomId && user && !isChatSession) {
       const accessToken = await getToken(roomId, user.id);
       setToken(accessToken);
@@ -69,7 +70,7 @@ const RoomContextProvider = ({ children }) => {
   }, [roomId, user, isChatSession]);
 
   useEffect(() => {
-    // connect to Twilio's video server when you receive a token
+    // * connect to Twilio's video server when you receive a token
     if (token) {
       Video.connect(token, { name: roomId }).then(
         (room) => {
@@ -83,7 +84,7 @@ const RoomContextProvider = ({ children }) => {
   }, [token]);
 
   useEffect(() => {
-    // add event listeners on the room for participants joining and leaving the room
+    // * add event listeners on the room for participants joining and leaving the room
     if (room) {
       room.on('participantConnected', participantConnected);
       room.on('participantDisconnected', participantDisconnected);
@@ -97,7 +98,7 @@ const RoomContextProvider = ({ children }) => {
   }, [room]);
 
   function leaveRoom() {
-    // when a user leaves the room
+    // * do this when a user leaves the room
     if (!room || !room.localParticipant) return;
     room.on('disconnected', (room) => {
       // Detach the local media elements
@@ -109,7 +110,7 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function toggleUserAudio() {
-    // toggle user's audio track
+    // * toggle user's audio track
     if (!room || !room.localParticipant) return;
     if (userAudio) {
       room.localParticipant.audioTracks.forEach((publication) => {
@@ -124,7 +125,7 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function toggleUserVideo() {
-    // toggle user's video track
+    // * toggle user's video track
     if (!room || !room.localParticipant) return;
     if (userVideo) {
       room.localParticipant.videoTracks.forEach((publication) => {
@@ -139,23 +140,25 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function participantConnected(participant) {
-    // when a new participant gets connected
+    // * when a new participant gets connected
     setParticipants((prevParticipants) => [...prevParticipants, participant]);
   }
 
   function participantDisconnected(participant) {
-    // when a participant gets disconnected
+    // * when a participant gets disconnected
     setParticipants((prevParticipants) =>
       prevParticipants.filter((p) => p !== participant)
     );
   }
 
   const togglePanel = (type) => {
+    // * toggle the type of side panel to display
     if (displayPanel === type) setDisplayPanel('');
     else setDisplayPanel(type);
   };
 
   async function toggleScreenShare() {
+    // * toggle the user's screen
     if (!screenTrack) {
       try {
         const stream = await navigator.mediaDevices.getDisplayMedia({

@@ -38,9 +38,10 @@ export default function RoomCall({ roomId, user }) {
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>
               {room && (
-                <LocalParticipant
+                <Participant
                   key={room.localParticipant.sid}
                   participant={room.localParticipant}
+                  me={true}
                 />
               )}
               {remoteParticipants}

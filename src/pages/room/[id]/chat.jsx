@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { IoSendSharp } from 'react-icons/io5';
+import { getSession } from 'next-auth/client';
+
 import Layout from '@/components/Layout/Layout';
 import ChatSessionPanel from '@/components/Panels/ChatSessionPanel';
-import { getSession } from 'next-auth/client';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 
 export default function Chat({ roomId, user }) {
   const { setRoomId, setUser, setIsChatSession } = useRoomContext();
-  const {
-    joinRoom,
-    socketConnected,
-    chats,
-    receiveMessages,
-    sendMessage,
-    updateUsersList,
-  } = useSocketContext();
+  const { chats, sendMessage } = useSocketContext();
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -23,15 +17,6 @@ export default function Chat({ roomId, user }) {
     setUser(user);
     setIsChatSession(true);
   }, []);
-
-  useEffect(() => {
-    console.log(socketConnected);
-    // if (socketConnected.current) {
-    //   joinRoom();
-    //   receiveMessages();
-    //   updateUsersList();
-    // }
-  }, [socketConnected.current]);
 
   return (
     <Layout title={`Chat - ${roomId}`}>
@@ -51,7 +36,6 @@ export default function Chat({ roomId, user }) {
             >
               {chats.map((chat, idx) => {
                 const isUserMe = chat.user.id === user.id;
-                // const isUserMe = false;
                 return (
                   <div className='w-full' key={idx}>
                     <div
