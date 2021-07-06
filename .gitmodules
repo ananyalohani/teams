@@ -1,0 +1,3 @@
+[submodule "msft-teams-project-server"]
+	path = msft-teams-project-server
+	url = git@github.com:ananyalohani/msft-teams-project-server.git
