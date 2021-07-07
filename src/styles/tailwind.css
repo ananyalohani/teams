@@ -30,7 +30,7 @@
   }
 
   .call-icon-wrapper {
-    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3;
+    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3 cursor-pointer;
   }
 
   .call-icon-wrapper.active {

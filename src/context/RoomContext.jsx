@@ -7,6 +7,16 @@ import React, {
 } from 'react';
 import Video, { LocalVideoTrack } from 'twilio-video';
 
+// TODO
+// * handle screen sharing participant disconected by storing screen sharing participant id in a context variable
+// * display network quality by greying out the "not active" network bars
+// * change CallFooter code to use classnames library
+// * make video call more responsive
+// * make /dashboard more responsive
+// * make /room/[id]/chat more responsive
+// * implement raise hand feature
+// * try to add TDD somewhere
+
 import { getToken } from '@/utils';
 
 const RoomContext = createContext();
@@ -23,6 +33,8 @@ const RoomContextProvider = ({ children }) => {
   const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
   const [isChatSession, setIsChatSession] = useState(false);
   const [userNetQual, setUserNetQual] = useState(null);
+  const [isLocalParticipantSharingScreen, setIsLocalParticipantSharingScreen] =
+    useState(false);
 
   const handleCallEnd = useCallback(() => {
     // * handle the case when a user ends the call
@@ -113,6 +125,7 @@ const RoomContextProvider = ({ children }) => {
     if (!room || !room.localParticipant) return;
     room.on('disconnected', (room) => {
       // Detach the local media elements
+      if (isLocalParticipantSharingScreen) screenTrack(null);
       room.localParticipant.tracks.forEach((publication) => {
         const attachedElements = publication.track.detach();
         attachedElements.forEach((element) => element.remove());
@@ -181,11 +194,13 @@ const RoomContextProvider = ({ children }) => {
         userScreen.mediaStreamTrack.onended = () => {
           toggleScreenShare();
         };
+        setIsLocalParticipantSharingScreen(true);
       } catch (e) {
         console.error(e);
       }
     } else {
       room.localParticipant.unpublishTrack(screenTrack);
+      setIsLocalParticipantSharingScreen(false);
       screenTrack.stop();
       setScreenTrack(null);
     }
@@ -247,6 +262,7 @@ const RoomContextProvider = ({ children }) => {
     setIsChatSession,
     userNetQual,
     setNetworkQualityStats,
+    isLocalParticipantSharingScreen,
   };
 
   return (

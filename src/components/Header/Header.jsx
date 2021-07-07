@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
 import { signIn, signOut, useSession } from 'next-auth/client';
 
@@ -26,14 +25,13 @@ export default function Header() {
               }}
             />
           </a>
-          <h1
+          <a
             style={{ fontSize: '32px', marginBottom: '2px' }}
             className='text-blue-400 font-bold'
+            href='/'
           >
-            <Link href='/'>
-              <a className='flex items-center'>Teams</a>
-            </Link>
-          </h1>
+            Teams
+          </a>
         </div>
 
         <div className='flex flex-row space-x-5 items-center '>

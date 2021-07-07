@@ -37,15 +37,28 @@ export default function RoomCall({ roomId, user }) {
         <div className='flex flex-row h-full flex-1'>
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
             <div id='video-grid' className='flex flex-wrap justify-center p-5'>
-              {room && (
+              {screenTrack ? (
+                <SharedScreen />
+              ) : (
+                room && (
+                  <>
+                    <Participant
+                      key={room.localParticipant.sid}
+                      participant={room.localParticipant}
+                      me={true}
+                    />
+                    {remoteParticipants}
+                  </>
+                )
+              )}
+              {/* {room && (
                 <Participant
                   key={room.localParticipant.sid}
                   participant={room.localParticipant}
                   me={true}
                 />
               )}
-              {remoteParticipants}
-              {screenTrack && <SharedScreen />}
+              {screenTrack && <SharedScreen />} */}
             </div>
           </div>
           <ChatPanel />

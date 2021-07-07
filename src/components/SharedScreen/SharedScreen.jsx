@@ -9,11 +9,19 @@ export default function SharedScreen() {
   useEffect(() => {
     if (screenTrack) {
       screenTrack.attach(screenRef.current);
+    } else {
+      screenTrack.detach();
     }
     return () => {
       screenTrack.detach();
     };
   }, [screenTrack]);
 
-  return <video ref={screenRef} autoPlay className='video' />;
+  return (
+    <video
+      ref={screenRef}
+      autoPlay
+      style={{ maxHeight: '80%', maxWidth: '80%' }}
+    />
+  );
 }

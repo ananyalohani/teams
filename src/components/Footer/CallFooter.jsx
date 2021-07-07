@@ -10,7 +10,6 @@ import {
   IoInformationCircle,
 } from 'react-icons/io5';
 import { MdPresentToAll } from 'react-icons/md';
-import Link from 'next/link';
 import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
 
 import { useRoomContext } from '@/context/RoomContext';
@@ -27,6 +26,8 @@ export default function CallFooter() {
     displayPanel,
     toggleScreenShare,
     room,
+    screenTrack,
+    isLocalParticipantSharingScreen,
   } = useRoomContext();
 
   const [disabled, setDisabled] = useState(true);
@@ -38,6 +39,7 @@ export default function CallFooter() {
   return (
     <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-around border-t border-gray-950'>
       <div className='flex flex-row space-x-5 sm:space-x-8'>
+        {/* CALL INFO */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper ${
@@ -50,6 +52,7 @@ export default function CallFooter() {
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
+        {/* USER AUDIO */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper ${audio ? '' : 'active'} ${
@@ -63,6 +66,8 @@ export default function CallFooter() {
             <IoMicOffSharp className='call-icon' />
           )}
         </button>
+
+        {/* USER VIDEO */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper ${video ? '' : 'active'} ${
@@ -76,6 +81,8 @@ export default function CallFooter() {
             <IoVideocamOff className='call-icon' />
           )}
         </button>
+
+        {/* SHARE SCREEN */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper hidden lg:block ${
@@ -85,14 +92,15 @@ export default function CallFooter() {
         >
           <MdPresentToAll className='call-icon' />
         </button>
-        <Link href='/dashboard'>
-          <div className='call-icon-wrapper phn'>
-            <IoCall className='call-icon' />
-          </div>
-        </Link>
+
+        {/* LEAVE CALL */}
+        <a className='call-icon-wrapper phn' href='/dashboard'>
+          <IoCall className='call-icon' />
+        </a>
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
+        {/* TOGGLE CHAT */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper ${
@@ -102,6 +110,8 @@ export default function CallFooter() {
         >
           <IoChatboxEllipses className='call-icon' />
         </button>
+
+        {/* TOGGLE PARTICIPANTS */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper ${
@@ -111,6 +121,8 @@ export default function CallFooter() {
         >
           <IoPeople className='call-icon' />
         </button>
+
+        {/* BACKGROUND */}
         <button
           disabled={disabled}
           className={`call-icon-wrapper text-gray-200 ${
