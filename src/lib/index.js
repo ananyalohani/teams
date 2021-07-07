@@ -5,6 +5,7 @@ module.exports = {
         ? 'https://msft.lohani.dev'
         : 'http://localhost:3000',
     server: 'http://localhost:5100',
+    socket: 'https://ws.msft.lohani.dev',
   },
   colors: {
     rose: '#fb7185',
