@@ -23,7 +23,7 @@ const SocketContextProvider = ({ children }) => {
   useEffect(() => {
     // * connect to the socket and listen to incoming socket events
     if (roomId && !socketConnected.current) {
-      socketRef.current = io(url.socket);
+      socketRef.current = io(url.server);
       socketConnected.current = true;
       joinRoom();
       receiveMessages();
