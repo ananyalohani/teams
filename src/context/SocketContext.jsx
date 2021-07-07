@@ -25,7 +25,6 @@ const SocketContextProvider = ({ children }) => {
     if (roomId && !socketConnected.current) {
       socketRef.current = io(url.server);
       socketConnected.current = true;
-      console.log('socket connected');
       joinRoom();
       receiveMessages();
       updateUsersList();
@@ -62,7 +61,6 @@ const SocketContextProvider = ({ children }) => {
   function joinRoom() {
     // * join the room
     socketRef.current.emit('join-room', { roomId, user });
-    console.log('room joined');
 
     // * alert if the room is full
     socketRef.current.on('room-full', () => {

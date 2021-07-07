@@ -10,6 +10,8 @@ export const userRoomSchema = new Schema({
     {
       roomId: String,
       date: Date,
+      meetingLink: String,
+      chatLink: String,
     },
   ],
 });

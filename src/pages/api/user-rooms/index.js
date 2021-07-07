@@ -12,6 +12,7 @@ handler.get(async (req, res) => {
       userId: req.query.userId,
     });
 
+    console.log(userRooms);
     if (userRooms) {
       console.log(userRooms.rooms);
       res.json(userRooms.rooms);
@@ -46,7 +47,7 @@ handler.put(async (req, res) => {
     );
     res.send(result);
   } catch (e) {
-    console.log(error);
+    console.error(e);
   }
 });
 

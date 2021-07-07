@@ -12,7 +12,6 @@ handler.get(async (req, res) => {
       roomId: req.query.roomId,
     });
     if (chatSession) {
-      console.log(chatSession.messages);
       res.json(chatSession.messages);
     } else res.json([]);
   } catch (e) {
@@ -60,7 +59,7 @@ handler.put(async (req, res) => {
     );
     res.send(result);
   } catch (e) {
-    console.log(error);
+    console.error(e);
   }
 });
 
