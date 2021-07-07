@@ -9,7 +9,7 @@ import { sendInvite } from '@/utils';
 import { url } from '@/lib';
 
 export default function InfoPanel() {
-  const { roomId, participants, user } = useRoomContext();
+  const { roomId, participants, user, userNetQual } = useRoomContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
   const meetingLink = `${url.client}/room/${roomId}`;
@@ -52,6 +52,12 @@ export default function InfoPanel() {
           <p className='font-semibold'>Participants</p>
           <p className='font-light'>{participants.length + 1}</p>
         </div>
+        {userNetQual && (
+          <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
+            <p className='font-semibold'>Network Quality</p>
+            <p className='font-light'>{userNetQual}</p>
+          </div>
+        )}
         <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
           <p className='font-semibold'>Invite Users</p>
           <p className='font-light'>

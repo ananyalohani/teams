@@ -19,10 +19,6 @@ export const userSchema = new Schema(
     image: {
       type: String,
     },
-    color: {
-      type: String,
-      default: assignRandomColor(),
-    },
   },
   {
     timestamps: true,

@@ -22,6 +22,7 @@ const RoomContextProvider = ({ children }) => {
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
   const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
   const [isChatSession, setIsChatSession] = useState(false);
+  const [userNetQual, setUserNetQual] = useState(null);
 
   const handleCallEnd = useCallback(() => {
     // * handle the case when a user ends the call
@@ -72,9 +73,19 @@ const RoomContextProvider = ({ children }) => {
   useEffect(() => {
     // * connect to Twilio's video server when you receive a token
     if (token) {
-      Video.connect(token, { name: roomId }).then(
+      Video.connect(token, {
+        name: roomId,
+        networkQuality: {
+          local: 1,
+          remote: 2,
+        },
+      }).then(
         (room) => {
           setRoom(room);
+          room.localParticipant.setNetworkQualityConfiguration({
+            local: 2,
+            remote: 1,
+          });
         },
         (err) => {
           console.error(`Unable to connect to Room: ${err.message}`);
@@ -180,6 +191,41 @@ const RoomContextProvider = ({ children }) => {
     }
   }
 
+  function setNetworkQualityStats(networkQualityLevel, networkQualityStats) {
+    // Print in console the networkQualityLevel using bars
+
+    const levels = {
+      1: '▃',
+      2: '▃▄',
+      3: '▃▄▅',
+      4: '▃▄▅▆',
+      5: '▃▄▅▆▇',
+    };
+
+    if (roomId && networkQualityStats) {
+      fetch('/api/network-quality', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          roomId,
+          userId: user.id,
+          audioRecv: networkQualityStats.audio.recv,
+          audioSend: networkQualityStats.audio.send,
+          videoRecv: networkQualityStats.video.recv,
+          videoSend: networkQualityStats.video.send,
+        }),
+      });
+    }
+
+    if (networkQualityLevel) setUserNetQual(levels[networkQualityLevel]);
+    else setUserNetQual(null);
+
+    return {
+      networkQualityLevel: levels[networkQualityLevel],
+      networkQualityStats,
+    };
+  }
+
   const contextProps = {
     room,
     roomId,
@@ -199,6 +245,8 @@ const RoomContextProvider = ({ children }) => {
     screenTrack,
     setScreenTrack,
     setIsChatSession,
+    userNetQual,
+    setNetworkQualityStats,
   };
 
   return (

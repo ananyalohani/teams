@@ -74,3 +74,25 @@ export async function getToken(roomId, identity) {
     return null;
   }
 }
+
+export function printNetworkQualityStats(
+  networkQualityLevel,
+  networkQualityStats
+) {
+  // Print in console the networkQualityLevel using bars
+  console.log(
+    {
+      1: '▃',
+      2: '▃▄',
+      3: '▃▄▅',
+      4: '▃▄▅▆',
+      5: '▃▄▅▆▇',
+    }[networkQualityLevel] || ''
+  );
+
+  if (networkQualityStats) {
+    // Print in console the networkQualityStats, which is non-null only if Network Quality
+    // verbosity is 2 (moderate) or greater
+    console.log('Network Quality statistics:', networkQualityStats);
+  }
+}

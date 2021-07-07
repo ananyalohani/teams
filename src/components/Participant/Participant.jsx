@@ -7,7 +7,7 @@ import {
   IoHandRightSharp,
 } from 'react-icons/io5';
 
-import { trackpubsToTracks } from '@/utils';
+import { trackpubsToTracks, printNetworkQualityStats } from '@/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 
@@ -17,7 +17,7 @@ const Participant = ({ participant, me = false }) => {
   const [participantUser, setParticipantUser] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const { setScreenTrack, user } = useRoomContext();
+  const { setScreenTrack, user, setNetworkQualityStats } = useRoomContext();
   const { findUser } = useSocketContext();
 
   const videoRef = useRef();
@@ -33,6 +33,7 @@ const Participant = ({ participant, me = false }) => {
       trackEnabled(track);
       trackSubscribed(track);
     });
+
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
     participant.on('trackPublished', async (remoteTrackPublication) => {
@@ -58,6 +59,17 @@ const Participant = ({ participant, me = false }) => {
         publication.track.on('enabled', (track) => trackEnabled(track));
       }
     });
+
+    if (me) {
+      // Set the initial Network Quality Level and statistics
+      setNetworkQualityStats(
+        participant.networkQualityLevel,
+        participant.networkQualityStats
+      );
+
+      // Set changes to Network Quality Level and statistics
+      participant.on('networkQualityLevelChanged', setNetworkQualityStats);
+    }
 
     return () => {
       setVideoTracks([]);
