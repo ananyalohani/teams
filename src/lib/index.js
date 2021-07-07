@@ -4,11 +4,7 @@ module.exports = {
       process.env.NODE_ENV === 'production'
         ? 'https://msft.lohani.dev'
         : 'http://localhost:3000',
-    server:
-      process.env.NODE_ENV === 'production'
-        ? 'https://ws.msft.lohani.dev'
-        : 'https://ws.msft.lohani.dev',
-    // : 'http://localhost:5100',
+    server: 'http://localhost:5100',
   },
   colors: {
     rose: '#fb7185',
