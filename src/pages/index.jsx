@@ -23,7 +23,7 @@ export default function Index() {
             </div>
 
             <button className='btn-alt link'>
-              <Link href={session ? '/home' : '/auth/login'}>
+              <Link href={session ? '/dashboard' : '/auth/login'}>
                 <a>Get Started</a>
               </Link>
             </button>

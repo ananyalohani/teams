@@ -22,7 +22,7 @@ export function formattedTimeString() {
   const minutes = date.getMinutes();
   const suffix = hours % 12 === hours ? 'AM' : 'PM';
   const timeString = `${hours % 12 === 0 ? 12 : hours % 12}:${
-    minutes % 10 === minutes ? `0${minutes}` : minutes
+    minutes % 10 === minutes ? '0' + minutes : minutes
   } ${suffix}`;
 
   return timeString;
@@ -75,24 +75,13 @@ export async function getToken(roomId, identity) {
   }
 }
 
-export function printNetworkQualityStats(
-  networkQualityLevel,
-  networkQualityStats
-) {
-  // Print in console the networkQualityLevel using bars
-  console.log(
-    {
-      1: '▃',
-      2: '▃▄',
-      3: '▃▄▅',
-      4: '▃▄▅▆',
-      5: '▃▄▅▆▇',
-    }[networkQualityLevel] || ''
-  );
+export async function getRecentMeetings(userId) {
+  try {
+    const data = await fetch(`/api/user-rooms?userId=${userId}`);
+    const jsonData = await data.json();
 
-  if (networkQualityStats) {
-    // Print in console the networkQualityStats, which is non-null only if Network Quality
-    // verbosity is 2 (moderate) or greater
-    console.log('Network Quality statistics:', networkQualityStats);
+    return jsonData;
+  } catch (e) {
+    console.error(e);
   }
 }

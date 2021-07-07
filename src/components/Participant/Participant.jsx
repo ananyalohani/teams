@@ -7,7 +7,7 @@ import {
   IoHandRightSharp,
 } from 'react-icons/io5';
 
-import { trackpubsToTracks, printNetworkQualityStats } from '@/utils';
+import { trackpubsToTracks } from '@/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 

@@ -48,10 +48,10 @@ export async function getServerSideProps(context) {
     const { req } = context;
     const session = await getSession({ req });
     if (session) {
-      // if user is already logged in, redirect to /home
+      // if user is already logged in, redirect to /dashboard
       return {
         redirect: {
-          destination: '/home',
+          destination: '/dashboard',
           permanent: false,
         },
       };
@@ -63,6 +63,6 @@ export async function getServerSideProps(context) {
   const providers = await getProviders();
 
   return {
-    props: { providers, callbackUrl: `${url.client}/home` },
+    props: { providers, callbackUrl: `${url.client}/dashboard` },
   };
 }

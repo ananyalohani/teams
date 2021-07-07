@@ -12,9 +12,7 @@ handler.get(async (req, res) => {
       userId: req.query.userId,
     });
 
-    console.log(userRooms);
     if (userRooms) {
-      console.log(userRooms.rooms);
       res.json(userRooms.rooms);
     } else {
       res.json([]);

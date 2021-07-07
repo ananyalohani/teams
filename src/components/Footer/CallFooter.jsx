@@ -85,7 +85,7 @@ export default function CallFooter() {
         >
           <MdPresentToAll className='call-icon' />
         </button>
-        <Link href='/home'>
+        <Link href='/dashboard'>
           <div className='call-icon-wrapper phn'>
             <IoCall className='call-icon' />
           </div>
