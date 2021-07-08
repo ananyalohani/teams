@@ -12,11 +12,10 @@ import {
 } from 'react-icons/io5';
 import { MdPresentToAll } from 'react-icons/md';
 import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
+import classNames from 'classnames';
 
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
-
-// ! USE CLASSNAMES LIBRARY TO SET CLASSNAME 'active' and 'disabled'
 
 export default function CallFooter() {
   const {
@@ -47,9 +46,11 @@ export default function CallFooter() {
         {/* CALL INFO */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper ${
-            displayPanel === 'meeting-details' ? 'active' : ''
-          } ${disabled ? 'disabled' : ''}`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: displayPanel === 'meeting-details',
+            disabled,
+          })}
           onClick={() => togglePanel('meeting-details')}
         >
           <IoInformationCircle className='call-icon' />
@@ -60,9 +61,11 @@ export default function CallFooter() {
         {/* USER AUDIO */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper ${audio ? '' : 'active'} ${
-            disabled ? 'disabled' : ''
-          }`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: !audio,
+            disabled,
+          })}
           onClick={toggleUserAudio}
         >
           {audio ? (
@@ -75,9 +78,11 @@ export default function CallFooter() {
         {/* USER VIDEO */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper ${video ? '' : 'active'} ${
-            disabled ? 'disabled' : ''
-          }`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: !video,
+            disabled,
+          })}
           onClick={toggleUserVideo}
         >
           {video ? (
@@ -90,9 +95,9 @@ export default function CallFooter() {
         {/* SHARE SCREEN */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper hidden lg:block ${
-            disabled ? 'disabled' : ''
-          }`}
+          className={classNames('call-icon-wrapper hidden lg:block', {
+            disabled,
+          })}
           onClick={toggleScreenShare}
         >
           <MdPresentToAll className='call-icon' />
@@ -101,9 +106,11 @@ export default function CallFooter() {
         {/* RAISE HAND */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper hidden lg:block ${
-            user && usersRaisedHand.includes(user.id) ? 'active' : ''
-          } ${disabled ? 'disabled' : ''}`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: user && usersRaisedHand.includes(user.id),
+            disabled,
+          })}
           onClick={toggleRaiseHand}
         >
           <IoHandRightSharp className='call-icon' />
@@ -119,9 +126,11 @@ export default function CallFooter() {
         {/* TOGGLE CHAT */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper ${
-            displayPanel === 'chat' ? 'active' : ''
-          } ${disabled ? 'disabled' : ''}`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: displayPanel === 'chat',
+            disabled,
+          })}
           onClick={() => togglePanel('chat')}
         >
           <IoChatboxEllipses className='call-icon' />
@@ -130,9 +139,11 @@ export default function CallFooter() {
         {/* TOGGLE PARTICIPANTS */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper ${
-            displayPanel === 'participants' ? 'active' : ''
-          } ${disabled ? 'disabled' : ''}`}
+          className={classNames({
+            'call-icon-wrapper': true,
+            active: displayPanel === 'participants',
+            disabled,
+          })}
           onClick={() => togglePanel('participants')}
         >
           <IoPeople className='call-icon' />
@@ -141,9 +152,10 @@ export default function CallFooter() {
         {/* BACKGROUND */}
         <button
           disabled={disabled}
-          className={`call-icon-wrapper text-gray-200 ${
-            displayPanel === 'background' ? 'active' : ''
-          } ${disabled ? 'disabled' : ''}`}
+          className={classNames('call-icon-wrapper text-gray-200', {
+            active: displayPanel === 'background',
+            disabled,
+          })}
           onClick={() => togglePanel('background')}
         >
           <BackgroundIcon height={24} width={24} />

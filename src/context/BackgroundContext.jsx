@@ -5,7 +5,8 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { url, virtualBackgroundImages as bg } from '@/lib';
+import { virtualBackgroundImages as bg } from '@/lib';
+import url from 'url';
 import { useRoomContext } from './RoomContext';
 import { trackpubsToTracks } from '@/utils';
 

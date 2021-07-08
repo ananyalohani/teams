@@ -6,7 +6,7 @@ import { IoSendSharp } from 'react-icons/io5';
 import SidePanel from '@/components/Panels/SidePanel';
 import { useRoomContext } from '@/context/RoomContext';
 import { sendInvite } from '@/utils';
-import { url } from '@/lib';
+import url from 'url';
 
 export default function InfoPanel() {
   const { roomId, participants, user, userNetQual } = useRoomContext();
