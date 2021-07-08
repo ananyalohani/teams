@@ -11,19 +11,86 @@ import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import BackgroundPanel from '@/components/Panels/BackgroundPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
+import { getToken } from '@/utils';
+import Video, { LocalVideoTrack } from 'twilio-video';
 
 export default function RoomCall({ roomId, user }) {
-  const { room, participants, leaveRoom, setRoomId, setUser, screenTrack } =
-    useRoomContext();
+  const {
+    room,
+    participants,
+    leaveRoom,
+    setRoomId,
+    setUser,
+    screenTrack,
+    handleCallEnd,
+    setToken,
+    token,
+    setRoom,
+    participantConnected,
+    participantDisconnected,
+  } = useRoomContext();
 
   useEffect(() => {
+    // * fetch accessToken for twilio video
     setRoomId(roomId);
     setUser(user);
+    getToken(roomId, user.id).then((token) => {
+      Video.connect(token, {
+        name: roomId,
+        networkQuality: {
+          local: 1,
+          remote: 2,
+        },
+      }).then(
+        (room) => {
+          setRoom(room);
+          room.localParticipant.setNetworkQualityConfiguration({
+            local: 2,
+            remote: 1,
+          });
+        },
+        (err) => {
+          console.error(`Unable to connect to Room: ${err.message}`);
+        }
+      );
+    });
   }, []);
 
   useEffect(() => {
+    // * add event listeners on the room for participants joining and leaving the room
     leaveRoom();
+    if (room) {
+      room.on('participantConnected', participantConnected);
+      room.on('participantDisconnected', participantDisconnected);
+      room.participants.forEach(participantConnected);
+    }
+
+    return () => {
+      room?.off('participantConnected', participantConnected);
+      room?.off('participantDisconnected', participantDisconnected);
+    };
   }, [room]);
+
+  useEffect(() => {
+    const cleanup = (event) => {
+      // * cleanup function for call end
+      if (event.persisted) {
+        return;
+      }
+      if (room) {
+        handleCallEnd();
+      }
+    };
+
+    if (room) {
+      window.addEventListener('pagehide', cleanup);
+      window.addEventListener('beforeunload', cleanup);
+      return () => {
+        window.removeEventListener('pagehide', cleanup);
+        window.removeEventListener('beforeunload', cleanup);
+      };
+    }
+  }, [room, handleCallEnd]);
 
   const remoteParticipants = participants?.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
@@ -51,14 +118,6 @@ export default function RoomCall({ roomId, user }) {
                   </>
                 )
               )}
-              {/* {room && (
-                <Participant
-                  key={room.localParticipant.sid}
-                  participant={room.localParticipant}
-                  me={true}
-                />
-              )}
-              {screenTrack && <SharedScreen />} */}
             </div>
           </div>
           <ChatPanel />

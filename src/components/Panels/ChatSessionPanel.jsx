@@ -6,7 +6,7 @@ import { AiOutlineHistory } from 'react-icons/ai';
 
 import { useRoomContext } from '@/context/RoomContext';
 import { sendInvite } from '@/utils';
-import url from 'url';
+import url from '@/url';
 import { useSocketContext } from '@/context/SocketContext';
 
 export default function InfoPanel() {

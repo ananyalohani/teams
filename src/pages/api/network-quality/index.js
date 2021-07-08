@@ -4,8 +4,9 @@ import NetworkQuality from '@/models/network-quality';
 const handler = createHandler();
 
 handler.get(async (req, res) => {
+  if (!req.query.roomId) return;
   try {
-    NetworkQuality.find({}, (err, result) => {
+    NetworkQuality.findAll({ roomId: req.query.roomId }, (err, result) => {
       if (err) res.status(500).send(err);
       res.json(result);
     });
@@ -17,8 +18,24 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   if (!req.body) return;
   try {
-    const netQualObj = new NetworkQuality(req.body);
-    const result = await netQualObj.save();
+    const result = await NetworkQuality.updateOne(
+      {
+        roomId: req.body.roomId,
+        userId: req.body.userId,
+      },
+      {
+        $set: {
+          audioRecv: req.body.audioRecv,
+          audioSend: req.body.audioSend,
+          videoRecv: req.body.videoRecv,
+          videoSend: req.body.videoSend,
+        },
+      },
+      {
+        upsert: true,
+      }
+    );
+    res.send(result);
   } catch (e) {
     console.error(e);
   }

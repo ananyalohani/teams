@@ -10,6 +10,7 @@ import {
 import { trackpubsToTracks } from '@/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
+import postNetworkQualityStats from '@/utils/networkQuality';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
@@ -17,7 +18,7 @@ const Participant = ({ participant, me = false }) => {
   const [participantUser, setParticipantUser] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const { setScreenTrack, user, setNetworkQualityStats } = useRoomContext();
+  const { setScreenTrack, user, roomId, setUserNetQual } = useRoomContext();
   const { findUser, usersRaisedHand } = useSocketContext();
 
   const videoRef = useRef();
@@ -62,13 +63,21 @@ const Participant = ({ participant, me = false }) => {
 
     if (me) {
       // Set the initial Network Quality Level and statistics
-      setNetworkQualityStats(
+      postNetworkQualityStats(
+        roomId,
+        participant.identity,
         participant.networkQualityLevel,
         participant.networkQualityStats
       );
 
+      setUserNetQual(participant.networkQualityLevel);
+
       // Set changes to Network Quality Level and statistics
-      participant.on('networkQualityLevelChanged', setNetworkQualityStats);
+      participant.on('networkQualityLevelChanged', (level, stats) => {
+        postNetworkQualityStats(roomId, participant.identity, level, stats);
+        if (level) setUserNetQual(level);
+        else setUserNetQual(null);
+      });
     }
 
     return () => {

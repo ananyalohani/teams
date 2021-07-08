@@ -13,6 +13,7 @@ import {
 import { MdPresentToAll } from 'react-icons/md';
 import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
 import classNames from 'classnames';
+import { LocalVideoTrack } from 'twilio-video';
 
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
@@ -25,14 +26,37 @@ export default function CallFooter() {
     toggleUserVideo,
     togglePanel,
     displayPanel,
-    toggleScreenShare,
+    // toggleScreenShare,
     room,
     screenTrack,
-    isLocalParticipantSharingScreen,
+    setScreenTrack,
     user,
   } = useRoomContext();
 
   const { usersRaisedHand, toggleRaiseHand } = useSocketContext();
+
+  async function toggleScreenShare() {
+    // * toggle the user's screen
+    if (!screenTrack) {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+        });
+        const userScreen = new LocalVideoTrack(stream.getTracks()[0]);
+        setScreenTrack(userScreen);
+        room.localParticipant.publishTrack(userScreen);
+        userScreen.mediaStreamTrack.onended = () => {
+          toggleScreenShare();
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      room.localParticipant.unpublishTrack(screenTrack);
+      screenTrack.stop();
+      setScreenTrack(null);
+    }
+  }
 
   const [disabled, setDisabled] = useState(true);
 

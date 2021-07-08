@@ -6,6 +6,7 @@ const MODEL_NAME = 'NetworkQuality';
 export const networkQualitySchema = new Schema({
   roomId: String,
   userId: ObjectId,
+  networkQualityLevel: Number,
   audioRecv: Number,
   audioSend: Number,
   videoRecv: Number,

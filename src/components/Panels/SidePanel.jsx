@@ -4,7 +4,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import { useRoomContext } from '@/context/RoomContext';
 
 function SidePanel({ name, id, title, children }) {
-  const { displayPanel, togglePanel, isChatSession } = useRoomContext();
+  const { displayPanel, togglePanel } = useRoomContext();
 
   return (
     <div
@@ -20,14 +20,8 @@ function SidePanel({ name, id, title, children }) {
       <div className='bg-gray-800 w-full p-4 border-b-2 border-gray-950'>
         <div className='flex flex-row  justify-between'>
           <p className='font-semibold'>{title}</p>
-          <div
-            // className={`cursor-pointer ${isChatSession ? 'invisible' : ''}`}
-            className='cursor-pointer'
-            onClick={() => togglePanel('')}
-          >
-            <IoCloseOutline
-              className={isChatSession ? 'h-6 w-6 ' : 'h-6 w-6'}
-            />
+          <div className='cursor-pointer' onClick={() => togglePanel('')}>
+            <IoCloseOutline className='h-6 w-6' />
           </div>
         </div>
       </div>
