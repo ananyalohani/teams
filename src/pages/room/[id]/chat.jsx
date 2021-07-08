@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { IoSendSharp } from 'react-icons/io5';
+import { IoSendSharp, IoInformationCircle } from 'react-icons/io5';
 import { getSession } from 'next-auth/client';
 
-import Layout from '@/components/Layout/Layout';
+import LayoutNoFooter from '@/components/Layout/LayoutNoFooter';
 import ChatSessionPanel from '@/components/Panels/ChatSessionPanel';
 import Scroller from '@/components/Scroller/Scroller';
 import { useSocketContext } from '@/context/SocketContext';
+import classNames from 'classnames';
 
 export async function getServerSideProps(context) {
   try {
@@ -38,6 +39,7 @@ export async function getServerSideProps(context) {
 export default function Chat({ roomId, user }) {
   const { chats, sendMessage, setRoomId, setUser } = useSocketContext();
   const [message, setMessage] = useState('');
+  const [sidePanel, setSidePanel] = useState(false);
 
   useEffect(() => {
     setRoomId(roomId);
@@ -45,20 +47,21 @@ export default function Chat({ roomId, user }) {
   }, []);
 
   return (
-    <Layout title={`Chat - ${roomId}`}>
-      <div
-        className='flex-1 flex flex-row'
-        style={{ height: 'calc(100vh - 9rem)' }}
-      >
-        <div className='flex-1 bg-gray-850 flex flex-col'>
+    <LayoutNoFooter title={`Chat - ${roomId}`}>
+      <div className='flex flex-row' style={{ height: 'calc(100vh - 5rem)' }}>
+        <div
+          className={classNames('flex-1 bg-gray-850 md:flex flex-col', {
+            flex: !sidePanel,
+            hidden: sidePanel,
+          })}
+        >
           <div
             className='flex-1 flex flex-col my-0 mx-auto'
             style={{ width: '95%' }}
           >
             <div
               id='chat-window'
-              className='text-gray-200 overflow-y-scroll flex flex-col space-y-5 py-5 '
-              style={{ height: 'calc(100vh - 15.5rem)' }}
+              className='text-gray-200 overflow-y-scroll flex flex-col space-y-5 py-5'
             >
               {chats.map((chat, idx) => {
                 const isUserMe = chat.user.id === user.id;
@@ -76,7 +79,7 @@ export default function Chat({ roomId, user }) {
                         alt='user avatar'
                         className='w-12 h-12 rounded-full shadow-sm mx-4'
                       />
-                      <div className='bg-gray-900 rounded py-3 px-3 flex flex-col space-y-1 w-72'>
+                      <div className='bg-gray-900 rounded py-3 px-3 flex flex-col space-y-1 w-64 sm:w-72'>
                         <div className='flex flex-row items-center justify-between'>
                           <p className='text-sm font-semibold'>
                             {isUserMe
@@ -103,6 +106,9 @@ export default function Chat({ roomId, user }) {
             }}
             className='flex flex-row space-x-4 mx-auto bg-gray-900 py-8 w-full px-8 border-t border-gray-950'
           >
+            <button className='' onClick={() => setSidePanel(!sidePanel)}>
+              <IoInformationCircle className='text-gray-700 hover:text-blue-400 w-8 h-8' />
+            </button>
             <input
               type='text'
               className='text-box bg-gray-800 flex-1'
@@ -115,8 +121,8 @@ export default function Chat({ roomId, user }) {
             </button>
           </form>
         </div>
-        <ChatSessionPanel />
+        <ChatSessionPanel sidePanel={sidePanel} setSidePanel={setSidePanel} />
       </div>
-    </Layout>
+    </LayoutNoFooter>
   );
 }

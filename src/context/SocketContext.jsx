@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import io from 'socket.io-client';
 
-import url from '@/url';
-import { formattedTimeString } from '@/utils';
+import url from '@/lib/url';
+import { formattedTimeString } from '@/lib/utils';
 import { alerts } from '@/lib';
 
 const SocketContext = createContext();

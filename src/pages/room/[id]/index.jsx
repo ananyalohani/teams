@@ -12,7 +12,7 @@ import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import BackgroundPanel from '@/components/Panels/BackgroundPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
-import getToken from '@/utils/accessToken';
+import getToken from '@/lib/utils/accessToken';
 import Video from 'twilio-video';
 
 export async function getServerSideProps(context) {

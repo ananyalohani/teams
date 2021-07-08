@@ -9,13 +9,13 @@ export default function Index() {
   return (
     <Layout title='Microsoft Teams'>
       <section className='w-full bg-blue-500 flex-1 flex flex-col'>
-        <div className='wrapper h-full flex flex-col flex-1 sm:flex-row items-center sm:justify-between sm:overflow-hidden py-12'>
-          <div className='flex flex-col items-center sm:items-start space-y-5 sm:space-y-10 '>
+        <div className='wrapper h-full flex flex-col flex-1 md:flex-row items-center md:justify-between md:overflow-hidden py-12'>
+          <div className='flex flex-col items-center md:items-start space-y-5 md:space-y-10 '>
             <div className='flex flex-col space-y-3'>
-              <h1 className='text-4xl text-center sm:text-left sm:text-5xl text-gray-900 font-bold'>
+              <h1 className='text-4xl text-center md:text-left md:text-5xl text-gray-900 font-bold'>
                 Microsoft Teams
               </h1>
-              <p className='text-2xl text-center sm:text-left sm:text-2xl'>
+              <p className='text-2xl text-center md:text-left md:text-2xl'>
                 Meet, chat, call and collaborate <br />
                 in just one place.
               </p>
@@ -36,10 +36,11 @@ export default function Index() {
         <h1 className='text-4xl sm:text-5xl font-bold text-blue-400 text-center'>
           Why Teams?
         </h1>
-        <div className='wrapper flex flex-col space-y-10 sm:space-y-0 sm:flex-row justify-between'>
+        <div className='wrapper flex flex-col space-y-10 lg:space-y-0 lg:flex-row justify-between'>
           <img
             src='/images/thinking.png'
             alt='thinking man'
+            className='hidden lg:block'
             style={{ maxWidth: '26rem', display: 'block' }}
           />
           <ul className='bg-gray-600 bg-opacity-75 px-5 sm:px-10 rounded-xl border border-gray-500 flex flex-col divide-y divide-gray-500 list-none'>

@@ -6,9 +6,9 @@ import React, {
   useRef,
 } from 'react';
 import { virtualBackgroundImages as bg } from '@/lib';
-import url from '@/url';
+import url from '@/lib/url';
 import { useRoomContext } from './RoomContext';
-import { trackpubsToTracks } from '@/utils';
+import { trackpubsToTracks } from '@/lib/utils';
 
 const BackgroundContext = createContext();
 

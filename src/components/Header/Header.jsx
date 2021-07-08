@@ -7,7 +7,7 @@ export default function Header() {
 
   return (
     <header className='bg-gray-900 border-b border-gray-950 sticky h-20'>
-      <div className='wrapper flex flex-row justify-center sm:justify-between py-3 items-center'>
+      <div className='wrapper flex flex-row justify-between py-3 items-center'>
         <div className='flex flex-row space-x-4 items-center'>
           <a
             href='https://www.microsoft.com/en-in/'
@@ -37,7 +37,7 @@ export default function Header() {
         <div className='flex flex-row space-x-5 items-center '>
           {!session && (
             <>
-              <button onClick={signIn} className='btn hidden sm:block'>
+              <button onClick={signIn} className='btn sm:block'>
                 Sign In
               </button>
               <FaUserCircle className='w-12 h-12 text-blue-400 hidden sm:block' />
@@ -45,7 +45,7 @@ export default function Header() {
           )}
           {session && (
             <>
-              <button onClick={signOut} className='btn hidden sm:block'>
+              <button onClick={signOut} className='btn sm:block'>
                 Sign Out
               </button>
               <img

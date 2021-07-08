@@ -1,15 +1,12 @@
 import React from 'react';
 
-import Head from '@/components/Head/Head';
-import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import LayoutNoFooter from '@/components/Layout/LayoutNoFooter';
 
 function Layout({ title, children }) {
   return (
     <>
-      <Head title={title} />
-      <Header />
-      <main className='flex flex-col bg-gray-900'>{children}</main>
+      <LayoutNoFooter title={title}>{children}</LayoutNoFooter>
       <Footer />
     </>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { getSession } from 'next-auth/client';
 
 import Placeholder from '@/components/Layout/Placeholder';
-import { generateCallID } from '@/utils';
+import { generateCallID } from '@/lib/utils';
 import Head from '@/components/Head/Head';
 
 export async function getServerSideProps(context) {

@@ -58,6 +58,10 @@ button {
   @apply max-w-xs max-h-32 sm:max-w-md sm:max-h-72;
 }
 
+#recent-meetings {
+  max-width: 70%;
+}
+
 @media only screen and (max-width: 640px) {
   .wrapper {
     width: 90%;
@@ -83,5 +87,9 @@ button {
 
   #chat-panel {
     display: none !important;
+  }
+
+  #recent-meetings {
+    max-width: 90%;
   }
 }

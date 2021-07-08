@@ -4,9 +4,9 @@ import { IoVideocam, IoChatboxEllipses } from 'react-icons/io5';
 import { CgSpinner } from 'react-icons/cg';
 
 import Layout from '@/components/Layout/Layout';
-import getRecentMeetings from '@/utils/recentMeetings';
+import getRecentMeetings from '@/lib/utils/recentMeetings';
 import { alerts } from '@/lib';
-import { validateRoomName } from '@/utils';
+import { validateRoomName } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
   try {
@@ -73,16 +73,18 @@ export default function Dashboard({ user }) {
         className='w-full flex items-center justify-center bg-gray-900'
         style={{ height: 'calc(100vh - 5rem)' }}
       >
-        <div className='wrapper flex flex-row justify-between items-center text-light'>
+        <div className='wrapper flex flex-row lg:justify-between justify-center items-center text-light'>
           <div className='flex flex-col items-start space-y-5'>
             <div>
-              <p className='text-5xl inline'>Hello, </p>
-              <p className='text-5xl font-bold text-blue-400 inline'>
+              <p className='text-4xl sm:text-5xl inline'>Hello, </p>
+              <p className='text-4xl sm:text-5xl font-bold text-blue-400 inline'>
                 {user.name}!
               </p>
             </div>
-            <p className='text-3xl font-semibold'>Start a Meeting</p>
-            <p className='text-xl'>
+            <p className='text-2xl sm:text-3xl font-semibold'>
+              Start a Meeting
+            </p>
+            <p className='text-lg sm:text-xl'>
               Video call and group chat with upto{' '}
               <strong>20 participants</strong> at a time.
               <br />
@@ -92,7 +94,8 @@ export default function Dashboard({ user }) {
             <form onSubmit={handleSubmit} className='flex flex-col space-y-2 '>
               <input
                 type='text'
-                className='text-box w-100'
+                className='text-box sm:w-100'
+                style={{ width: '22rem' }}
                 onChange={(e) => setRoomName(e.target.value)}
                 placeholder='Enter a name for your room'
               />
@@ -119,6 +122,7 @@ export default function Dashboard({ user }) {
           <img
             src='/images/video_call.png'
             alt='video call'
+            className='hidden lg:block'
             style={{ maxWidth: '28rem', display: 'block' }}
           />
         </div>
@@ -128,7 +132,7 @@ export default function Dashboard({ user }) {
           <div
             id='recent-meetings'
             className='bg-gray-900 rounded-md p-5 flex flex-col space-y-2 flex-1'
-            style={{ maxWidth: '70%', margin: '0 auto', maxHeight: '35rem' }}
+            style={{ margin: '0 auto', maxHeight: '35rem' }}
           >
             <p className='text-3xl text-center font-bold text-light border-b border-gray-800 pb-3'>
               Recent Meetings

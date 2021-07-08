@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar } from '@material-ui/core';
 import { MdContentCopy } from 'react-icons/md';
-import { IoSendSharp, IoVideocam } from 'react-icons/io5';
+import { IoCloseOutline, IoSendSharp, IoVideocam } from 'react-icons/io5';
 import { AiOutlineHistory } from 'react-icons/ai';
 
-import sendInvite from '@/utils/emailInvite';
-import url from '@/url';
+import sendInvite from '@/lib/utils/emailInvite';
+import url from '@/lib/url';
 import { useSocketContext } from '@/context/SocketContext';
+import classNames from 'classnames';
 
-export default function InfoPanel() {
+export default function ChatSessionPanel({ sidePanel, setSidePanel }) {
   const { usersList, clearChatHistory, roomId, user } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
-  const meetingLink = `${url.client}/room/${roomId}/chat`;
+  const meetingLink = `/room/${roomId}/chat`;
 
   const handleInvite = (e) => {
     e.preventDefault();
@@ -43,15 +44,23 @@ export default function InfoPanel() {
 
   return (
     <div
-      className='flex flex-col bg-gray-900 border-l border-gray-950 text-gray-200'
+      className={classNames(
+        'flex flex-col bg-gray-900 border-l border-gray-950 text-gray-200 w-screen md:w-80',
+        {
+          hidden: !sidePanel,
+          block: sidePanel,
+        }
+      )}
       style={{
-        height: 'calc(100vh - 9rem)',
-        width: '21rem',
+        height: 'calc(100vh - 5rem)',
       }}
     >
       <div className='bg-gray-800 w-full p-4 border-b-2 border-gray-950'>
         <div className='flex flex-row  justify-between'>
           <p className='font-semibold'>Information</p>
+          <div className='cursor-pointer' onClick={() => setSidePanel(false)}>
+            <IoCloseOutline className='h-6 w-6' />
+          </div>
         </div>
       </div>
       <div className='flex flex-col space-y-3 p-3 text-sm'>

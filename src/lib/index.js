@@ -1,4 +1,4 @@
-import { allowedChars } from '@/utils';
+import { allowedChars } from '@/lib/utils';
 
 module.exports = {
   virtualBackgroundImages: {

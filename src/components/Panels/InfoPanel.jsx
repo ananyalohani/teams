@@ -6,8 +6,8 @@ import { IoSendSharp } from 'react-icons/io5';
 import SidePanel from '@/components/Panels/SidePanel';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
-import sendInvite from '@/utils/emailInvite';
-import url from '@/url';
+import sendInvite from '@/lib/utils/emailInvite';
+import url from '@/lib/url';
 import { netQualConfig } from '@/lib';
 
 export default function InfoPanel() {

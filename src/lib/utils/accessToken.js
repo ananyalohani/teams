@@ -1,4 +1,4 @@
-import url from '@/url';
+import url from '@/lib/url';
 
 export default async function getToken(roomId, identity) {
   try {

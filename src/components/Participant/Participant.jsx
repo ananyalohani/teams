@@ -7,10 +7,10 @@ import {
   IoHandRightSharp,
 } from 'react-icons/io5';
 
-import { trackpubsToTracks } from '@/utils';
+import { trackpubsToTracks } from '@/lib/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
-import postNetworkQualityStats from '@/utils/networkQuality';
+import postNetworkQualityStats from '@/lib/utils/networkQuality';
 
 const Participant = ({ participant, me = false }) => {
   const [videoTracks, setVideoTracks] = useState([]);
