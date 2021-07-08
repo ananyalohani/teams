@@ -51,7 +51,8 @@ export default function Header() {
               <img
                 src={session.user.image}
                 alt='user avatar'
-                className='w-12 h-12 rounded-full border-2 border-blue-400 shadow-sm'
+                className='w-12 h-12 rounded-full border-2 shadow-sm'
+                style={{ borderColor: session.user.color }}
               />
             </>
           )}

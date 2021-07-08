@@ -7,6 +7,7 @@ import SidePanel from '@/components/Panels/SidePanel';
 import { useRoomContext } from '@/context/RoomContext';
 import { sendInvite } from '@/utils';
 import url from '@/url';
+import { netQualConfig } from '@/lib';
 
 export default function InfoPanel() {
   const { roomId, participants, user, userNetQual } = useRoomContext();
@@ -53,9 +54,17 @@ export default function InfoPanel() {
           <p className='font-light'>{participants.length + 1}</p>
         </div>
         {userNetQual && (
-          <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>
+          <div className='flex flex-col space-y-1 py-2 px-3 pb-3 bg-gray-850 rounded'>
             <p className='font-semibold'>Network Quality</p>
-            <p className='font-light'>{userNetQual}</p>
+            <p>
+              {netQualConfig[userNetQual].label} - {userNetQual * 20}%
+            </p>
+            <div className='h-2 rounded bg-white overflow-hidden'>
+              <div
+                style={{ width: userNetQual * 20 + '%' }}
+                className={`h-full ${netQualConfig[userNetQual].color}`}
+              ></div>
+            </div>
           </div>
         )}
         <div className='flex flex-col space-y-1 py-2 px-3 bg-gray-850 rounded'>

@@ -31,6 +31,8 @@ module.exports = {
           875: '#182030',
           950: '#080B10',
         },
+        lime: colors.lime,
+        orange: colors.orange,
       },
       scale: {
         '-1': '-1',

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import io from 'socket.io-client';
 
-import { url } from '@/lib';
+import url from '@/url';
 import { formattedTimeString } from '@/utils';
 import { useRoomContext } from './RoomContext';
 

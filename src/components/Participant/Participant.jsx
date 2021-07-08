@@ -70,13 +70,14 @@ const Participant = ({ participant, me = false }) => {
         participant.networkQualityStats
       );
 
-      setUserNetQual(participant.networkQualityLevel);
+      // setUserNetQual(participant.networkQualityLevel); // ! uncomment this later
+      setUserNetQual(4);
 
       // Set changes to Network Quality Level and statistics
       participant.on('networkQualityLevelChanged', (level, stats) => {
         postNetworkQualityStats(roomId, participant.identity, level, stats);
-        if (level) setUserNetQual(level);
-        else setUserNetQual(null);
+        // if (level) setUserNetQual(level);  // ! uncomment this later
+        // else setUserNetQual(null);
       });
     }
 
