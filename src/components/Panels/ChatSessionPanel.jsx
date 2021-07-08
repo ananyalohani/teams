@@ -4,14 +4,12 @@ import { MdContentCopy } from 'react-icons/md';
 import { IoSendSharp, IoVideocam } from 'react-icons/io5';
 import { AiOutlineHistory } from 'react-icons/ai';
 
-import { useRoomContext } from '@/context/RoomContext';
 import sendInvite from '@/utils/emailInvite';
 import url from '@/url';
 import { useSocketContext } from '@/context/SocketContext';
 
 export default function InfoPanel() {
-  const { roomId, user } = useRoomContext();
-  const { usersList, clearChatHistory } = useSocketContext();
+  const { usersList, clearChatHistory, roomId, user } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
   const meetingLink = `${url.client}/room/${roomId}/chat`;

@@ -5,15 +5,6 @@ import Placeholder from '@/components/Layout/Placeholder';
 import { generateCallID } from '@/utils';
 import Head from '@/components/Head/Head';
 
-export default function CallRedirect() {
-  return (
-    <>
-      <Head title={'Call'} />
-      <Placeholder />
-    </>
-  );
-}
-
 export async function getServerSideProps(context) {
   try {
     const { req, query } = context;
@@ -39,4 +30,13 @@ export async function getServerSideProps(context) {
       permanent: false,
     },
   };
+}
+
+export default function CallRedirect() {
+  return (
+    <>
+      <Head title={'Call'} />
+      <Placeholder />
+    </>
+  );
 }

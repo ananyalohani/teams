@@ -7,28 +7,55 @@ import Head from '@/components/Head/Head';
 import ChatPanel from '@/components/Panels/ChatPanel';
 import CallFooter from '@/components/Footer/CallFooter';
 import { useRoomContext } from '@/context/RoomContext';
+import { useSocketContext } from '@/context/SocketContext';
 import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import BackgroundPanel from '@/components/Panels/BackgroundPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
 import getToken from '@/utils/accessToken';
-import Video, { LocalVideoTrack } from 'twilio-video';
+import Video from 'twilio-video';
+
+export async function getServerSideProps(context) {
+  try {
+    const { req, query } = context;
+    const session = await getSession({ req });
+
+    if (session) {
+      const roomId = query.id;
+
+      return {
+        props: {
+          roomId,
+          user: session.user,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // user not logged in, redirect to /login page
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
+    },
+  };
+}
 
 export default function RoomCall({ roomId, user }) {
   const {
     room,
     participants,
     leaveRoom,
-    setRoomId,
-    setUser,
     screenTrack,
     handleCallEnd,
-    setToken,
-    token,
     setRoom,
     participantConnected,
     participantDisconnected,
   } = useRoomContext();
+
+  const { setRoomId, setUser } = useSocketContext();
 
   useEffect(() => {
     // * fetch accessToken for twilio video
@@ -129,32 +156,4 @@ export default function RoomCall({ roomId, user }) {
       </div>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  try {
-    const { req, query } = context;
-    const session = await getSession({ req });
-
-    if (session) {
-      const roomId = query.id;
-
-      return {
-        props: {
-          roomId,
-          user: session.user,
-        },
-      };
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  // user not logged in, redirect to /login page
-  return {
-    redirect: {
-      destination: '/auth/login',
-      permanent: false,
-    },
-  };
 }

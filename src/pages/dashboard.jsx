@@ -5,6 +5,33 @@ import { CgSpinner } from 'react-icons/cg';
 
 import Layout from '@/components/Layout/Layout';
 import getRecentMeetings from '@/utils/recentMeetings';
+import { alerts } from '@/lib';
+import { validateRoomName } from '@/utils';
+
+export async function getServerSideProps(context) {
+  try {
+    const { req } = context;
+    const session = await getSession({ req });
+
+    if (session) {
+      return {
+        props: {
+          user: session.user,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // user not logged in, redirect to /login page
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
+    },
+  };
+}
 
 export default function Dashboard({ user }) {
   const [roomName, setRoomName] = useState();
@@ -26,14 +53,8 @@ export default function Dashboard({ user }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (
-      roomName?.includes(' ') ||
-      roomName?.includes(':') ||
-      roomName?.includes(',') ||
-      roomName?.includes(';') ||
-      roomName?.includes('/')
-    ) {
-      alert('Your room name cannot contain spaces or these characters: ,.:;/');
+    if (!validateRoomName(roomName)) {
+      alert(alerts.invalidRoomName);
       return;
     }
 
@@ -42,7 +63,7 @@ export default function Dashboard({ user }) {
       if (submit === 2) window.location.href = `/room/${roomName}/chat`;
     } else {
       if (submit === 1) window.location.href = '/room';
-      if (submit === 2) alert('Please enter a name for your chat room.');
+      if (submit === 2) alert(alerts.emptyRoomName);
     }
   }
 
@@ -147,29 +168,4 @@ export default function Dashboard({ user }) {
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps(context) {
-  try {
-    const { req } = context;
-    const session = await getSession({ req });
-
-    if (session) {
-      return {
-        props: {
-          user: session.user,
-        },
-      };
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  // user not logged in, redirect to /login page
-  return {
-    redirect: {
-      destination: '/auth/login',
-      permanent: false,
-    },
-  };
 }

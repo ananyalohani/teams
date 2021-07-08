@@ -5,18 +5,43 @@ import { getSession } from 'next-auth/client';
 import Layout from '@/components/Layout/Layout';
 import ChatSessionPanel from '@/components/Panels/ChatSessionPanel';
 import Scroller from '@/components/Scroller/Scroller';
-import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 
+export async function getServerSideProps(context) {
+  try {
+    const { req, query } = context;
+    const session = await getSession({ req });
+
+    if (session) {
+      const roomId = query.id;
+
+      return {
+        props: {
+          roomId,
+          user: session.user,
+        },
+      };
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // user not logged in, redirect to /login page
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
+    },
+  };
+}
+
 export default function Chat({ roomId, user }) {
-  const { setRoomId, setUser, setIsChatSession } = useRoomContext();
-  const { chats, sendMessage } = useSocketContext();
+  const { chats, sendMessage, setRoomId, setUser } = useSocketContext();
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     setRoomId(roomId);
     setUser(user);
-    setIsChatSession(true);
   }, []);
 
   return (
@@ -94,32 +119,4 @@ export default function Chat({ roomId, user }) {
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps(context) {
-  try {
-    const { req, query } = context;
-    const session = await getSession({ req });
-
-    if (session) {
-      const roomId = query.id;
-
-      return {
-        props: {
-          roomId,
-          user: session.user,
-        },
-      };
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  // user not logged in, redirect to /login page
-  return {
-    redirect: {
-      destination: '/auth/login',
-      permanent: false,
-    },
-  };
 }

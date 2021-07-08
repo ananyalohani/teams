@@ -1,3 +1,5 @@
+import { allowedChars } from '@/utils';
+
 module.exports = {
   virtualBackgroundImages: {
     beach: '/twilio-video-processor/backgrounds/beach.jpg',
@@ -35,5 +37,12 @@ module.exports = {
       label: 'Excellent',
       color: 'bg-green-500',
     },
+  },
+  alerts: {
+    roomFull: 'This room is full, please join a different room.',
+    alreadyInRoom:
+      "It looks like you're already in this room. You cannot join the same room twice.",
+    invalidRoomName: `Your room name can only contain the following characters: ${allowedChars}`,
+    emptyRoomName: 'Please enter a name for your chat room.',
   },
 };

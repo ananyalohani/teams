@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IoSendSharp } from 'react-icons/io5';
 
-import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 import SidePanel from './SidePanel';
 import Scroller from '@/components/Scroller/Scroller';
@@ -9,8 +8,7 @@ import Scroller from '@/components/Scroller/Scroller';
 function ChatPanel() {
   const [message, setMessage] = useState(''); // bind this to the input text-box
 
-  const { user } = useRoomContext();
-  const { sendMessage, chats } = useSocketContext();
+  const { sendMessage, chats, user } = useSocketContext();
 
   return (
     <SidePanel name='chat' title='Chat'>

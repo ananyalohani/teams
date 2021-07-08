@@ -26,14 +26,12 @@ export default function CallFooter() {
     toggleUserVideo,
     togglePanel,
     displayPanel,
-    // toggleScreenShare,
     room,
     screenTrack,
     setScreenTrack,
-    user,
   } = useRoomContext();
 
-  const { usersRaisedHand, toggleRaiseHand } = useSocketContext();
+  const { usersRaisedHand, toggleRaiseHand, user } = useSocketContext();
 
   async function toggleScreenShare() {
     // * toggle the user's screen

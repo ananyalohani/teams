@@ -5,12 +5,14 @@ import { IoSendSharp } from 'react-icons/io5';
 
 import SidePanel from '@/components/Panels/SidePanel';
 import { useRoomContext } from '@/context/RoomContext';
+import { useSocketContext } from '@/context/SocketContext';
 import sendInvite from '@/utils/emailInvite';
 import url from '@/url';
 import { netQualConfig } from '@/lib';
 
 export default function InfoPanel() {
-  const { roomId, participants, user, userNetQual } = useRoomContext();
+  const { participants, userNetQual } = useRoomContext();
+  const { roomId, user } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
   const meetingLink = `${url.client}/room/${roomId}`;

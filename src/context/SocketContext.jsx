@@ -9,12 +9,13 @@ import io from 'socket.io-client';
 
 import url from '@/url';
 import { formattedTimeString } from '@/utils';
-import { useRoomContext } from './RoomContext';
+import { alerts } from '@/lib';
 
 const SocketContext = createContext();
 
 const SocketContextProvider = ({ children }) => {
-  const { roomId, user } = useRoomContext(); // get roomId and NextAuth user object from RoomContext
+  const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
+  const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [usersList, setUsersList] = useState([]); // List of NextAuth `user` objects present in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
   const [usersRaisedHand, setUsersRaisedHand] = useState([]);
@@ -72,15 +73,12 @@ const SocketContextProvider = ({ children }) => {
     socketRef.current.emit('join-room', { roomId, user });
 
     // * alert if the room is full
-    // * move hardcoded strings to config file
     socketRef.current.on('room-full', () => {
-      alert('This room is full, please join a different room.');
+      alert(alerts.roomFull);
     });
 
     socketRef.current.on('user-already-joined', () => {
-      alert(
-        "It looks like you're already in this room. You cannot join the same room twice."
-      );
+      alert(alerts.alreadyInRoom);
     });
   }
 
@@ -153,6 +151,10 @@ const SocketContextProvider = ({ children }) => {
   }
 
   const contextProps = {
+    roomId,
+    setRoomId,
+    user,
+    setUser,
     chats,
     socketConnected,
     usersList,

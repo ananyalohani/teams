@@ -18,8 +18,8 @@ const Participant = ({ participant, me = false }) => {
   const [participantUser, setParticipantUser] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
-  const { setScreenTrack, user, roomId, setUserNetQual } = useRoomContext();
-  const { findUser, usersRaisedHand } = useSocketContext();
+  const { setScreenTrack, setUserNetQual } = useRoomContext();
+  const { findUser, usersRaisedHand, user, roomId } = useSocketContext();
 
   const videoRef = useRef();
   const audioRef = useRef();

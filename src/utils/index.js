@@ -37,3 +37,13 @@ export function assignRandomColor(str) {
   }
   return colour;
 }
+
+export const allowedChars =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=";
+
+export function validateRoomName(roomName) {
+  for (let i = 0; i < roomName.length; i++) {
+    if (allowedChars.indexOf(roomName.charAt(i)) === -1) return false;
+  }
+  return true;
+}

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRoomContext } from '@/context/RoomContext';
 import SidePanel from '@/components/Panels/SidePanel';
 import { useSocketContext } from '@/context/SocketContext';
 
 function ParticipantsPanel() {
-  const { user } = useRoomContext();
-  const { usersList } = useSocketContext();
+  const { user, usersList } = useSocketContext();
 
   return (
     <SidePanel title='Participants' name='participants'>

@@ -11,13 +11,13 @@ import { BackgroundContextProvider } from '@/context/BackgroundContext';
 function Application({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
-      <RoomContextProvider>
-        <SocketContextProvider>
+      <SocketContextProvider>
+        <RoomContextProvider>
           <BackgroundContextProvider>
             <Component {...pageProps} />
           </BackgroundContextProvider>
-        </SocketContextProvider>
-      </RoomContextProvider>
+        </RoomContextProvider>
+      </SocketContextProvider>
     </Provider>
   );
 }

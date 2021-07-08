@@ -5,16 +5,18 @@ import React, {
   useContext,
   createContext,
 } from 'react';
-// import Video, { LocalVideoTrack } from 'twilio-video';
+
+import { useSocketContext } from '@/context/SocketContext';
 
 const RoomContext = createContext();
 
 const RoomContextProvider = ({ children }) => {
   // const [token, setToken] = useState(); // fetch Twilio access token from server
+  const { roomId, user } = useSocketContext(); // get roomId and NextAuth user object from RoomContext
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
-  const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
+  // const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
   const [participants, setParticipants] = useState([]); // array of `participant` objects returned by Twilio
-  const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
+  // const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
   const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
@@ -101,11 +103,11 @@ const RoomContextProvider = ({ children }) => {
   const contextProps = {
     room,
     setRoom,
-    roomId,
-    setRoomId,
+    // roomId,
+    // setRoomId,
     participants,
-    user,
-    setUser,
+    // user,
+    // setUser,
     displayPanel,
     togglePanel,
     leaveRoom,
