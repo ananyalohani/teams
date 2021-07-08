@@ -18,7 +18,7 @@ const Participant = ({ participant, me = false }) => {
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const { setScreenTrack, user, setNetworkQualityStats } = useRoomContext();
-  const { findUser } = useSocketContext();
+  const { findUser, usersRaisedHand } = useSocketContext();
 
   const videoRef = useRef();
   const audioRef = useRef();
@@ -157,6 +157,9 @@ const Participant = ({ participant, me = false }) => {
             {participantUser && participantUser.id === user.id ? ' (You)' : ''}
           </p>
           <div className='flex flex-row items-center space-x-2'>
+            {usersRaisedHand.includes(participant.identity) && (
+              <IoHandRightSharp className='text-gray-200 w-4 h-4' />
+            )}
             {isAudioEnabled ? (
               <IoMicSharp className='text-gray-200 w-5 h-5' />
             ) : (

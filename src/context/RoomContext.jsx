@@ -7,7 +7,8 @@ import React, {
 } from 'react';
 import Video, { LocalVideoTrack } from 'twilio-video';
 
-// TODO
+// TODO: Please complete this by 08/07
+// * push and pull for pnpm changes
 // * handle screen sharing participant disconected by storing screen sharing participant id in a context variable
 // * display network quality by greying out the "not active" network bars
 // * change CallFooter code to use classnames library
@@ -16,6 +17,8 @@ import Video, { LocalVideoTrack } from 'twilio-video';
 // * make /room/[id]/chat more responsive
 // * implement raise hand feature
 // * try to add TDD somewhere
+// * add this for user colors: https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+// * refactor RoomContext and move all twilio video logic to different files
 
 import { getToken } from '@/utils';
 
@@ -208,7 +211,9 @@ const RoomContextProvider = ({ children }) => {
 
   function setNetworkQualityStats(networkQualityLevel, networkQualityStats) {
     // Print in console the networkQualityLevel using bars
+    // * move this to a different class
 
+    // * change to percentage
     const levels = {
       1: '▃',
       2: '▃▄',

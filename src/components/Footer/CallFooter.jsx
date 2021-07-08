@@ -8,11 +8,13 @@ import {
   IoChatboxEllipses,
   IoPeople,
   IoInformationCircle,
+  IoHandRightSharp,
 } from 'react-icons/io5';
 import { MdPresentToAll } from 'react-icons/md';
 import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
 
 import { useRoomContext } from '@/context/RoomContext';
+import { useSocketContext } from '@/context/SocketContext';
 
 // ! USE CLASSNAMES LIBRARY TO SET CLASSNAME 'active' and 'disabled'
 
@@ -28,7 +30,10 @@ export default function CallFooter() {
     room,
     screenTrack,
     isLocalParticipantSharingScreen,
+    user,
   } = useRoomContext();
+
+  const { usersRaisedHand, toggleRaiseHand } = useSocketContext();
 
   const [disabled, setDisabled] = useState(true);
 
@@ -91,6 +96,17 @@ export default function CallFooter() {
           onClick={toggleScreenShare}
         >
           <MdPresentToAll className='call-icon' />
+        </button>
+
+        {/* RAISE HAND */}
+        <button
+          disabled={disabled}
+          className={`call-icon-wrapper hidden lg:block ${
+            user && usersRaisedHand.includes(user.id) ? 'active' : ''
+          } ${disabled ? 'disabled' : ''}`}
+          onClick={toggleRaiseHand}
+        >
+          <IoHandRightSharp className='call-icon' />
         </button>
 
         {/* LEAVE CALL */}

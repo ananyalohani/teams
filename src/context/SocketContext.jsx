@@ -17,6 +17,7 @@ const SocketContextProvider = ({ children }) => {
   const { roomId, user } = useRoomContext(); // get roomId and NextAuth user object from RoomContext
   const [usersList, setUsersList] = useState([]); // List of NextAuth `user` objects present in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
+  const [usersRaisedHand, setUsersRaisedHand] = useState([]);
   const socketRef = useRef(null); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
 
@@ -29,8 +30,13 @@ const SocketContextProvider = ({ children }) => {
       receiveMessages();
       updateUsersList();
       getChatHistory();
+      listenToRaisedHands();
     }
   }, [roomId]);
+
+  useEffect(() => {
+    console.log(usersRaisedHand);
+  }, [usersRaisedHand]);
 
   useEffect(() => {
     const cleanup = (event) => {
@@ -125,6 +131,27 @@ const SocketContextProvider = ({ children }) => {
     return usersList.find((u) => u.id === userId);
   }
 
+  function listenToRaisedHands() {
+    socketRef.current.on('user-raised-hand', ({ userId }) => {
+      setUsersRaisedHand((old) => [...old, userId]);
+    });
+
+    socketRef.current.on('user-unraised-hand', ({ userId }) => {
+      console.log('user-unraised-hand');
+      setUsersRaisedHand((old) => old.filter((id) => id !== userId));
+    });
+  }
+
+  function toggleRaiseHand() {
+    if (!usersRaisedHand.includes(user.id)) {
+      socketRef.current.emit('raise-hand', { userId: user.id, roomId });
+      setUsersRaisedHand((old) => [...old, user.id]);
+    } else {
+      socketRef.current.emit('unraise-hand', { userId: user.id, roomId });
+      setUsersRaisedHand((old) => old.filter((id) => id !== user.id));
+    }
+  }
+
   const contextProps = {
     chats,
     socketConnected,
@@ -135,6 +162,8 @@ const SocketContextProvider = ({ children }) => {
     updateUsersList,
     clearChatHistory,
     findUser,
+    usersRaisedHand,
+    toggleRaiseHand,
   };
 
   return (
