@@ -5,7 +5,7 @@ import { IoSendSharp } from 'react-icons/io5';
 
 import SidePanel from '@/components/Panels/SidePanel';
 import { useRoomContext } from '@/context/RoomContext';
-import { sendInvite } from '@/utils';
+import sendInvite from '@/utils/emailInvite';
 import url from '@/url';
 import { netQualConfig } from '@/lib';
 
