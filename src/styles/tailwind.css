@@ -21,7 +21,7 @@
   }
 
   .text-box {
-    @apply bg-gray-800 border border-gray-950 px-3 rounded-md p-2 w-52 sm:w-64 text-gray-200;
+    @apply bg-gray-800 border border-gray-950 px-3 rounded-md p-2 w-full text-gray-200;
     @apply focus:outline-none focus:border-blue-400;
   }
 
@@ -30,7 +30,7 @@
   }
 
   .call-icon-wrapper {
-    @apply bg-gray-800 border border-gray-950 rounded-full p-2 sm:p-3 cursor-pointer;
+    @apply bg-gray-800 border border-gray-950 rounded-full p-2 md:p-3 cursor-pointer;
   }
 
   .call-icon-wrapper.active {
@@ -42,7 +42,7 @@
   }
 
   .call-icon {
-    @apply text-white h-5 w-5 sm:h-6 sm:w-6;
+    @apply text-white h-5 w-5 md:h-6 md:w-6;
   }
 
   .call-icon-wrapper.phn {

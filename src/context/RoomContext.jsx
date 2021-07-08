@@ -19,7 +19,7 @@ const RoomContextProvider = ({ children }) => {
   // const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
-  const [displayPanel, setDisplayPanel] = useState('chat'); // toggle display of side panels
+  const [displayPanel, setDisplayPanel] = useState(''); // toggle display of side panels
   const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
   const [userNetQual, setUserNetQual] = useState(null);
 

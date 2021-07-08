@@ -6,7 +6,7 @@ import {
   IoVideocam,
   IoHandRightSharp,
 } from 'react-icons/io5';
-
+import classNames from 'classnames';
 import { trackpubsToTracks } from '@/lib/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
@@ -148,38 +148,35 @@ const Participant = ({ participant, me = false }) => {
   }
 
   return (
-    <div>
-      <div className='video-wrapper bg-gray-900 p-1 rounded-md'>
+    <div className='participant-video'>
+      <div className='video-wrapper'>
         <video
           ref={videoRef}
           playsInline
           autoPlay
-          className={`video ${me && 'transform -scale-x-1'}`}
+          className={classNames('video', { inverted: me })}
         />
-        <audio ref={audioRef} autoPlay muted={me} />
-        <div
-          className='text-gray-200 text-sm flex flex-row items-center justify-between  p-0.5 mx-auto my-0'
-          style={{ width: '95%' }}
-        >
-          <p>
-            {participantUser && participantUser.name}
-            {participantUser && participantUser.id === user.id ? ' (You)' : ''}
-          </p>
-          <div className='flex flex-row items-center space-x-2'>
-            {usersRaisedHand.includes(participant.identity) && (
-              <IoHandRightSharp className='text-gray-200 w-4 h-4' />
-            )}
-            {isAudioEnabled ? (
-              <IoMicSharp className='text-gray-200 w-5 h-5' />
-            ) : (
-              <IoMicOffSharp className='text-gray-200 w-5 h-5' />
-            )}
-            {isVideoEnabled ? (
-              <IoVideocam className='text-gray-200 w-5 h-5' />
-            ) : (
-              <IoVideocamOff className='text-gray-200 w-5 h-5' />
-            )}
-          </div>
+      </div>
+      <audio ref={audioRef} autoPlay muted={me} />
+      <div className='video-label'>
+        <p>
+          {participantUser && participantUser.name}
+          {participantUser && participantUser.id === user.id ? ' (You)' : ''}
+        </p>
+        <div className='flex flex-row items-center space-x-2'>
+          {usersRaisedHand.includes(participant.identity) && (
+            <IoHandRightSharp className='text-gray-200 w-4 h-4' />
+          )}
+          {isAudioEnabled ? (
+            <IoMicSharp className='text-gray-200 w-5 h-5' />
+          ) : (
+            <IoMicOffSharp className='text-gray-200 w-5 h-5' />
+          )}
+          {isVideoEnabled ? (
+            <IoVideocam className='text-gray-200 w-5 h-5' />
+          ) : (
+            <IoVideocamOff className='text-gray-200 w-5 h-5' />
+          )}
         </div>
       </div>
     </div>

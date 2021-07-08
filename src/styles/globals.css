@@ -17,7 +17,7 @@ button {
 
 .wrapper {
   width: 80%;
-  margin: 0 auto;
+  margin: 0 auto !important;
 }
 
 .card-text {
@@ -53,13 +53,59 @@ button {
   @apply px-4 py-2 w-full h-full flex flex-row items-center justify-center;
 }
 
-.video {
-  @apply bg-black flex-1 rounded object-cover;
-  @apply max-w-xs max-h-32 sm:max-w-md sm:max-h-72;
-}
-
 #recent-meetings {
   max-width: 70%;
+}
+
+.video {
+  @apply bg-black rounded;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.video.inverted {
+  @apply transform -scale-x-1;
+}
+.video-wrapper {
+  position: relative !important;
+  width: 100% !important;
+  padding-top: 56.25% !important;
+}
+
+.video-label {
+  @apply text-gray-200 text-sm flex flex-row items-center justify-between p-0.5 mx-auto my-0;
+  width: 95%;
+}
+
+.participant-video {
+  @apply bg-gray-900 rounded-md p-1;
+  height: min-content;
+  min-width: 400px;
+  width: 35%;
+}
+
+#video-call {
+  height: calc(100vh - 5rem);
+}
+
+#video-grid {
+  height: calc(100vh - 10rem);
+}
+
+@media only screen and (max-width: 1024px) {
+  .participant-video {
+    min-width: 300px;
+    width: 30%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .participant-video {
+    width: auto !important;
+  }
 }
 
 @media only screen and (max-width: 640px) {
@@ -91,5 +137,9 @@ button {
 
   #recent-meetings {
     max-width: 90%;
+  }
+
+  .participant-video {
+    width: auto !important;
   }
 }

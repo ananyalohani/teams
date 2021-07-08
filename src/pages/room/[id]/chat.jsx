@@ -111,7 +111,7 @@ export default function Chat({ roomId, user }) {
             </button>
             <input
               type='text'
-              className='text-box bg-gray-800 flex-1'
+              className='text-box bg-gray-800 flex-1 mx-4 '
               onChange={(e) => setMessage(e.target.value)}
               value={message}
               placeholder='Type your message...'

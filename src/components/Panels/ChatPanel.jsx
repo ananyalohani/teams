@@ -42,7 +42,7 @@ function ChatPanel() {
           sendMessage(e, message, user);
           setMessage('');
         }}
-        className='flex flex-row justify-evenly my-3'
+        className='flex flex-row justify-evenly my-3 mx-3'
       >
         <input
           type='text'
@@ -52,7 +52,7 @@ function ChatPanel() {
           placeholder='Type your message...'
         />
 
-        <button type='submit' className=''>
+        <button type='submit' className='mx-2'>
           <IoSendSharp className='text-gray-700 hover:text-blue-400 w-6 h-6' />
         </button>
       </form>

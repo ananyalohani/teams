@@ -174,10 +174,13 @@ export default function CallFooter() {
         {/* BACKGROUND */}
         <button
           disabled={disabled}
-          className={classNames('call-icon-wrapper text-gray-200', {
-            active: displayPanel === 'background',
-            disabled,
-          })}
+          className={classNames(
+            'call-icon-wrapper text-gray-200 hidden lg:block',
+            {
+              active: displayPanel === 'background',
+              disabled,
+            }
+          )}
           onClick={() => togglePanel('background')}
         >
           <BackgroundIcon height={24} width={24} />

@@ -48,7 +48,7 @@ export default function ChatSessionPanel({ sidePanel, setSidePanel }) {
         'flex flex-col bg-gray-900 border-l border-gray-950 text-gray-200 w-screen md:w-80',
         {
           hidden: !sidePanel,
-          block: sidePanel,
+          flex: sidePanel,
         }
       )}
       style={{

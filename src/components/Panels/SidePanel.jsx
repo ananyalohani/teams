@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
+import classNames from 'classnames';
 
 import { useRoomContext } from '@/context/RoomContext';
 
@@ -8,14 +9,14 @@ function SidePanel({ name, id, title, children }) {
 
   return (
     <div
-      className={
-        displayPanel === name
-          ? 'flex flex-col bg-gray-900 w-80 border-l border-gray-950 text-gray-200'
-          : 'hidden'
-      }
-      style={{
-        height: 'calc(100vh - 10rem)',
-      }}
+      className={classNames({
+        'flex flex-col bg-gray-900 w-screen md:w-80 border-l border-gray-950 text-gray-200 h-full':
+          displayPanel === name,
+        hidden: !Boolean(displayPanel) || displayPanel !== name,
+      })}
+      // style={{
+      //   height: 'calc(100vh - 10rem)',
+      // }}
     >
       <div className='bg-gray-800 w-full p-4 border-b-2 border-gray-950'>
         <div className='flex flex-row  justify-between'>
