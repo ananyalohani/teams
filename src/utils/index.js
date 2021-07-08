@@ -1,15 +1,5 @@
 import { customAlphabet } from 'nanoid';
 import { nolookalikes } from 'nanoid-dictionary';
-import { colors, url } from '@/lib';
-
-export function checkForDuplicates(array, parameter, value) {
-  array.map((element) => {
-    if (element[parameter] === value) {
-      return true;
-    }
-  });
-  return false;
-}
 
 export function generateCallID(length = 8) {
   const nanoid = customAlphabet(nolookalikes, length);
@@ -18,20 +8,15 @@ export function generateCallID(length = 8) {
 
 export function formattedTimeString() {
   const date = new Date();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+
+  let hours = date.getHours();
   const suffix = hours % 12 === hours ? 'AM' : 'PM';
-  const timeString = `${hours % 12 === 0 ? 12 : hours % 12}:${
-    minutes % 10 === minutes ? '0' + minutes : minutes
-  } ${suffix}`;
+  hours = hours % 12 === 0 ? 12 : hours % 12;
 
-  return timeString;
-}
+  let minutes = date.getMinutes();
+  minutes = minutes % 10 === minutes ? '0' + minutes : minutes;
 
-export function assignRandomColor() {
-  const i = Math.floor(Math.random() * Object.keys(colors).length);
-  const key = Object.keys(colors)[i];
-  return colors[key];
+  return `${hours}:${minutes} ${suffix}`;
 }
 
 export function trackpubsToTracks(trackMap) {
@@ -40,48 +25,15 @@ export function trackpubsToTracks(trackMap) {
     .filter((track) => track !== null);
 }
 
-export async function sendInvite(data) {
-  try {
-    await fetch('/api/invite', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  } catch (e) {
-    console.error(e);
+export function assignRandomColor(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-}
-
-export async function getToken(roomId, identity) {
-  try {
-    const data = await fetch(`${url.server}/video/token`, {
-      method: 'POST',
-      body: JSON.stringify({
-        identity,
-        room: roomId,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const jsonData = await data.json();
-
-    return jsonData.token;
-  } catch (e) {
-    console.error(e);
-    return null;
+  var colour = '#';
+  for (var i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 0xff;
+    colour += ('00' + value.toString(16)).substr(-2);
   }
-}
-
-export async function getRecentMeetings(userId) {
-  try {
-    const data = await fetch(`/api/user-rooms?userId=${userId}`);
-    const jsonData = await data.json();
-
-    return jsonData;
-  } catch (e) {
-    console.error(e);
-  }
+  return colour;
 }

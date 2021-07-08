@@ -34,6 +34,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-url.js
+# url.js
 
 todo.md

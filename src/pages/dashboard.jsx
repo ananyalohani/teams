@@ -4,7 +4,7 @@ import { IoVideocam, IoChatboxEllipses } from 'react-icons/io5';
 import { CgSpinner } from 'react-icons/cg';
 
 import Layout from '@/components/Layout/Layout';
-import { getRecentMeetings } from '@/utils';
+import getRecentMeetings from '@/utils/recentMeetings';
 
 export default function Dashboard({ user }) {
   const [roomName, setRoomName] = useState();

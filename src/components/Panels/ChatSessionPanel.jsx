@@ -5,7 +5,7 @@ import { IoSendSharp, IoVideocam } from 'react-icons/io5';
 import { AiOutlineHistory } from 'react-icons/ai';
 
 import { useRoomContext } from '@/context/RoomContext';
-import { sendInvite } from '@/utils';
+import sendInvite from '@/utils/emailInvite';
 import url from '@/url';
 import { useSocketContext } from '@/context/SocketContext';
 

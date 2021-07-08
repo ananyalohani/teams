@@ -11,7 +11,7 @@ import ParticipantsPanel from '@/components/Panels/ParticipantsPanel';
 import BackgroundPanel from '@/components/Panels/BackgroundPanel';
 import InfoPanel from '@/components/Panels/InfoPanel';
 import SharedScreen from '@/components/SharedScreen/SharedScreen';
-import { getToken } from '@/utils';
+import getToken from '@/utils/accessToken';
 import Video, { LocalVideoTrack } from 'twilio-video';
 
 export default function RoomCall({ roomId, user }) {
