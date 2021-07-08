@@ -56,6 +56,9 @@ const SocketContextProvider = ({ children }) => {
     socketRef.current.on('chat-history', ({ chatHistory }) => {
       setChats(chatHistory);
     });
+    socketRef.current.on('user-cleared-chat-history', () => {
+      setChats([]);
+    });
   }
 
   function joinRoom() {
@@ -63,6 +66,7 @@ const SocketContextProvider = ({ children }) => {
     socketRef.current.emit('join-room', { roomId, user });
 
     // * alert if the room is full
+    // * move hardcoded strings to config file
     socketRef.current.on('room-full', () => {
       alert('This room is full, please join a different room.');
     });
