@@ -9,14 +9,7 @@ export function generateCallID(length = 8) {
 export function formattedTimeString() {
   const date = new Date();
 
-  let hours = date.getHours();
-  const suffix = hours % 12 === hours ? 'AM' : 'PM';
-  hours = hours % 12 === 0 ? 12 : hours % 12;
-
-  let minutes = date.getMinutes();
-  minutes = minutes % 10 === minutes ? '0' + minutes : minutes;
-
-  return `${hours}:${minutes} ${suffix}`;
+  return formatTimeString(date);
 }
 
 export function trackpubsToTracks(trackMap) {
@@ -42,8 +35,32 @@ export const allowedChars =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=";
 
 export function validateRoomName(roomName) {
+  if (!roomName) return true;
   for (let i = 0; i < roomName.length; i++) {
     if (allowedChars.indexOf(roomName.charAt(i)) === -1) return false;
   }
   return true;
+}
+
+export function sortByDate(arr) {
+  return arr.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+export function formattedDateString(date) {
+  const d = new Date(date);
+  const time = formatTimeString(d);
+  return `${d.toLocaleString().split(',')[0]}, ${time}`;
+}
+
+function formatTimeString(date) {
+  let hours = date.getHours();
+  const suffix = hours % 12 === hours ? 'AM' : 'PM';
+  hours = hours % 12 === 0 ? 12 : hours % 12;
+
+  let minutes = date.getMinutes();
+  minutes = minutes % 10 === minutes ? '0' + minutes : minutes;
+
+  return `${hours}:${minutes} ${suffix}`;
 }

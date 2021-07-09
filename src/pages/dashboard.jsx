@@ -6,7 +6,7 @@ import { CgSpinner } from 'react-icons/cg';
 import Layout from '@/components/Layout/Layout';
 import getRecentMeetings from '@/lib/utils/recentMeetings';
 import { alerts } from '@/lib';
-import { validateRoomName } from '@/lib/utils';
+import { validateRoomName, formattedDateString } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
   try {
@@ -36,20 +36,15 @@ export async function getServerSideProps(context) {
 export default function Dashboard({ user }) {
   const [roomName, setRoomName] = useState();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [submit, setSubmit] = useState(null);
 
   useEffect(() => {
     getRecentMeetings(user.id).then((data) => {
       setData(data);
-      console.log(data);
       setLoading(false);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -128,17 +123,19 @@ export default function Dashboard({ user }) {
         </div>
       </div>
       <div className='bg-blue-500 w-full flex'>
-        <div className='wrapper flex flex-row justify-between items-center py-20 text-dark space-x-9'>
+        <div className='wrapper py-20 text-dark'>
           <div
             id='recent-meetings'
             className='bg-gray-900 rounded-md p-5 flex flex-col space-y-2 flex-1'
-            style={{ margin: '0 auto', maxHeight: '35rem' }}
+            style={{ margin: '0 auto', maxHeight: '35rem', minHeight: '15rem' }}
           >
             <p className='text-3xl text-center font-bold text-light border-b border-gray-800 pb-3'>
               Recent Meetings
             </p>
-            <div className='flex flex-col overflow-y-scroll space-y-2 '>
-              {data && data.length === 0 ? (
+            <div className='flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1'>
+              {loading ? (
+                <CgSpinner className='text-gray-300 w-8 h-8 animate-spin' />
+              ) : data && data.length === 0 ? (
                 <div className='text-gray-400 text-center'>
                   <em>You have no recent meetings</em>
                 </div>
@@ -152,7 +149,7 @@ export default function Dashboard({ user }) {
                     >
                       <div className='flex flex-col space-y-2 text-light'>
                         <p className='font-bold'>{meeting.roomId}</p>
-                        <p>{meeting.date}</p>
+                        <p>{formattedDateString(meeting.date)}</p>
                       </div>
                       <div className='flex flex-row space-x-2 items-center'>
                         <a href={meeting.meetingLink}>
