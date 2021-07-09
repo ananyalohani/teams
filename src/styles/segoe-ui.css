@@ -75,14 +75,14 @@
 
 @font-face {
   font-family: SegoeUI;
-  src: url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.eot),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.eot?#iefix)
+  src: url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.eot),
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.eot?#iefix)
       format('embedded-opentype'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.woff)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.woff)
       format('woff'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.ttf)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.ttf)
       format('truetype'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.svg#web)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Light-Italic/latest.svg#web)
       format('svg');
   font-weight: normal;
   font-display: swap;
@@ -91,14 +91,14 @@
 
 @font-face {
   font-family: SegoeUI;
-  src: url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.eot),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.eot?#iefix)
+  src: url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.eot),
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.eot?#iefix)
       format('embedded-opentype'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.woff)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.woff)
       format('woff'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.ttf)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.ttf)
       format('truetype'),
-    url(http://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.svg#web)
+    url(https://i.s-microsoft.com/fonts/Segoe-UI/Cyrillic/Semibold-Italic/latest.svg#web)
       format('svg');
   font-weight: 700;
   font-display: swap;

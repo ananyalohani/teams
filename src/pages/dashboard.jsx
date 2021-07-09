@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/client';
 import { IoVideocam, IoChatboxEllipses } from 'react-icons/io5';
 import { CgSpinner } from 'react-icons/cg';
+import { AiFillClockCircle } from 'react-icons/ai';
 
 import Layout from '@/components/Layout/Layout';
 import getRecentMeetings from '@/lib/utils/recentMeetings';
+import getUsersByRoom from '@/lib/utils/usersByRoom';
 import { alerts } from '@/lib';
 import { validateRoomName, formattedDateString } from '@/lib/utils';
 
@@ -36,13 +38,23 @@ export async function getServerSideProps(context) {
 export default function Dashboard({ user }) {
   const [roomName, setRoomName] = useState();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [meetings, setMeetings] = useState([]);
   const [submit, setSubmit] = useState(null);
 
   useEffect(() => {
+    if (meetings.length) return;
     getRecentMeetings(user.id).then((data) => {
-      setData(data);
-      setLoading(false);
+      data.forEach((meeting) => {
+        let dict = {};
+        getUsersByRoom(meeting.roomId).then((usrs) => {
+          dict = {
+            ...meeting,
+            users: usrs.filter((u) => u.email !== user.email),
+          };
+          setMeetings((old) => [...old, dict]);
+          setLoading(false);
+        });
+      });
     });
   }, []);
 
@@ -129,38 +141,56 @@ export default function Dashboard({ user }) {
             className='bg-gray-900 rounded-md p-5 flex flex-col space-y-2 flex-1'
             style={{ margin: '0 auto', maxHeight: '35rem', minHeight: '15rem' }}
           >
-            <p className='text-3xl text-center font-bold text-light border-b border-gray-800 pb-3'>
-              Recent Meetings
-            </p>
-            <div className='flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1'>
+            <div className='flex flex-row space-x-3 items-center justify-center border-b border-gray-800 pb-3'>
+              <AiFillClockCircle className='text-light h-10 w-10' />
+              <p className='text-3xl font-bold text-light '>Recent Meetings</p>
+            </div>
+            <div className='flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1 pt-24'>
               {loading ? (
                 <CgSpinner className='text-gray-300 w-8 h-8 animate-spin' />
-              ) : data && data.length === 0 ? (
+              ) : meetings && meetings.length === 0 ? (
                 <div className='text-gray-400 text-center'>
                   <em>You have no recent meetings</em>
                 </div>
               ) : (
-                data &&
-                data.map((meeting) => (
-                  <>
-                    <div
-                      key={meeting._id}
-                      className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between'
-                    >
-                      <div className='flex flex-col space-y-2 text-light'>
-                        <p className='font-bold'>{meeting.roomId}</p>
-                        <p>{formattedDateString(meeting.date)}</p>
-                      </div>
-                      <div className='flex flex-row space-x-2 items-center'>
-                        <a href={meeting.meetingLink}>
-                          <IoVideocam className='text-gray-600 hover:text-blue-400 w-6 h-6 cursor-pointer' />
-                        </a>
-                        <a href={meeting.chatLink}>
-                          <IoChatboxEllipses className='text-gray-600 hover:text-blue-400 w-6 h-6 cursor-pointer' />
-                        </a>
-                      </div>
+                meetings &&
+                meetings.map((meeting, idx) => (
+                  <div
+                    key={idx}
+                    className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between'
+                  >
+                    <div className='flex flex-col space-y-2 text-light'>
+                      <p className='font-bold text-blue-500'>
+                        {meeting.roomId}
+                      </p>
+                      <p className='text-sm'>
+                        {formattedDateString(meeting.date)}
+                      </p>
+                      {meeting.users &&
+                        (meeting.users.length > 0 ? (
+                          <div className='flex flex-row space-x-2 text-sm'>
+                            <p className='font-semibold'>Participants: </p>
+                            {meeting.users.map((user, idx) => (
+                              <p key={idx} className='text-gray-400'>
+                                {user.name.split(' ')[0]},
+                              </p>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className='text-gray-400 text-sm'>
+                            <em>No other participants</em>
+                          </p>
+                        ))}
                     </div>
-                  </>
+                    <div className='flex flex-row space-x-2 items-center'>
+                      <a href={meeting.meetingLink}>
+                        <IoVideocam className='text-gray-500 hover:text-blue-500 w-6 h-6 cursor-pointer' />
+                      </a>
+                      <a href={meeting.chatLink}>
+                        <IoChatboxEllipses className='text-gray-500 hover:text-blue-500 w-6 h-6 cursor-pointer' />
+                      </a>
+                    </div>
+                  </div>
                 ))
               )}
             </div>

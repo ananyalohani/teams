@@ -1,22 +1,27 @@
 import createHandler, { runMiddleware } from '@/middleware';
-import UserRoom from '@/models/user-rooms';
-import { sortByDate } from '@/lib/utils';
+import Room from '@/models/rooms';
 
 const handler = createHandler();
 
 handler.get(async (req, res) => {
   await runMiddleware(req, res);
 
-  if (!req.query.userId) res.json([]);
+  if (!req.query.roomId) {
+    res.json({
+      error: {
+        code: 400,
+        description: 'Bad Request',
+        message: 'roomId is required to be passed in query',
+      },
+    });
+    return;
+  }
 
   try {
-    const userRooms = await UserRoom.findOne({
-      userId: req.query.userId,
-    });
+    const usersInRoom = await Room.findOne({ roomId: req.query.roomId });
 
-    if (userRooms) {
-      sortByDate(userRooms.rooms);
-      res.json(userRooms.rooms);
+    if (usersInRoom) {
+      res.json(usersInRoom.users);
     } else {
       res.json([]);
     }
@@ -30,16 +35,17 @@ handler.put(async (req, res) => {
 
   const data = req.body;
   if (!data) return;
-  const rooms = JSON.parse(data.rooms);
+
+  const users = JSON.parse(data.users);
 
   try {
-    const result = await UserRoom.updateOne(
+    const result = await Room.updateOne(
       {
-        userId: data.userId,
+        roomId: data.roomId,
       },
       {
         $set: {
-          rooms: rooms,
+          users: users,
         },
       },
       {

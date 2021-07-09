@@ -36,10 +36,6 @@ const SocketContextProvider = ({ children }) => {
   }, [roomId]);
 
   useEffect(() => {
-    console.log(usersRaisedHand);
-  }, [usersRaisedHand]);
-
-  useEffect(() => {
     const cleanup = (event) => {
       // * cleanup function for call disconnect
       if (event.persisted) {

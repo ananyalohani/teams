@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 import { ObjectId } from 'bson';
-import { userSchema } from './users';
 
 const MODEL_NAME = 'UserRoom';
 

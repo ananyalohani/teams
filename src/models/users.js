@@ -1,6 +1,5 @@
 import { ObjectId } from 'bson';
 import mongoose, { Schema } from 'mongoose';
-import { assignRandomColor } from '@/lib/utils';
 
 const MODEL_NAME = 'User';
 
