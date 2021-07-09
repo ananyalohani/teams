@@ -142,8 +142,7 @@ export default function Dashboard({ user }) {
             </div>
             <div
               className={classNames(
-                'flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1',
-                { 'pt-24': !loading }
+                'flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1'
               )}
             >
               {loading && (
