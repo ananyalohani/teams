@@ -99,27 +99,29 @@ export default function Chat({ roomId, user }) {
               <Scroller />
             </div>
           </div>
-          <form
-            onSubmit={(e) => {
-              sendMessage(e, message, user);
-              setMessage('');
-            }}
-            className='flex flex-row space-x-4 mx-auto bg-gray-900 py-8 w-full px-8 border-t border-gray-950'
-          >
+          <div className='flex flex-row space-x-4 mx-auto bg-gray-900 py-8 w-full px-8 border-t border-gray-950'>
             <button className='' onClick={() => setSidePanel(!sidePanel)}>
               <IoInformationCircle className='text-gray-700 hover:text-blue-400 w-8 h-8' />
             </button>
-            <input
-              type='text'
-              className='text-box bg-gray-800 flex-1 mx-4 '
-              onChange={(e) => setMessage(e.target.value)}
-              value={message}
-              placeholder='Type your message...'
-            />
-            <button type='submit' className=''>
-              <IoSendSharp className='text-gray-700 hover:text-blue-400 w-6 h-6' />
-            </button>
-          </form>
+            <form
+              onSubmit={(e) => {
+                sendMessage(e, message, user);
+                setMessage('');
+              }}
+              className='flex flex-row space-x-4 flex-1'
+            >
+              <input
+                type='text'
+                className='text-box bg-gray-800 flex-1 mx-4 '
+                onChange={(e) => setMessage(e.target.value)}
+                value={message}
+                placeholder='Type your message...'
+              />
+              <button type='submit' className=''>
+                <IoSendSharp className='text-gray-700 hover:text-blue-400 w-6 h-6' />
+              </button>
+            </form>
+          </div>
         </div>
         <ChatSessionPanel sidePanel={sidePanel} setSidePanel={setSidePanel} />
       </div>
