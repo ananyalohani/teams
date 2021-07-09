@@ -6,12 +6,12 @@ const handler = createHandler();
 handler.get(async (req, res) => {
   if (!req.query.roomId) return;
   try {
-    NetworkQuality.findAll({ roomId: req.query.roomId }, (err, result) => {
-      if (err) res.status(500).send(err);
-      res.json(result);
-    });
+    const result = await NetworkQuality.find({ roomId: req.query.roomId });
+    console.log(result);
+    res.json(result);
   } catch (e) {
     console.error(e);
+    res.status(500).send(err);
   }
 });
 
