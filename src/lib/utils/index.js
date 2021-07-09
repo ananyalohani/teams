@@ -43,9 +43,13 @@ export function validateRoomName(roomName) {
 }
 
 export function sortByDate(arr) {
-  return arr.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const compare = (a, b) => {
+    // console.log(a, b);
+    return new Date(b.date) - new Date(a.date);
+  };
+  // console.log(arr.sort(compare));
+
+  return arr.sort(compare);
 }
 
 export function formattedDateString(date) {

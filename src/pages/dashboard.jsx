@@ -3,12 +3,12 @@ import { getSession } from 'next-auth/client';
 import { IoVideocam, IoChatboxEllipses } from 'react-icons/io5';
 import { CgSpinner } from 'react-icons/cg';
 import { AiFillClockCircle } from 'react-icons/ai';
+import classNames from 'classnames';
 
 import Layout from '@/components/Layout/Layout';
-import getRecentMeetings from '@/lib/utils/recentMeetings';
-import getUsersByRoom from '@/lib/utils/usersByRoom';
+import getRecentMeetingData from '@/lib/utils/dashboardData';
 import { alerts } from '@/lib';
-import { validateRoomName, formattedDateString } from '@/lib/utils';
+import { validateRoomName, formattedDateString, sortByDate } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
   try {
@@ -42,21 +42,16 @@ export default function Dashboard({ user }) {
   const [submit, setSubmit] = useState(null);
 
   useEffect(() => {
-    if (meetings.length) return;
-    getRecentMeetings(user.id).then((data) => {
-      data.forEach((meeting) => {
-        let dict = {};
-        getUsersByRoom(meeting.roomId).then((usrs) => {
-          dict = {
-            ...meeting,
-            users: usrs.filter((u) => u.email !== user.email),
-          };
-          setMeetings((old) => [...old, dict]);
-          setLoading(false);
-        });
-      });
-    });
+    if (meetings.length > 0) return;
+    getRecentMeetingData(user, setMeetings);
   }, []);
+
+  useEffect(() => {
+    if (meetings.length) {
+      setMeetings(sortByDate(meetings));
+      setLoading(false);
+    }
+  }, [meetings]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -145,29 +140,34 @@ export default function Dashboard({ user }) {
               <AiFillClockCircle className='text-light h-10 w-10' />
               <p className='text-3xl font-bold text-light '>Recent Meetings</p>
             </div>
-            <div className='flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1 pt-24'>
-              {loading ? (
+            <div
+              className={classNames(
+                'flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1',
+                { 'pt-24': !loading }
+              )}
+            >
+              {loading && (
                 <CgSpinner className='text-gray-300 w-8 h-8 animate-spin' />
-              ) : meetings && meetings.length === 0 ? (
-                <div className='text-gray-400 text-center'>
-                  <em>You have no recent meetings</em>
-                </div>
-              ) : (
-                meetings &&
-                meetings.map((meeting, idx) => (
-                  <div
-                    key={idx}
-                    className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between'
-                  >
-                    <div className='flex flex-col space-y-2 text-light'>
-                      <p className='font-bold text-blue-500'>
-                        {meeting.roomId}
-                      </p>
-                      <p className='text-sm'>
-                        {formattedDateString(meeting.date)}
-                      </p>
-                      {meeting.users &&
-                        (meeting.users.length > 0 ? (
+              )}
+              {meetings &&
+                (!loading && meetings.length === 0 ? (
+                  <div className='text-gray-400 text-center'>
+                    <em>You have no recent meetings</em>
+                  </div>
+                ) : (
+                  meetings.map((meeting, idx) => (
+                    <div
+                      key={idx}
+                      className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between'
+                    >
+                      <div className='flex flex-col space-y-2 text-light'>
+                        <p className='font-bold text-blue-400'>
+                          {meeting.roomId}
+                        </p>
+                        <p className='text-sm'>
+                          {formattedDateString(meeting.date)}
+                        </p>
+                        {meeting.users.length > 0 ? (
                           <div className='flex flex-row space-x-2 text-sm'>
                             <p className='font-semibold'>Participants: </p>
                             {meeting.users.map((user, idx) => (
@@ -180,19 +180,19 @@ export default function Dashboard({ user }) {
                           <p className='text-gray-400 text-sm'>
                             <em>No other participants</em>
                           </p>
-                        ))}
+                        )}
+                      </div>
+                      <div className='flex flex-row space-x-2 items-center'>
+                        <a href={meeting.meetingLink}>
+                          <IoVideocam className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
+                        </a>
+                        <a href={meeting.chatLink}>
+                          <IoChatboxEllipses className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
+                        </a>
+                      </div>
                     </div>
-                    <div className='flex flex-row space-x-2 items-center'>
-                      <a href={meeting.meetingLink}>
-                        <IoVideocam className='text-gray-500 hover:text-blue-500 w-6 h-6 cursor-pointer' />
-                      </a>
-                      <a href={meeting.chatLink}>
-                        <IoChatboxEllipses className='text-gray-500 hover:text-blue-500 w-6 h-6 cursor-pointer' />
-                      </a>
-                    </div>
-                  </div>
-                ))
-              )}
+                  ))
+                ))}
             </div>
           </div>
         </div>

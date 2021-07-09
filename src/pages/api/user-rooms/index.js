@@ -1,6 +1,5 @@
 import createHandler, { runMiddleware } from '@/middleware';
 import UserRoom from '@/models/user-rooms';
-import { sortByDate } from '@/lib/utils';
 
 const handler = createHandler();
 
@@ -15,7 +14,6 @@ handler.get(async (req, res) => {
     });
 
     if (userRooms) {
-      sortByDate(userRooms.rooms);
       res.json(userRooms.rooms);
     } else {
       res.json([]);
