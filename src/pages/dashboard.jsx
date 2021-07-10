@@ -89,7 +89,7 @@ export default function Dashboard({ user }) {
             </p>
             <p className='text-lg sm:text-xl'>
               Video call and group chat with upto{' '}
-              <strong>20 participants</strong> at a time.
+              <strong>25 participants</strong> at a time.
               <br />
               Secure meetings in <strong>rooms</strong> accessible only to the
               people you choose.
