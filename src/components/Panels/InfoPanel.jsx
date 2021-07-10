@@ -64,10 +64,46 @@ export default function InfoPanel() {
               {netQualConfig[userNetQual].label} - {userNetQual * 20}%
             </p>
             <div className='h-2 rounded bg-white overflow-hidden'>
-              <div
-                style={{ width: userNetQual * 20 + '%' }}
-                className={`h-full ${netQualConfig[userNetQual].color}`}
-              ></div>
+              {(() => {
+                switch (userNetQual) {
+                  case 1:
+                    return (
+                      <div
+                        style={{ width: userNetQual * 20 + '%' }}
+                        className='h-full bg-red-500'
+                      ></div>
+                    );
+                  case 2:
+                    return (
+                      <div
+                        style={{ width: userNetQual * 20 + '%' }}
+                        className='h-full bg-orange-400'
+                      ></div>
+                    );
+                  case 3:
+                    return (
+                      <div
+                        style={{ width: userNetQual * 20 + '%' }}
+                        className='h-full bg-yellow-300'
+                      ></div>
+                    );
+                  case 4:
+                    return (
+                      <div
+                        style={{ width: userNetQual * 20 + '%' }}
+                        className='h-full bg-lime-500'
+                      ></div>
+                    );
+                  case 5:
+                    return (
+                      <div
+                        style={{ width: userNetQual * 20 + '%' }}
+                        className='h-full bg-green-500'
+                      ></div>
+                    );
+                }
+              })()}
+              <div className='hidden bg-gray-400'></div>
             </div>
           </div>
         )}

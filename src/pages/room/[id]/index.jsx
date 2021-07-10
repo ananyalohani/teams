@@ -139,7 +139,7 @@ export default function RoomCall({ roomId, user }) {
             <div
               id='video-grid'
               className={classNames(
-                'flex flex-wrap justify-center p-5 h-full w-full',
+                'flex flex-wrap justify-center p-5 h-full w-full items-center',
                 {
                   flex: !Boolean(displayPanel),
                   hidden: Boolean(displayPanel),
