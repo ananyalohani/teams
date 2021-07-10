@@ -15,6 +15,7 @@ export default function InfoPanel() {
   const { roomId, user } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
+  const [openIS, setOpenIS] = useState(false);
   const meetingLink = `${url.client}/room/${roomId}`;
 
   const handleInvite = (e) => {
@@ -28,6 +29,7 @@ export default function InfoPanel() {
       meetingLink,
     };
     sendInvite(data);
+    setOpenIS(true);
     setEmail('');
   };
 
@@ -94,6 +96,13 @@ export default function InfoPanel() {
         open={openSB}
         onClose={() => setOpenSB(false)}
         message='Link copied!'
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        autoHideDuration={1000}
+        open={openIS}
+        onClose={() => setOpenIS(false)}
+        message='Invite Sent Successfully!'
       />
     </SidePanel>
   );

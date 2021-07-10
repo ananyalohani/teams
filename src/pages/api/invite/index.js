@@ -26,7 +26,6 @@ function sendEmail(data) {
 
   sendgrid.send(options, (error, result) => {
     if (error) console.error(error);
-    else console.log('Email sent successfully.');
   });
 }
 

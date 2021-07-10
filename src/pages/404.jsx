@@ -7,7 +7,7 @@ function Custom404() {
     <Layout title='Not Found'>
       <div
         className='flex flex-col items-center justify-center space-y-5'
-        style={{ height: 'calc(100vh - 10rem)' }}
+        style={{ height: 'calc(100vh - 9rem)' }}
       >
         <img
           src='/images/page_not_found.png'

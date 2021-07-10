@@ -14,6 +14,7 @@ import { MdPresentToAll } from 'react-icons/md';
 import { BackgroundIcon } from '@/components/CustomIcons/CustomIcons';
 import classNames from 'classnames';
 import { LocalVideoTrack } from 'twilio-video';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
@@ -32,6 +33,11 @@ export default function CallFooter() {
   } = useRoomContext();
 
   const { usersRaisedHand, toggleRaiseHand, user } = useSocketContext();
+  const [isChromium, setIsChromium] = useState(false);
+
+  useEffect(() => {
+    setIsChromium(!!window.chrome);
+  }, []);
 
   async function toggleScreenShare() {
     // * toggle the user's screen
@@ -66,125 +72,159 @@ export default function CallFooter() {
     <footer className='h-20 w-full bg-gray-900 flex flex-row items-center justify-around border-t border-gray-950'>
       <div className='flex flex-row space-x-5 sm:space-x-8'>
         {/* CALL INFO */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: displayPanel === 'meeting-details',
-            disabled,
-          })}
-          onClick={() => togglePanel('meeting-details')}
-        >
-          <IoInformationCircle className='call-icon' />
-        </button>
+        <Tooltip title='Information'>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: displayPanel === 'meeting-details',
+              disabled,
+            })}
+            onClick={() => togglePanel('meeting-details')}
+          >
+            <IoInformationCircle className='call-icon' />
+          </button>
+        </Tooltip>
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
         {/* USER AUDIO */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: !audio,
-            disabled,
-          })}
-          onClick={toggleUserAudio}
-        >
-          {audio ? (
-            <IoMicSharp className='call-icon' />
-          ) : (
-            <IoMicOffSharp className='call-icon' />
-          )}
-        </button>
+
+        <Tooltip title={audio ? 'Turn off audio' : 'Turn on audio'}>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: !audio,
+              disabled,
+            })}
+            onClick={toggleUserAudio}
+          >
+            {audio ? (
+              <IoMicSharp className='call-icon' />
+            ) : (
+              <IoMicOffSharp className='call-icon' />
+            )}
+          </button>
+        </Tooltip>
 
         {/* USER VIDEO */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: !video,
-            disabled,
-          })}
-          onClick={toggleUserVideo}
-        >
-          {video ? (
-            <IoVideocam className='call-icon' />
-          ) : (
-            <IoVideocamOff className='call-icon' />
-          )}
-        </button>
+        <Tooltip title={video ? 'Turn off video' : 'Turn on video'}>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: !video,
+              disabled,
+            })}
+            onClick={toggleUserVideo}
+          >
+            {video ? (
+              <IoVideocam className='call-icon' />
+            ) : (
+              <IoVideocamOff className='call-icon' />
+            )}
+          </button>
+        </Tooltip>
 
         {/* SHARE SCREEN */}
-        <button
-          disabled={disabled}
-          className={classNames('call-icon-wrapper hidden lg:block', {
-            disabled,
-          })}
-          onClick={toggleScreenShare}
-        >
-          <MdPresentToAll className='call-icon' />
-        </button>
+        <Tooltip title='Share screen'>
+          <button
+            disabled={disabled}
+            className={classNames('call-icon-wrapper hidden lg:block', {
+              disabled,
+            })}
+            onClick={toggleScreenShare}
+          >
+            <MdPresentToAll className='call-icon' />
+          </button>
+        </Tooltip>
 
         {/* RAISE HAND */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: user && usersRaisedHand.includes(user.id),
-            disabled,
-          })}
-          onClick={toggleRaiseHand}
-        >
-          <IoHandRightSharp className='call-icon' />
-        </button>
+        <Tooltip title='Raise hand'>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: user && usersRaisedHand.includes(user.id),
+              disabled,
+            })}
+            onClick={toggleRaiseHand}
+          >
+            <IoHandRightSharp className='call-icon' />
+          </button>
+        </Tooltip>
 
         {/* LEAVE CALL */}
-        <a className='call-icon-wrapper phn' href='/dashboard'>
-          <IoCall className='call-icon' />
-        </a>
+        <Tooltip title='Leave call'>
+          <button className='call-icon-wrapper phn'>
+            <a href='/dashboard'>
+              <IoCall className='call-icon' />
+            </a>
+          </button>
+        </Tooltip>
       </div>
 
       <div className='flex flex-row space-x-5 sm:space-x-8'>
         {/* TOGGLE CHAT */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: displayPanel === 'chat',
-            disabled,
-          })}
-          onClick={() => togglePanel('chat')}
-        >
-          <IoChatboxEllipses className='call-icon' />
-        </button>
+        <Tooltip title={displayPanel === 'chat' ? 'Hide chat' : 'Show chat'}>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: displayPanel === 'chat',
+              disabled,
+            })}
+            onClick={() => togglePanel('chat')}
+          >
+            <IoChatboxEllipses className='call-icon' />
+          </button>
+        </Tooltip>
 
         {/* TOGGLE PARTICIPANTS */}
-        <button
-          disabled={disabled}
-          className={classNames({
-            'call-icon-wrapper': true,
-            active: displayPanel === 'participants',
-            disabled,
-          })}
-          onClick={() => togglePanel('participants')}
+        <Tooltip
+          title={
+            displayPanel === 'participants'
+              ? 'Hide participants'
+              : 'Show participants'
+          }
         >
-          <IoPeople className='call-icon' />
-        </button>
+          <button
+            disabled={disabled}
+            className={classNames({
+              'call-icon-wrapper': true,
+              active: displayPanel === 'participants',
+              disabled,
+            })}
+            onClick={() => togglePanel('participants')}
+          >
+            <IoPeople className='call-icon' />
+          </button>
+        </Tooltip>
 
         {/* BACKGROUND */}
-        <button
-          disabled={disabled}
-          className={classNames(
-            'call-icon-wrapper text-gray-200 hidden lg:block',
-            {
-              active: displayPanel === 'background',
-              disabled,
-            }
-          )}
-          onClick={() => togglePanel('background')}
+        <Tooltip
+          title={
+            displayPanel === 'background'
+              ? 'Hide backgrounds'
+              : 'Show backgrounds'
+          }
         >
-          <BackgroundIcon height={24} width={24} />
-        </button>
+          <button
+            disabled={disabled}
+            className={classNames(
+              'call-icon-wrapper text-gray-200 hidden lg:block',
+              {
+                active: displayPanel === 'background',
+                disabled,
+                'lg:hidden': !isChromium,
+              }
+            )}
+            onClick={() => togglePanel('background')}
+          >
+            <BackgroundIcon height={24} width={24} />
+          </button>
+        </Tooltip>
       </div>
     </footer>
   );

@@ -4,6 +4,7 @@ import { IoVideocam, IoChatboxEllipses } from 'react-icons/io5';
 import { CgSpinner } from 'react-icons/cg';
 import { AiFillClockCircle } from 'react-icons/ai';
 import classNames from 'classnames';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Layout from '@/components/Layout/Layout';
 import getRecentMeetingData from '@/lib/utils/dashboardData';
@@ -133,8 +134,8 @@ export default function Dashboard({ user }) {
         <div className='wrapper py-20 text-dark'>
           <div
             id='recent-meetings'
-            className='bg-gray-900 rounded-md p-5 flex flex-col space-y-2 flex-1'
-            style={{ margin: '0 auto', maxHeight: '35rem', minHeight: '15rem' }}
+            className='bg-gray-900 rounded-md p-5 flex flex-col space-y-2 flex-1 mx-auto'
+            style={{ maxHeight: '35rem', minHeight: '15rem' }}
           >
             <div className='flex flex-row space-x-3 items-center justify-center border-b border-gray-800 pb-3'>
               <AiFillClockCircle className='text-light h-10 w-10' />
@@ -142,7 +143,7 @@ export default function Dashboard({ user }) {
             </div>
             <div
               className={classNames(
-                'flex flex-col overflow-y-scroll space-y-2 items-center justify-center flex-1'
+                'flex flex-col overflow-y-auto space-y-2 items-center flex-1 relative'
               )}
             >
               {loading && (
@@ -157,7 +158,7 @@ export default function Dashboard({ user }) {
                   meetings.map((meeting, idx) => (
                     <div
                       key={idx}
-                      className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between'
+                      className='w-full bg-gray-800 rounded p-3 flex flex-row justify-between '
                     >
                       <div className='flex flex-col space-y-2 text-light'>
                         <p className='font-bold text-blue-400'>
@@ -166,28 +167,29 @@ export default function Dashboard({ user }) {
                         <p className='text-sm'>
                           {formattedDateString(meeting.date)}
                         </p>
-                        {meeting.users.length > 0 ? (
-                          <div className='flex flex-row space-x-2 text-sm'>
-                            <p className='font-semibold'>Participants: </p>
+                        {
+                          <div className='flex flex-row text-sm'>
+                            <p className='font-semibold mr-2'>Participants: </p>
+                            <p className='text-gray-400'>You</p>
                             {meeting.users.map((user, idx) => (
                               <p key={idx} className='text-gray-400'>
-                                {user.name.split(' ')[0]},
+                                , {user.name.split(' ')[0]}
                               </p>
                             ))}
                           </div>
-                        ) : (
-                          <p className='text-gray-400 text-sm'>
-                            <em>No other participants</em>
-                          </p>
-                        )}
+                        }
                       </div>
                       <div className='flex flex-row space-x-2 items-center'>
-                        <a href={meeting.meetingLink}>
-                          <IoVideocam className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
-                        </a>
-                        <a href={meeting.chatLink}>
-                          <IoChatboxEllipses className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
-                        </a>
+                        <Tooltip title='Rejoin this call'>
+                          <a href={meeting.meetingLink}>
+                            <IoVideocam className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
+                          </a>
+                        </Tooltip>
+                        <Tooltip title='Rejoin this chat room'>
+                          <a href={meeting.chatLink}>
+                            <IoChatboxEllipses className='text-gray-500 hover:text-blue-400 w-6 h-6 cursor-pointer' />
+                          </a>
+                        </Tooltip>
                       </div>
                     </div>
                   ))

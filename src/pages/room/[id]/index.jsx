@@ -58,6 +58,11 @@ export default function RoomCall({ roomId, user }) {
   } = useRoomContext();
 
   const { setRoomId, setUser } = useSocketContext();
+  const [isChromium, setIsChromium] = useState(false);
+
+  useEffect(() => {
+    setIsChromium(!!window.chrome);
+  }, []);
 
   useEffect(() => {
     // * fetch accessToken for twilio video
@@ -162,7 +167,7 @@ export default function RoomCall({ roomId, user }) {
           <ChatPanel />
           <ParticipantsPanel />
           <InfoPanel />
-          <BackgroundPanel />
+          {isChromium && <BackgroundPanel />}
         </div>
         <CallFooter />
       </div>

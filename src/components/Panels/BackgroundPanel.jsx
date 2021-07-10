@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import SidePanel from '@/components/Panels/SidePanel';
 import { virtualBackgroundImages as bg } from '@/lib';
 import { MdBlurOn } from 'react-icons/md';
 import { IoBanOutline } from 'react-icons/io5';
 import { useBackgroundContext } from '@/context/BackgroundContext';
+import { useRoomContext } from '@/context/RoomContext';
+import { trackpubsToTracks } from '@/lib/utils';
 
 function BackgroundPanel() {
-  const { changeUserBackground } = useBackgroundContext();
+  const { room } = useRoomContext();
+  const {
+    virtualBackground,
+    blurBackground,
+    librariesLoaded,
+    changeUserBackground,
+    loadVirtualBgLib,
+    loadBlurBgLib,
+    setVideoTracks,
+  } = useBackgroundContext();
+
+  useEffect(() => {
+    if (virtualBackground && blurBackground) {
+      if (room) {
+        const vt = trackpubsToTracks(room.localParticipant.videoTracks);
+        if (vt) {
+          setVideoTracks(vt);
+          librariesLoaded.current = true;
+          console.log('background libraries loaded');
+        }
+      }
+    }
+  }, [virtualBackground, blurBackground, room]);
+
+  useEffect(() => {
+    loadBlurBgLib();
+    loadVirtualBgLib(bg.beach);
+  }, []);
 
   return (
     <SidePanel title='Select Background' name='background'>

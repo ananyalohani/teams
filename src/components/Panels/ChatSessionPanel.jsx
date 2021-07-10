@@ -13,6 +13,7 @@ export default function ChatSessionPanel({ sidePanel, setSidePanel }) {
   const { usersList, clearChatHistory, roomId, user } = useSocketContext();
   const [email, setEmail] = useState('');
   const [openSB, setOpenSB] = useState(false);
+  const [openIS, setOpenIS] = useState(false);
   const meetingLink = `/room/${roomId}/chat`;
 
   const handleInvite = (e) => {
@@ -26,6 +27,7 @@ export default function ChatSessionPanel({ sidePanel, setSidePanel }) {
       meetingLink,
     };
     sendInvite(data);
+    setOpenIS(true);
     setEmail('');
   };
 
@@ -118,6 +120,13 @@ export default function ChatSessionPanel({ sidePanel, setSidePanel }) {
         open={openSB}
         onClose={() => setOpenSB(false)}
         message='Link copied!'
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        autoHideDuration={1000}
+        open={openIS}
+        onClose={() => setOpenIS(false)}
+        message='Invite Sent Successfully!'
       />
     </div>
   );

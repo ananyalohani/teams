@@ -17,6 +17,10 @@ module.exports = {
     sunset: '/twilio-video-processor/backgrounds/sunset.jpg',
   },
   netQualConfig: {
+    0: {
+      label: 'Broken (Reconnecting)',
+      color: 'bg-gray-400',
+    },
     1: {
       label: 'Very Poor',
       color: 'bg-red-500',

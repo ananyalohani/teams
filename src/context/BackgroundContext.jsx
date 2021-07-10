@@ -5,55 +5,31 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { virtualBackgroundImages as bg } from '@/lib';
 import url from '@/lib/url';
-import { useRoomContext } from './RoomContext';
-import { trackpubsToTracks } from '@/lib/utils';
 
 const BackgroundContext = createContext();
 
 const BackgroundContextProvider = ({ children }) => {
-  const { room, isChatSession } = useRoomContext(); // twilio room object
   const [virtualBackground, setVirtualBackground] = useState(); // virtualBackground library export
   const [blurBackground, setBlurBackground] = useState(); // blurBackground library export
   const librariesLoaded = useRef(false); // checks if virtual and blur background libraries are loaded
   const [videoTracks, setVideoTracks] = useState(null); // localParticipant's video track
 
-  useEffect(() => {
-    if (virtualBackground && blurBackground) {
-      if (room) {
-        const vt = trackpubsToTracks(room.localParticipant.videoTracks);
-        if (vt) {
-          setVideoTracks(vt);
-          librariesLoaded.current = true;
-          console.log('background libraries loaded');
-        }
-      }
+  const loadBlurBgLib = async () => {
+    try {
+      const { GaussianBlurBackgroundProcessor } = await import(
+        '@twilio/video-processors'
+      );
+      const blurBg = new GaussianBlurBackgroundProcessor({
+        assetsPath: `${url.client}/twilio-video-processor/assets`,
+        maskBlurRadius: 5,
+        blurFilterRadius: 10,
+      });
+      setBlurBackground(blurBg);
+    } catch (e) {
+      console.error(e);
     }
-  }, [virtualBackground, blurBackground, room]);
-
-  useEffect(() => {
-    if (isChatSession) return;
-    // load the GaussianBlurBackgroundProcessor library
-    const loadBlurBgLib = async () => {
-      try {
-        const { GaussianBlurBackgroundProcessor } = await import(
-          '@twilio/video-processors'
-        );
-        const blurBg = new GaussianBlurBackgroundProcessor({
-          assetsPath: `${url.client}/twilio-video-processor/assets`,
-          maskBlurRadius: 5,
-          blurFilterRadius: 10,
-        });
-        setBlurBackground(blurBg);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    loadBlurBgLib();
-    loadVirtualBgLib(bg.beach);
-  }, [isChatSession]);
+  };
 
   const loadVirtualBgLib = async (imagePath) => {
     // load the VirtualBackgroundProcessor library
@@ -126,6 +102,14 @@ const BackgroundContextProvider = ({ children }) => {
   const contextProps = {
     changeUserBackground,
     librariesLoaded,
+    virtualBackground,
+    setVirtualBackground,
+    blurBackground,
+    setBlurBackground,
+    librariesLoaded,
+    loadVirtualBgLib,
+    loadBlurBgLib,
+    setVideoTracks,
   };
 
   return (
