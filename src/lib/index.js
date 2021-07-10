@@ -1,6 +1,7 @@
 import { allowedChars } from '@/lib/utils';
 
 module.exports = {
+  allowedURLs: ['http://localhost:5100', 'https://ws.msft.lohani.dev'],
   virtualBackgroundImages: {
     beach: '/twilio-video-processor/backgrounds/beach.jpg',
     bokeh: '/twilio-video-processor/backgrounds/bokeh.jpg',

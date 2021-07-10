@@ -1,6 +1,6 @@
 # Teams
 
-**Teams** is a web app implementation of Microsoft Teams, the video conferencing and collaboration platform by **Microsoft**.
+[**Teams**](https://msft.lohani.dev) is a web app implementation of Microsoft Teams, the video conferencing and collaboration platform by **Microsoft**.
 
 ## Table of Contents
 
@@ -8,9 +8,6 @@
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Development](#development)
-  - [API Reference](#api-reference)
-      - [Get all items](#get-all-items)
-      - [Get item](#get-item)
   - [Technologies Used](#technologies-used)
       - [Frontend](#frontend)
       - [Video Call and Chat](#video-call-and-chat)
@@ -19,6 +16,7 @@
       - [Other Libraries](#other-libraries)
   - [Agile Techniques Used](#agile-techniques-used)
       - [Kanban Board](#kanban-board)
+  - [Demo](#demo)
   - [Credits](#credits)
   - [Contact](#contact)
 
@@ -75,28 +73,6 @@ pnpm run server
 
 Go to http://localhost:3000 on your browser.
 
-## API Reference
-
-#### Get all items
-
-```http
-  GET /api/items
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
 ## Technologies Used
 
 #### Frontend
@@ -130,18 +106,18 @@ Go to http://localhost:3000 on your browser.
 
 #### Kanban Board
 
-I organised my tasks by dividing them into 4 categories: **To do**, **In Progress**, **Done** and **Bugs**. I also set an In progress limit of 3, meaning if the In Progress column had 3 tasks, I had to finish them before I move on to start new tasks.
+I used a [Kanban board](<(https://github.com/users/ananyalohani/projects/2)>) to organise my tasks by dividing them into 4 categories: **To do**, **In Progress**, **Done** and **Bugs**. I also set an In progress limit of 3, meaning if the In Progress column had 3 tasks, I had to finish them before I move on to start new tasks.
 
-I preferred a Kanban board over a Scrum board since I was working a little on each phase throughout the four weeks, and I didn’t see fit to add start and end dates on the sprints.
+The development of this project was iterative: Design, Code, Redesign, Fix Bugs. I preferred a Kanban board over a Scrum board since I was working a little on each phase throughout the four weeks, and I didn’t see fit to add start and end dates on the sprints.
 
-Find the Kanban board [here](https://github.com/users/ananyalohani/projects/2).
+## Demo
 
 ## Credits
 
-- Font: Segoe UI by Microsoft
-- Icon Images: Flat Icons
-- Illustrations: Undraw
-- Icons: React Icons
+- Segoe UI font by Microsoft
+- Flat Icons
+- Undraw Illustrations
+- React Icons
 
 ## Contact
 

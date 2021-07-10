@@ -7,6 +7,7 @@ import ChatSessionPanel from '@/components/Panels/ChatSessionPanel';
 import Scroller from '@/components/Scroller/Scroller';
 import { useSocketContext } from '@/context/SocketContext';
 import classNames from 'classnames';
+import { formattedDateString } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
   try {
@@ -86,8 +87,10 @@ export default function Chat({ roomId, user }) {
                               ? `${chat.user.name} (You)`
                               : `${chat.user.name}`}
                           </p>
-                          <p className='text-sm font-light opacity-80'>
-                            {chat.message.time}
+                          <p className='text-sm font-light opacity-60'>
+                            {formattedDateString(
+                              chat.message.date ?? new Date()
+                            )}
                           </p>
                         </div>
                         <p className='text-sm'>{chat.message.body}</p>

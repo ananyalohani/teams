@@ -1,6 +1,7 @@
 import dbMiddleware from './db';
 import nextConnect from 'next-connect';
 import Cors from 'cors';
+import { allowedURLs } from '@/lib';
 
 export default function createHandler(...middlewares) {
   return nextConnect().use(dbMiddleware, ...middlewares);
@@ -9,7 +10,7 @@ export default function createHandler(...middlewares) {
 // Initializing the cors middleware
 const cors = Cors({
   methods: ['GET', 'PUT', 'POST'],
-  origin: '*',
+  origin: allowedURLs,
 });
 
 // Helper method to wait for a middleware to execute before continuing

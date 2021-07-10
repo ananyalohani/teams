@@ -44,10 +44,8 @@ export function validateRoomName(roomName) {
 
 export function sortByDate(arr) {
   const compare = (a, b) => {
-    // console.log(a, b);
     return new Date(b.date) - new Date(a.date);
   };
-  // console.log(arr.sort(compare));
 
   return arr.sort(compare);
 }

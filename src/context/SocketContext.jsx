@@ -71,10 +71,12 @@ const SocketContextProvider = ({ children }) => {
     // * alert if the room is full
     socketRef.current.on('room-full', () => {
       alert(alerts.roomFull);
+      window.location.href = '/dashboard';
     });
 
     socketRef.current.on('user-already-joined', () => {
       alert(alerts.alreadyInRoom);
+      window.location.href = '/dashboard';
     });
   }
 
