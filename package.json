@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "pnpm i && cd ./server && npm i",
+    "postinstall": "cd server && npm i",
     "client": "next dev",
     "server": "cd ./server && npm start"
   },

@@ -57,10 +57,11 @@ To run this project locally do the following:
   npm i -g pnpm
 
   # install dependencies
+  pnpm i
   pnpm run postinstall
 ```
 
-Make sure that all the environment variables are correctly defined in a .env file before proceeding to the next step. Refer to .env.example for the required environment variables.
+Make sure that all the environment variables are correctly defined in .env and server/.env file before proceeding to the next step. Refer to [.env.example](.env.example) and [server/.env.example](server/.env.example) for the required environment variables.
 
 ```bash
 # client runs on port 3000
