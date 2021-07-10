@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/client';
 import classNames from 'classnames';
 
+import LayoutNoFooter from '@/components/Layout/LayoutNoFooter';
 import Participant from '@/components/Participant/Participant';
 import Header from '@/components/Header/Header';
 import Head from '@/components/Head/Head';
@@ -131,9 +132,7 @@ export default function RoomCall({ roomId, user }) {
   ));
 
   return (
-    <>
-      <Head title={`Call - ${roomId}`} />
-      <Header />
+    <LayoutNoFooter title={`Call - ${roomId}`}>
       <div className='flex flex-col' style={{ height: 'calc(100vh - 5rem)' }}>
         <div className='flex flex-row h-full flex-1'>
           <div className='bg-gray-875 flex-1 flex items-center justify-center'>
@@ -171,6 +170,6 @@ export default function RoomCall({ roomId, user }) {
         </div>
         <CallFooter />
       </div>
-    </>
+    </LayoutNoFooter>
   );
 }
