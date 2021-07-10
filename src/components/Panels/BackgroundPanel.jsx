@@ -27,7 +27,7 @@ function BackgroundPanel() {
         if (vt) {
           setVideoTracks(vt);
           librariesLoaded.current = true;
-          console.log('background libraries loaded');
+          // console.log('background libraries loaded');
         }
       }
     }

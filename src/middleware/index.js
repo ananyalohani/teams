@@ -7,16 +7,15 @@ export default function createHandler(...middlewares) {
   return nextConnect().use(dbMiddleware, ...middlewares);
 }
 
-// Initializing the cors middleware
-const cors = Cors({
-  methods: ['GET', 'PUT', 'POST'],
-  origin: allowedURLs,
-});
-
 // Helper method to wait for a middleware to execute before continuing
 // And to throw an error when an error happens in a middleware
-export function runMiddleware(req, res) {
+export function runMiddleware(req, res, allowAll = false) {
   return new Promise((resolve, reject) => {
+    const cors = Cors({
+      methods: ['GET', 'PUT', 'POST'],
+      origin: allowAll ? '*' : allowedURLs,
+    });
+
     cors(req, res, (result) => {
       if (result instanceof Error) {
         return reject(result);

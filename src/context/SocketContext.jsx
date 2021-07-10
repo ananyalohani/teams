@@ -133,7 +133,7 @@ const SocketContextProvider = ({ children }) => {
     });
 
     socketRef.current.on('user-unraised-hand', ({ userId }) => {
-      console.log('user-unraised-hand');
+      // console.log('user-unraised-hand');
       setUsersRaisedHand((old) => old.filter((id) => id !== userId));
     });
   }

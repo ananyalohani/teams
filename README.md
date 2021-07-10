@@ -16,6 +16,8 @@
       - [Other Libraries](#other-libraries)
   - [Agile Techniques Used](#agile-techniques-used)
       - [Kanban Board](#kanban-board)
+  - [API Reference](#api-reference)
+      - [Get network quality info for users in a room](#get-network-quality-info-for-users-in-a-room)
   - [Demo](#demo)
   - [Credits](#credits)
   - [Contact](#contact)
@@ -30,7 +32,7 @@
    - Call capacity of 25
    - Authentication
    - Screen Share
-   - Background Filters (Virtual and Blur)
+   - Background Filters (Virtual and Blur) [Only for Chromium-based browsers]
    - Monitoring Network Quality
    - Rooms
    - Named Rooms
@@ -47,12 +49,9 @@
 To run this project locally do the following:
 
 ```bash
-  # clone this repository
-  git clone https://github.com/ananyalohani/teams.git
+  # clone this repository and the server submodule
+  git clone --recurse-submodules https://github.com/ananyalohani/teams.git
   cd teams
-
-  # clone the submodule
-  <some commands here>
 
   # if you don't have pnpm installed
   npm i -g pnpm
@@ -109,6 +108,20 @@ Go to http://localhost:3000 on your browser.
 I used a [Kanban board](<(https://github.com/users/ananyalohani/projects/2)>) to organise my tasks by dividing them into 4 categories: **To do**, **In Progress**, **Done** and **Bugs**. I also set an In progress limit of 3, meaning if the In Progress column had 3 tasks, I had to finish them before I move on to start new tasks.
 
 The development of this project was iterative: Design, Code, Redesign, Fix Bugs. I preferred a Kanban board over a Scrum board since I was working a little on each phase throughout the four weeks, and I didn’t see fit to add start and end dates on the sprints.
+
+## API Reference
+
+The netwrok quality of participants in a call can be analysed using Twilio's Network Quality API.
+
+#### Get network quality info for users in a room
+
+```http
+GET /api/network-quality?roomId=${roomId}
+```
+
+| Parameter | Type     | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
+| `roomId`  | `string` | **Required**. RoomId for which you want to see the details |
 
 ## Demo
 

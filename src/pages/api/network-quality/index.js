@@ -1,13 +1,15 @@
-import createHandler from '@/middleware';
+import createHandler, { runMiddleware } from '@/middleware';
 import NetworkQuality from '@/models/network-quality';
 
 const handler = createHandler();
 
 handler.get(async (req, res) => {
+  await runMiddleware(req, res, true);
+
   if (!req.query.roomId) return;
   try {
     const result = await NetworkQuality.find({ roomId: req.query.roomId });
-    console.log(result);
+    // console.log(result);
     res.json(result);
   } catch (e) {
     console.error(e);
