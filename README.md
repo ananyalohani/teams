@@ -35,7 +35,7 @@
 <details>
 
 <summary>
-Elaborate
+Expand
 </summary>
 
 #### Frontend
