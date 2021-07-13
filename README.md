@@ -127,18 +127,19 @@ Go to http://localhost:3000 on your browser.
 
 ## Demo
 
-- **Fully Functional Prototype:** https://msft.lohani.dev
-- **Presentation:** https://teams-ppt.vercel.app
-- **Video Demo:** https://youtu.be/qoQxXQ06DRE
+- [**Fully Functional Prototype**](https://msft.lohani.dev)
+- [**Video Demo**](https://youtu.be/qoQxXQ06DRE)
+- [**Presentation**](https://teams-ppt.vercel.app)
 
 ## Credits
 
+- [GitHub Webhook Script Runner](https://github.com/plibither8/github-hook-script-runner) (Thanks [@plibither8](https://github.com/plibither8/)!)
 - Segoe UI font by Microsoft
 - Flat Icons
 - Undraw Illustrations
 - React Icons
 
-## Contact
+## Author
 
 **Ananya Lohani**
 

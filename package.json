@@ -1,5 +1,5 @@
 {
-  "name": "microsoft-teams-clone",
+  "name": "teams",
   "private": true,
   "scripts": {
     "dev": "next dev",
