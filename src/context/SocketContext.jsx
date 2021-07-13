@@ -18,12 +18,12 @@ const SocketContextProvider = ({ children }) => {
   const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [usersList, setUsersList] = useState([]); // List of NextAuth `user` objects present in the room
   const [chats, setChats] = useState([]); // keep track of all the chats
-  const [usersRaisedHand, setUsersRaisedHand] = useState([]);
+  const [usersRaisedHand, setUsersRaisedHand] = useState([]); // list of all user's who have raised hand
   const socketRef = useRef(null); // ref to the socket connection object
   const socketConnected = useRef(false); // set the state of connection of socket
 
   useEffect(() => {
-    // * connect to the socket and listen to incoming socket events
+    // connect to the socket and listen to incoming socket events
     if (roomId && !socketConnected.current) {
       socketRef.current = io(url.server);
       socketConnected.current = true;
@@ -37,7 +37,7 @@ const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     const cleanup = (event) => {
-      // * cleanup function for call disconnect
+      // cleanup function for call disconnect
       if (event.persisted) {
         return;
       }
@@ -55,7 +55,7 @@ const SocketContextProvider = ({ children }) => {
   }, [roomId, socketRef.current]);
 
   function getChatHistory() {
-    // * receive the chat history from the server
+    // receive the chat history from the server
     socketRef.current.on('chat-history', ({ chatHistory }) => {
       setChats(chatHistory);
     });
@@ -65,10 +65,10 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function joinRoom() {
-    // * join the room
+    // join the room
     socketRef.current.emit('join-room', { roomId, user });
 
-    // * alert if the room is full
+    // alert if the room is full
     socketRef.current.on('room-full', () => {
       alert(alerts.roomFull);
       window.location.href = '/dashboard';
@@ -87,7 +87,7 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function sendMessage(e, body, user) {
-    // * send a text message within the video call
+    // send a text message within the video call
     e.preventDefault();
     if (body === '') return;
     const chat = {
@@ -106,19 +106,19 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function receiveMessages() {
-    // * listen to incoming messages from sockets
+    // listen to incoming messages from sockets
     socketRef.current.on('receive-message', ({ chat }) => {
       addChat(chat);
     });
   }
 
   function addChat(message) {
-    // * add message to the list of chats
+    // add message to the list of chats
     setChats((chats) => [...chats, message]);
   }
 
   function clearChatHistory() {
-    // * permanently delete chat history
+    // permanently delete chat history
     socketRef.current.emit('clear-chat-history', { roomId });
     setChats([]);
   }
@@ -128,17 +128,18 @@ const SocketContextProvider = ({ children }) => {
   }
 
   function listenToRaisedHands() {
+    // listen to incoming raise-hand events from sockets
     socketRef.current.on('user-raised-hand', ({ userId }) => {
       setUsersRaisedHand((old) => [...old, userId]);
     });
 
     socketRef.current.on('user-unraised-hand', ({ userId }) => {
-      // console.log('user-unraised-hand');
       setUsersRaisedHand((old) => old.filter((id) => id !== userId));
     });
   }
 
   function toggleRaiseHand() {
+    // toggle the handraised status of the user
     if (!usersRaisedHand.includes(user.id)) {
       socketRef.current.emit('raise-hand', { userId: user.id, roomId });
       setUsersRaisedHand((old) => [...old, user.id]);

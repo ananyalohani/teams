@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import SidePanel from '@/components/Panels/SidePanel';
 import { useSocketContext } from '@/context/SocketContext';

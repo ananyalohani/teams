@@ -1,27 +1,15 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  createContext,
-} from 'react';
-
-import { useSocketContext } from '@/context/SocketContext';
+import React, { useState, useCallback, useContext, createContext } from 'react';
 
 const RoomContext = createContext();
 
 const RoomContextProvider = ({ children }) => {
-  // const [token, setToken] = useState(); // fetch Twilio access token from server
-  const { roomId, user } = useSocketContext(); // get roomId and NextAuth user object from RoomContext
   const [room, setRoom] = useState(null); // `room` object returned by Twilio
-  // const [roomId, setRoomId] = useState(null); // `roomId` string; set externally
   const [participants, setParticipants] = useState([]); // array of `participant` objects returned by Twilio
-  // const [user, setUser] = useState(null); // `user` object returned by NextAuth; set externally
   const [userAudio, setUserAudio] = useState(true); // whether the user is muted or not
   const [userVideo, setUserVideo] = useState(true); // whether the user's video is on or not
   const [displayPanel, setDisplayPanel] = useState(''); // toggle display of side panels
   const [screenTrack, setScreenTrack] = useState(null); // the screen track shared by a participant
-  const [userNetQual, setUserNetQual] = useState(null);
+  const [userNetQual, setUserNetQual] = useState(null); // user's network quality levels
 
   const handleCallEnd = useCallback(() => {
     // * handle the case when a user ends the call
@@ -41,7 +29,7 @@ const RoomContextProvider = ({ children }) => {
   }, []);
 
   function leaveRoom() {
-    // * do this when a user leaves the room
+    // do this when a user leaves the room
     if (!room || !room.localParticipant) return;
     room.on('disconnected', (room) => {
       // Detach the local media elements
@@ -53,7 +41,7 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function toggleUserAudio() {
-    // * toggle user's audio track
+    // toggle user's audio track
     if (!room || !room.localParticipant) return;
     if (userAudio) {
       room.localParticipant.audioTracks.forEach((publication) => {
@@ -68,7 +56,7 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function toggleUserVideo() {
-    // * toggle user's video track
+    // toggle user's video track
     if (!room || !room.localParticipant) return;
     if (userVideo) {
       room.localParticipant.videoTracks.forEach((publication) => {
@@ -83,12 +71,12 @@ const RoomContextProvider = ({ children }) => {
   }
 
   function participantConnected(participant) {
-    // * when a new participant gets connected
+    // when a new participant gets connected
     setParticipants((prevParticipants) => [...prevParticipants, participant]);
   }
 
   function participantDisconnected(participant) {
-    // * when a participant gets disconnected
+    // when a participant gets disconnected
     setParticipants((prevParticipants) =>
       prevParticipants.filter((p) => p !== participant)
     );
@@ -103,11 +91,7 @@ const RoomContextProvider = ({ children }) => {
   const contextProps = {
     room,
     setRoom,
-    // roomId,
-    // setRoomId,
     participants,
-    // user,
-    // setUser,
     displayPanel,
     togglePanel,
     leaveRoom,

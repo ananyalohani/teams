@@ -21,22 +21,23 @@ function BackgroundPanel() {
   } = useBackgroundContext();
 
   useEffect(() => {
+    // load the background processor libraries
+    loadBlurBgLib();
+    loadVirtualBgLib(bg.beach);
+  }, []);
+
+  useEffect(() => {
     if (virtualBackground && blurBackground) {
+      // once virtual and blur background libraries are loaded
       if (room) {
         const vt = trackpubsToTracks(room.localParticipant.videoTracks);
         if (vt) {
           setVideoTracks(vt);
           librariesLoaded.current = true;
-          // console.log('background libraries loaded');
         }
       }
     }
   }, [virtualBackground, blurBackground, room]);
-
-  useEffect(() => {
-    loadBlurBgLib();
-    loadVirtualBgLib(bg.beach);
-  }, []);
 
   return (
     <SidePanel title='Select Background' name='background'>

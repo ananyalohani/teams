@@ -4,10 +4,10 @@ import { MdContentCopy } from 'react-icons/md';
 import { IoSendSharp } from 'react-icons/io5';
 
 import SidePanel from '@/components/Panels/SidePanel';
+import url from '@/lib/url';
+import sendInvite from '@/lib/utils/emailInvite';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
-import sendInvite from '@/lib/utils/emailInvite';
-import url from '@/lib/url';
 import { netQualConfig } from '@/lib';
 
 export default function InfoPanel() {

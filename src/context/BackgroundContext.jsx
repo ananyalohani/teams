@@ -16,6 +16,7 @@ const BackgroundContextProvider = ({ children }) => {
   const [videoTracks, setVideoTracks] = useState(null); // localParticipant's video track
 
   const loadBlurBgLib = async () => {
+    // load the BlurBackgroundProcessor library
     try {
       const { GaussianBlurBackgroundProcessor } = await import(
         '@twilio/video-processors'

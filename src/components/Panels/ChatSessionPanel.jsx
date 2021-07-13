@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Snackbar } from '@material-ui/core';
 import { MdContentCopy } from 'react-icons/md';
 import { IoCloseOutline, IoSendSharp, IoVideocam } from 'react-icons/io5';
 import { AiOutlineHistory } from 'react-icons/ai';
 
 import sendInvite from '@/lib/utils/emailInvite';
-import url from '@/lib/url';
 import { useSocketContext } from '@/context/SocketContext';
 import classNames from 'classnames';
 

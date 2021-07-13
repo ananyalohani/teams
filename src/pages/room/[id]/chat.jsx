@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { formattedDateString } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
+  // fetch the next-auth user session
   try {
     const { req, query } = context;
     const session = await getSession({ req });
@@ -43,6 +44,7 @@ export default function Chat({ roomId, user }) {
   const [sidePanel, setSidePanel] = useState(false);
 
   useEffect(() => {
+    // initialise values
     setRoomId(roomId);
     setUser(user);
   }, []);

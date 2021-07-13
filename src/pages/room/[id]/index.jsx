@@ -18,6 +18,7 @@ import getToken from '@/lib/utils/accessToken';
 import Video from 'twilio-video';
 
 export async function getServerSideProps(context) {
+  // fetch the next-auth user session
   try {
     const { req, query } = context;
     const session = await getSession({ req });
@@ -66,7 +67,7 @@ export default function RoomCall({ roomId, user }) {
   }, []);
 
   useEffect(() => {
-    // * fetch accessToken for twilio video
+    // fetch accessToken for twilio video
     setRoomId(roomId);
     setUser(user);
     getToken(roomId, user.id).then((token) => {
@@ -92,7 +93,7 @@ export default function RoomCall({ roomId, user }) {
   }, []);
 
   useEffect(() => {
-    // * add event listeners on the room for participants joining and leaving the room
+    // add event listeners on the room for participants joining and leaving the room
     leaveRoom();
     if (room) {
       room.on('participantConnected', participantConnected);
@@ -108,7 +109,7 @@ export default function RoomCall({ roomId, user }) {
 
   useEffect(() => {
     const cleanup = (event) => {
-      // * cleanup function for call end
+      // cleanup function for call end
       if (event.persisted) {
         return;
       }

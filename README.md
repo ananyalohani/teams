@@ -84,7 +84,7 @@ The development of this project was iterative: Design, Code, Redesign, Fix Bugs.
 
 ## API Reference
 
-The netwrok quality of participants in a call can be analysed using Twilio's Network Quality API.
+The network quality of participants in a call can be analysed using Twilio's Network Quality API.
 
 #### Get network quality info for users in a room
 

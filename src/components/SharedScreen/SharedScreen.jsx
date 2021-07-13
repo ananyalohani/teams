@@ -7,6 +7,7 @@ export default function SharedScreen() {
   const screenRef = useRef();
 
   useEffect(() => {
+    // attach the screen track to the video element
     if (screenTrack) {
       screenTrack.attach(screenRef.current);
     } else {

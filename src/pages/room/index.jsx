@@ -6,6 +6,7 @@ import { generateCallID } from '@/lib/utils';
 import Head from '@/components/Head/Head';
 
 export async function getServerSideProps(context) {
+  // fetch the next-auth user session
   try {
     const { req, query } = context;
     const session = await getSession({ req });

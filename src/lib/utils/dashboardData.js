@@ -1,4 +1,5 @@
 async function getRoomsByUser(userId) {
+  // fetch the room data by user
   try {
     const data = await fetch(`/api/user-rooms?userId=${userId}`);
     const jsonData = await data.json();
@@ -10,6 +11,7 @@ async function getRoomsByUser(userId) {
 }
 
 async function getUsersByRoom(roomId) {
+  // fetch the user data by room
   try {
     const data = await fetch(`/api/rooms?roomId=${roomId}`);
     const jsonData = await data.json();
@@ -21,6 +23,7 @@ async function getUsersByRoom(roomId) {
 }
 
 export default async function getRecentMeetingData(user, setMeetings) {
+  // get recent meetings of user
   try {
     const roomsByUser = await getRoomsByUser(user.id);
     const temp = [];

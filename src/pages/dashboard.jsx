@@ -12,6 +12,7 @@ import { alerts } from '@/lib';
 import { validateRoomName, formattedDateString, sortByDate } from '@/lib/utils';
 
 export async function getServerSideProps(context) {
+  // fetch the next-auth user session
   try {
     const { req } = context;
     const session = await getSession({ req });

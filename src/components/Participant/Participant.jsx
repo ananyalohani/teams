@@ -7,17 +7,18 @@ import {
   IoHandRightSharp,
 } from 'react-icons/io5';
 import classNames from 'classnames';
+
 import { trackpubsToTracks } from '@/lib/utils';
 import { useRoomContext } from '@/context/RoomContext';
 import { useSocketContext } from '@/context/SocketContext';
 import postNetworkQualityStats from '@/lib/utils/networkQuality';
 
 const Participant = ({ participant, me = false }) => {
-  const [videoTracks, setVideoTracks] = useState([]);
-  const [audioTracks, setAudioTracks] = useState([]);
-  const [participantUser, setParticipantUser] = useState(null);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
-  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [participantUser, setParticipantUser] = useState(null); // next-auth `user` object associated with this participant
+  const [videoTracks, setVideoTracks] = useState([]); // participant's video tracks
+  const [audioTracks, setAudioTracks] = useState([]); // participant's audio tracks
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true); // video status
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true); // audio status
   const { setScreenTrack, setUserNetQual } = useRoomContext();
   const { findUser, usersRaisedHand, user, roomId } = useSocketContext();
 
@@ -25,6 +26,7 @@ const Participant = ({ participant, me = false }) => {
   const audioRef = useRef();
 
   useEffect(() => {
+    // initialise basic values for the participants
     setParticipantUser(findUser(participant.identity));
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
@@ -38,6 +40,7 @@ const Participant = ({ participant, me = false }) => {
     participant.on('trackUnsubscribed', trackUnsubscribed);
 
     participant.on('trackPublished', async (remoteTrackPublication) => {
+      // when a user publishes a screen track
       while (true) {
         if (remoteTrackPublication.track) break;
         await new Promise((res) => {
@@ -48,6 +51,7 @@ const Participant = ({ participant, me = false }) => {
     });
 
     participant.on('trackUnpublished', (remoteTrackPublication) => {
+      // when a user unpublishes a screen track
       setScreenTrack(null);
     });
 
@@ -62,7 +66,7 @@ const Participant = ({ participant, me = false }) => {
     });
 
     if (me) {
-      // Set the initial Network Quality Level and statistics
+      // set the initial Network Quality Level and statistics
       postNetworkQualityStats(
         roomId,
         participant.identity,
@@ -72,7 +76,7 @@ const Participant = ({ participant, me = false }) => {
 
       setUserNetQual(participant.networkQualityLevel);
 
-      // Set changes to Network Quality Level and statistics
+      // set changes to Network Quality Level and statistics
       participant.on('networkQualityLevelChanged', (level, stats) => {
         postNetworkQualityStats(roomId, participant.identity, level, stats);
         if (level) setUserNetQual(level);

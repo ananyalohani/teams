@@ -1,6 +1,7 @@
 import url from '@/lib/url';
 
 export default async function getToken(roomId, identity) {
+  // fetches an access token for twilio from the server's API
   try {
     const data = await fetch(`${url.server}/video/token`, {
       method: 'POST',

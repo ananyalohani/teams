@@ -14,9 +14,6 @@ function SidePanel({ name, id, title, children }) {
           displayPanel === name,
         hidden: !Boolean(displayPanel) || displayPanel !== name,
       })}
-      // style={{
-      //   height: 'calc(100vh - 10rem)',
-      // }}
     >
       <div className='bg-gray-800 w-full p-4 border-b-2 border-gray-950'>
         <div className='flex flex-row  justify-between'>
