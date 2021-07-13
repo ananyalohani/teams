@@ -30,6 +30,14 @@
 
 ## Technologies Used
 
+![tech_stack](public/images/tech_stack.png)
+
+<details>
+
+<summary>
+Elaborate
+</summary>
+
 #### Frontend
 
 - React
@@ -57,6 +65,8 @@
 - SendGrid
 - Twilio Network Quality API
 - Twilio Video Processors API
+
+</details>
 
 ## Architecture
 
