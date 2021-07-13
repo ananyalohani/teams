@@ -1,8 +1,8 @@
-<div align="center">
-  <img src="/public/images/msft_logo.png" width=45>
-  <h1>Teams</h1>
-</div>
+<img align="left" width=40 height=40 src="public/images/msft_logo.png" alt="Teams">
 
+# Teams
+
+<!--
 <div align="center">
   <h3>
     <a href="https://msft.lohani.dev/">
@@ -17,7 +17,9 @@
       Agile Board
     </a>
   </h3>
-</div>
+</div> -->
+
+## Overview
 
 [**Teams**](https://msft.lohani.dev) is a web app implementation of Microsoft Teams, the video conferencing and collaboration platform by **Microsoft**.
 
