@@ -119,7 +119,7 @@ Go to http://localhost:3000 on your browser.
 
 - **Fully Functional Prototype:** https://msft.lohani.dev
 - **Presentation:** https://teams-ppt.vercel.app
-- **Video Demo:** https://youtu.be/2qgeOJr2lEQ
+- **Video Demo:** https://youtu.be/qoQxXQ06DRE
 
 ## Credits
 
