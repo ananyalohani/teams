@@ -2,6 +2,8 @@
 
 [**Teams**](https://msft.lohani.dev) is a web app implementation of Microsoft Teams, the video conferencing and collaboration platform by **Microsoft**.
 
+![Teams](public/images/homepage-screenshot.png)
+
 ## Table of Contents
 
 - [Teams](#teams)
@@ -14,6 +16,7 @@
       - [Backend](#backend)
       - [Database](#database)
       - [Other Libraries](#other-libraries)
+  - [Architecture](#architecture)
   - [Agile Techniques Used](#agile-techniques-used)
       - [Kanban Board](#kanban-board)
   - [API Reference](#api-reference)
@@ -41,6 +44,8 @@
    - Send email invites to users
    - Display list of participants in a call
    - Raise hand
+   - Toast notifications
+   - Clear chat history
    - Display list of user's recent meetings
    - Fully responsive web app
 
@@ -58,17 +63,17 @@ To run this project locally do the following:
 
   # install dependencies
   pnpm i
-  pnpm run postinstall
+  pnpm postinstall
 ```
 
 Make sure that all the environment variables are correctly defined in .env and server/.env file before proceeding to the next step. Refer to [.env.example](.env.example) and [server/.env.example](server/.env.example) for the required environment variables.
 
 ```bash
 # client runs on port 3000
-pnpm run client
+pnpm client
 
 # server runs on port 5100
-pnpm run server
+pnpm server
 ```
 
 Go to http://localhost:3000 on your browser.
@@ -77,6 +82,7 @@ Go to http://localhost:3000 on your browser.
 
 #### Frontend
 
+- React
 - Next.js
 - Tailwind CSS
 
@@ -101,6 +107,12 @@ Go to http://localhost:3000 on your browser.
 - SendGrid
 - Twilio Network Quality API
 - Twilio Video Processors API
+
+## Architecture
+
+The client, Socket API and MongoDB database are hosted on a DigitalOcean VPS and available on my domain by reverse proxying the HTTP requests with Nginx.
+
+![architecture](public/images/architecture.png)
 
 ## Agile Techniques Used
 
@@ -134,6 +146,8 @@ GET /api/network-quality?roomId=${roomId}
 - React Icons
 
 ## Contact
+
+**Ananya Lohani**
 
 - Website: [lohani.dev](https://lohani.dev/)
 - GitHub: [@ananyalohani](https://github.com/ananyalohani/)
