@@ -4,27 +4,6 @@
 
 ![Teams](public/images/homepage-screenshot.png)
 
-## Table of Contents
-
-- [Teams](#teams)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Development](#development)
-  - [Technologies Used](#technologies-used)
-      - [Frontend](#frontend)
-      - [Video Call and Chat](#video-call-and-chat)
-      - [Backend](#backend)
-      - [Database](#database)
-      - [Other Libraries](#other-libraries)
-  - [Architecture](#architecture)
-  - [Agile Techniques Used](#agile-techniques-used)
-      - [Kanban Board](#kanban-board)
-  - [API Reference](#api-reference)
-      - [Get network quality info for users in a room](#get-network-quality-info-for-users-in-a-room)
-  - [Demo](#demo)
-  - [Credits](#credits)
-  - [Contact](#contact)
-
 ## Features
 
 1. **Mandatory Feature:** Two-person video call
@@ -48,35 +27,6 @@
    - Clear chat history
    - Display list of user's recent meetings
    - Fully responsive web app
-
-## Development
-
-To run this project locally do the following:
-
-```bash
-  # clone this repository and the server submodule
-  git clone --recurse-submodules https://github.com/ananyalohani/teams.git
-  cd teams
-
-  # if you don't have pnpm installed
-  npm i -g pnpm
-
-  # install dependencies
-  pnpm i
-  pnpm postinstall
-```
-
-Make sure that all the environment variables are correctly defined in .env and server/.env file before proceeding to the next step. Refer to [.env.example](.env.example) and [server/.env.example](server/.env.example) for the required environment variables.
-
-```bash
-# client runs on port 3000
-pnpm client
-
-# server runs on port 5100
-pnpm server
-```
-
-Go to http://localhost:3000 on your browser.
 
 ## Technologies Used
 
@@ -136,7 +86,40 @@ GET /api/network-quality?roomId=${roomId}
 | :-------- | :------- | :--------------------------------------------------------- |
 | `roomId`  | `string` | **Required**. RoomId for which you want to see the details |
 
+## Development
+
+To run this project locally do the following:
+
+```bash
+  # clone this repository and the server submodule
+  git clone --recurse-submodules https://github.com/ananyalohani/teams.git
+  cd teams
+
+  # if you don't have pnpm installed
+  npm i -g pnpm
+
+  # install dependencies
+  pnpm i
+  pnpm postinstall
+```
+
+Make sure that all the environment variables are correctly defined in .env and server/.env file before proceeding to the next step. Refer to [.env.example](.env.example) and [server/.env.example](server/.env.example) for the required environment variables.
+
+```bash
+# client runs on port 3000
+pnpm client
+
+# server runs on port 5100
+pnpm server
+```
+
+Go to http://localhost:3000 on your browser.
+
 ## Demo
+
+- **Fully Functional Prototype:** https://msft.lohani.dev
+- **Presentation:** https://teams-ppt.vercel.app
+- **Video Demo:** https://youtu.be/2qgeOJr2lEQ
 
 ## Credits
 
