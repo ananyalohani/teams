@@ -78,7 +78,7 @@ The client, Socket API and MongoDB database are hosted on a DigitalOcean VPS and
 
 #### Kanban Board
 
-I used a [Kanban board](<(https://github.com/users/ananyalohani/projects/2)>) to organise my tasks by dividing them into 4 categories: **To do**, **In Progress**, **Done** and **Bugs**. I also set an In progress limit of 3, meaning if the In Progress column had 3 tasks, I had to finish them before I move on to start new tasks.
+I used a [Kanban board](https://github.com/users/ananyalohani/projects/2) to organise my tasks by dividing them into 4 categories: **To do**, **In Progress**, **Done** and **Bugs**. I also set an In progress limit of 3, meaning if the In Progress column had 3 tasks, I had to finish them before I move on to start new tasks.
 
 The development of this project was iterative: Design, Code, Redesign, Fix Bugs. I preferred a Kanban board over a Scrum board since I was working a little on each phase throughout the four weeks, and I didn’t see fit to add start and end dates on the sprints.
 
